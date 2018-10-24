@@ -1,6 +1,6 @@
 using System;
 
-namespace WebApp.Models
+namespace ViWork.WebApp.Models
 {
     public class ErrorViewModel
     {

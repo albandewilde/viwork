@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Models;
+using ViWork.WebApp.Models;
 
-namespace WebApp.Controllers
+namespace ViWork.WebApp.Controllers
 {
     public class HomeController:Controller
     {
