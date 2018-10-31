@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViWork.DAL", "src\ViWork.DAL\ViWork.DAL.csproj", "{18E0FFF4-01BF-4D37-9B8C-E6E754B742DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViWork.DAL.Tests", "src\ViWork.DAL.Tests\ViWork.DAL.Tests.csproj", "{9B21B242-07CC-4A34-86EE-26EE9746D465}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViWork.DB", "src\ViWork.DB\ViWork.DB.csproj", "{BC4CDAF1-2810-40B9-9638-E47B6A6A8830}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViWork.WebApp", "src\ViWork.WebApp\ViWork.WebApp.csproj", "{7DA7F929-4076-42C7-B2A9-4215F54F74F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViWork.DAL.Test", "src\ViWork.DAL.Test\ViWork.DAL.Test.csproj", "{6FCE966F-E9D9-45EA-89A7-F6FF15AD7E50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		{18E0FFF4-01BF-4D37-9B8C-E6E754B742DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18E0FFF4-01BF-4D37-9B8C-E6E754B742DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18E0FFF4-01BF-4D37-9B8C-E6E754B742DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B21B242-07CC-4A34-86EE-26EE9746D465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B21B242-07CC-4A34-86EE-26EE9746D465}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B21B242-07CC-4A34-86EE-26EE9746D465}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B21B242-07CC-4A34-86EE-26EE9746D465}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC4CDAF1-2810-40B9-9638-E47B6A6A8830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC4CDAF1-2810-40B9-9638-E47B6A6A8830}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC4CDAF1-2810-40B9-9638-E47B6A6A8830}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{7DA7F929-4076-42C7-B2A9-4215F54F74F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DA7F929-4076-42C7-B2A9-4215F54F74F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DA7F929-4076-42C7-B2A9-4215F54F74F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FCE966F-E9D9-45EA-89A7-F6FF15AD7E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FCE966F-E9D9-45EA-89A7-F6FF15AD7E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FCE966F-E9D9-45EA-89A7-F6FF15AD7E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FCE966F-E9D9-45EA-89A7-F6FF15AD7E50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

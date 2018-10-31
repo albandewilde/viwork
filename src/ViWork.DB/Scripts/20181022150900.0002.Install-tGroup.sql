@@ -1,7 +1,7 @@
 create table viw.tGroup
 (
 	GroupId int identity(0,1),
-	GroupName nvarchar(32) not null,
+	GroupName nvarchar(32),
 	UserId int not null,
 
 	constraint Pk_tGroup primary key(GroupId),

@@ -4,7 +4,7 @@ create table viw.tUser
 	FirstName nvarchar(32) not null,
 	LastName nvarchar(32)not null,
 	Email nvarchar(32) not null,
-	[Type] nvarchar(11) not null,
+	[Type] nvarchar(11) 
 
 
 	constraint Pk_tUser primary key(UserId),
