@@ -261,3 +261,8 @@ src/ITI.PrimarySchool.WebApp/wwwroot/dist/
 src/ITI.PrimarySchool.DAL.Tests/appsettings.json
 src/ITI.PrimarySchool.WebApp/appsettings.json
 src/ITI.PrimarySchool.DB/appsettings.json
+
+# js files in object model of the WebApp
+./WebApp/objects/js/*
+./WebApp/objects/tests/js/*
+./WebApp/objects/node_modules
