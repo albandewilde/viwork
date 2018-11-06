@@ -23,8 +23,8 @@ begin
     insert into viw.tPasswordUser(UserId,  [Password])
                            values(@UserId, @Password);
 	
-	insert into viw.tGroup( UserId)
-						   values ( @UserId)
+	insert into viw.tGroup( GroupName)
+						   values (@LastName)
 	select @GroupId = SCOPE_IDENTITY()
 	insert into viw.tOwnGroup(UserId,GroupId)
 							values(@UserId, @GroupId)

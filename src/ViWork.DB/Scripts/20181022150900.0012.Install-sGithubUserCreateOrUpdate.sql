@@ -26,8 +26,8 @@ begin
 		insert into viw.tUser(Email) values(@Email);
 		set @userId = scope_identity();
 		select @GroupName = '';
-		insert into viw.tGroup( GroupName, UserId)
-							values (@GroupName, @UserId)
+		insert into viw.tGroup( GroupName)
+							values (@GroupName)
 		select @GroupId = SCOPE_IDENTITY()
 		insert into viw.tOwnGroup(UserId,GroupId)
 							values(@UserId, @GroupId)
