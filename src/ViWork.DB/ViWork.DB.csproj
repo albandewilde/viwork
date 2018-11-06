@@ -6,7 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\*.sql" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <EmbeddedResource Include="Scripts\20181022150900.0000.Create-schema-viw.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0001.Install-tUser.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0002.Install-tGroup.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0003.Install-tSchema.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0004.Install-tOwnGroup.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0005.Install-tLnkShema.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0006.Install-tPasswordUser.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0007.Install-tGithubUser.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0008.Install-vUser.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0009.Install-vGroup.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0010.Install-vSchema.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0011.Install-sPasswordUserCreate.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0012.Install-sGithubUserCreateOrUpdate.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0013.Install-sUserDelete.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0014.Install-sUserUpdate.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0015.Install-sPasswordUserUpdate.sql" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 create table viw.tPasswordUser
 (
-	 UserId     int,
+	
+	 UserId int not null,
     [Password] varbinary(128) not null,
 
     constraint PK_tPasswordUser primary key(UserId),

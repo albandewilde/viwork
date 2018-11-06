@@ -21,7 +21,7 @@ namespace ViWork.DAL
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 return await con.QueryFirstOrDefaultAsync<UserData>(
-                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GoogleRefreshToken, u.GoogleId, u.GithubId from iti.vUser u where u.UserId = @UserId",
+                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GithubId from viw.vUser u where u.UserId = @UserId",
                     new { UserId = userId } );
             }
         }
@@ -35,10 +35,8 @@ namespace ViWork.DAL
                              u.Email,
                              u.[Password],
                              u.GithubAccessToken,
-                             u.GoogleRefreshToken,
-                             u.GoogleId,
                              u.GithubId
-                      from iti.vUser u
+                      from viw.vUser u
                       where u.UserId = @UserId;",
                     new { UserId = userId } );
 
@@ -54,45 +52,40 @@ namespace ViWork.DAL
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 return await con.QueryFirstOrDefaultAsync<UserData>(
-                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GoogleRefreshToken, u.GoogleId, u.GithubId from iti.vUser u where u.Email = @Email",
+                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GithubId from viw.vUser u where u.Email = @Email",
                     new { Email = email } );
             }
         }
 
-        public async Task<UserData> FindByGoogleId( string googleId )
-        {
-            using( SqlConnection con = new SqlConnection( _connectionString ) )
-            {
-                return await con.QueryFirstOrDefaultAsync<UserData>(
-                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GoogleRefreshToken, u.GoogleId, u.GithubId from iti.vUser u where u.GoogleId = @GoogleId",
-                    new { GoogleId = googleId } );
-            }
-        }
+
 
         public async Task<UserData> FindByGithubId( int githubId )
         {
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 return await con.QueryFirstOrDefaultAsync<UserData>(
-                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GoogleRefreshToken, u.GoogleId, u.GithubId from iti.vUser u where u.GithubId = @GithubId",
+                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GithubId from viw.vUser u where u.GithubId = @GithubId",
                     new { GithubId = githubId } );
             }
         }
 
-        public async Task<Result<int>> CreatePasswordUser( string email, byte[] password )
+        public async Task<Result<int>> CreatePasswordUser( string email, byte[] password, string firstname, string lastname )
         {
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 var p = new DynamicParameters();
                 p.Add( "@Email", email );
+                p.Add("@FirstName", firstname);
+                p.Add("@LastName", lastname);
                 p.Add( "@Password", password );
                 p.Add( "@UserId", dbType: DbType.Int32, direction: ParameterDirection.Output );
                 p.Add( "@Status", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue );
-                await con.ExecuteAsync( "iti.sPasswordUserCreate", p, commandType: CommandType.StoredProcedure );
+                p.Add("@GroupId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                await con.ExecuteAsync( "viw.sPasswordUserCreate", p, commandType: CommandType.StoredProcedure );
 
                 int status = p.Get<int>( "@Status" );
                 if( status == 1 ) return Result.Failure<int>( Status.BadRequest, "An account with this email already exists." );
-
+                     
                 Debug.Assert( status == 0 );
                 return Result.Success( p.Get<int>( "@UserId" ) );
             }
@@ -103,29 +96,19 @@ namespace ViWork.DAL
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 await con.ExecuteAsync(
-                    "iti.sGithubUserCreateOrUpdate",
+                    "viw.sGithubUserCreateOrUpdate",
                     new { Email = email, GithubId = githubId, AccessToken = accessToken },
                     commandType: CommandType.StoredProcedure );
             }
         }
 
-        public async Task CreateOrUpdateGoogleUser( string email, string googleId, string refreshToken )
-        {
-            using( SqlConnection con = new SqlConnection( _connectionString ) )
-            {
-                await con.ExecuteAsync(
-                    "iti.sGoogleUserCreateOrUpdate",
-                    new { Email = email, GoogleId = googleId, RefreshToken = refreshToken },
-                    commandType: CommandType.StoredProcedure );
-            }
-        }
 
         public async Task<IEnumerable<string>> GetAuthenticationProviders( string userId )
         {
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 return await con.QueryAsync<string>(
-                    "select p.ProviderName from iti.vAuthenticationProvider p where p.UserId = @UserId",
+                    "select p.ProviderName from viw.vAuthenticationProvider p where p.UserId = @UserId",
                     new { UserId = userId } );
             }
         }
@@ -134,7 +117,7 @@ namespace ViWork.DAL
         {
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
-                await con.ExecuteAsync( "iti.sUserDelete", new { UserId = userId }, commandType: CommandType.StoredProcedure );
+                await con.ExecuteAsync( "viw.sUserDelete", new { UserId = userId }, commandType: CommandType.StoredProcedure );
             }
         }
 
@@ -143,7 +126,7 @@ namespace ViWork.DAL
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 await con.ExecuteAsync(
-                    "iti.sUserUpdate",
+                    "viw.sUserUpdate",
                     new { UserId = userId, Email = email },
                     commandType: CommandType.StoredProcedure );
             }
@@ -154,7 +137,7 @@ namespace ViWork.DAL
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 await con.ExecuteAsync(
-                    "iti.sPasswordUserUpdate",
+                    "viw.sPasswordUserUpdate",
                     new { UserId = userId, Password = password },
                     commandType: CommandType.StoredProcedure );
             }
