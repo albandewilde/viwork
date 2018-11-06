@@ -28,6 +28,16 @@ namespace ViWork.DAL
             }
         }
 
+        public async Task<SchemaData> FindByName(string schemaName)
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString)) 
+            {
+                    return await con.QueryFirstOrDefault(
+                        "Select * from viw.tSchema where SchemaId = @SchemaId",
+                        new { SchemaName = schemaName });
+            }            
+        }
+
         public async Task<SchemaData> FindSchemaGroup(int schemaId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
@@ -50,13 +60,21 @@ namespace ViWork.DAL
                 p.Add("@GroupId", groupID);
                 p.Add("@Statut", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
 
-                await con.ExecuteAsync("viw.sSchemaCreate", p, commandType: CommandType.StoredProcedure);
+                await con.ExecuteAsync("viw.sSchemaAdd", p, commandType: CommandType.StoredProcedure);
 
                 int status = p.Get<int>("@Status");
                 if (status == 1) return Result.Failure<int>(Status.BadRequest, "An schema with this name already exists.");
 
                 Debug.Assert(status == 0);
                 return Result.Success(p.Get<int>("@SchemaId"));
+            }
+        }
+
+        public async Task DeleteSchema(int schemaId)
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+               await con.ExecuteAsync("viw.sSchemaDelete", new { SchemaId = schemaId }, commandType: CommandType.StoredProcedure);
             }
         }
         
