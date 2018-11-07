@@ -4,8 +4,7 @@ create procedure viw.sPasswordUserCreate
 	@FirstName nvarchar(32),
 	@LastName nvarchar(32),
     @Password varbinary(128),
-	@UserId  int out,
-	@GroupId int out
+	@UserId  int out
 )
 as
 begin
@@ -17,14 +16,14 @@ begin
 		rollback;
 		return 1;
 	end;
-
+	declare @GroupId int
     insert into viw.tUser(Email , FirstName, LastName) values(@Email ,@FirstName, @LastName);
 		select @UserId = scope_identity();
     insert into viw.tPasswordUser(UserId,  [Password])
                            values(@UserId, @Password);
 	
 	insert into viw.tGroup( GroupName)
-						   values (@LastName)
+						   values (@LastName + ' group')
 	select @GroupId = SCOPE_IDENTITY()
 	insert into viw.tOwnGroup(UserId,GroupId)
 							values(@UserId, @GroupId)

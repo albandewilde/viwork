@@ -1,5 +1,4 @@
-Drop table viw.tGroup
-go
+
 
 create table viw.tGroup
 (
