@@ -1,5 +1,4 @@
-import AuthService from './services/AuthService.js';
-import router from './main.router';
+import AuthService from './services/AuthService'
 
 const host = process.env.VUE_APP_BACKEND;
 
@@ -16,13 +15,13 @@ AuthService.logoutEndpoint = host + '/Account/LogOff';
 // Allowed providers to log in our application, and the corresponding server-side endpoints
 AuthService.providers = {
   'Base': {
-    endpoint: host + '/Account/Login',
+    endpoint: host + '/Account/Login'
   },
   'Google': {
-    endpoint: host + '/Account/ExternalLogin?provider=Google',
+    endpoint: host + '/Account/ExternalLogin?provider=Google'
   },
   'GitHub': {
-    endpoint: host + '/Account/ExternalLogin?provider=GitHub',
+    endpoint: host + '/Account/ExternalLogin?provider=GitHub'
   },
 };
 

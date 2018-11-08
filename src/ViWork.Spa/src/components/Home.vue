@@ -1,18 +1,22 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Bienvenue sur ViWork</h1>
+            <p class="lead text-muted">Cette application est réalisée à l'aide du framework Vue 2.</p>
+            <p>
+                <a href="http://vuejs.org/v2/guide/" class="btn btn-primary my-2">Guide Vue 2</a>
+                <a href="http://vuejs.org/v2/api/" class="btn btn-secondary my-2">Documentation API Vue 2</a>
+            </p>
+        </div>
+    </section>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './HelloWorld.vue'; // @ is an alias to /src
+<script>
+export default {
 
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class Home extends Vue {}
+}
 </script>
+
+<style lang="scss">
+
+</style>

@@ -14,9 +14,9 @@ namespace ViWork.WebApp.Services
             _passwordHasher = passwordHasher;
         }
 
-        public Task<Result<int>> CreatePasswordUser(string email, string password)
+        public Task<Result<int>> CreatePasswordUser(string email, string password, string firstname, string lastname)
         {
-            return _userGateway.CreatePasswordUser(email, _passwordHasher.HashPassword(password));
+            return _userGateway.CreatePasswordUser(email, _passwordHasher.HashPassword(password), firstname, lastname);
         }
 
         public async Task<UserData> FindUser(string email, string password)
