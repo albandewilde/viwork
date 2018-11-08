@@ -2,9 +2,8 @@ create procedure viw.sGithubUserCreateOrUpdate
 (
     @Email       nvarchar(64),
     @GithubId    int,
-    @AccessToken varchar(64),
-	@GroupName nvarchar(64),
-	@GroupId nvarchar(64)
+    @AccessToken varchar(64)
+
 )
 as
 begin
@@ -19,18 +18,18 @@ begin
 	end;
 
     declare @userId int;
+	declare @groupId int;
 	select @userId = u.UserId from viw.tUser u where u.Email = @Email;
 
 	if @userId is null
 	begin
 		insert into viw.tUser(Email) values(@Email);
 		set @userId = scope_identity();
-		select @GroupName = '';
 		insert into viw.tGroup( GroupName)
-							values (@GroupName)
-		select @GroupId = SCOPE_IDENTITY()
+							values ('My group')
+		select @groupId = SCOPE_IDENTITY()
 		insert into viw.tOwnGroup(UserId,GroupId)
-							values(@UserId, @GroupId)
+							values(@userId, @GroupId)
 
 	end;
     

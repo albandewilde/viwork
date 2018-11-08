@@ -80,7 +80,7 @@ namespace ViWork.DAL
                 p.Add( "@Password", password );
                 p.Add( "@UserId", dbType: DbType.Int32, direction: ParameterDirection.Output );
                 p.Add( "@Status", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue );
-                p.Add("@GroupId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+               
                 await con.ExecuteAsync( "viw.sPasswordUserCreate", p, commandType: CommandType.StoredProcedure );
 
                 int status = p.Get<int>( "@Status" );
@@ -138,7 +138,7 @@ namespace ViWork.DAL
             {
                 await con.ExecuteAsync(
                     "viw.sPasswordUserUpdate",
-                    new { UserId = userId, Password = password },
+                    new { UserId = userId, Password = password},
                     commandType: CommandType.StoredProcedure );
             }
         }

@@ -1,8 +1,8 @@
 create table viw.tUser
 (
 	UserId int identity(0,1),
-	FirstName nvarchar(32) not null,
-	LastName nvarchar(32)not null,
+	FirstName nvarchar(32),
+	LastName nvarchar(32),
 	Email nvarchar(32) not null,
 	[Type] nvarchar(11) 
 
