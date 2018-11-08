@@ -35,10 +35,10 @@ namespace ViWork.WebApp
             services.AddSingleton<PasswordHasher>();
             services.AddSingleton<UserService>();
             services.AddSingleton<TokenService>();
-            //services.AddSingleton<GitHubService>();
-            //services.AddSingleton<GitHubClient>();
+            services.AddSingleton<GitHubService>();
+            services.AddSingleton<GitHubClient>();
             //services.AddSingleton<GoogleAuthenticationManager>();
-            //services.AddSingleton<GithubAuthenticationManager>();
+            services.AddSingleton<GithubAuthenticationManager>();
 
             string secretKey = Configuration["JwtBearer:SigningKey"];
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
@@ -79,7 +79,7 @@ namespace ViWork.WebApp
 
                         ValidateLifetime = true
                     };
-                });
+                })
                 //.AddGoogle(o =>
                 //{
                 //    o.SignInScheme = CookieAuthentication.AuthenticationScheme;
@@ -91,24 +91,24 @@ namespace ViWork.WebApp
                 //    };
                 //    o.AccessType = "offline";
                 //})
-                //.AddOAuth("GitHub", o =>
-                //{
-                //    o.SignInScheme = CookieAuthentication.AuthenticationScheme;
-                //    o.ClientId = Configuration["Authentication:Github:ClientId"];
-                //    o.ClientSecret = Configuration["Authentication:Github:ClientSecret"];
-                //    o.CallbackPath = new PathString("/signin-github");
+                .AddOAuth("GitHub", o =>
+                {
+                    o.SignInScheme = CookieAuthentication.AuthenticationScheme;
+                    o.ClientId = Configuration["Authentication:Github:ClientId"];
+                    o.ClientSecret = Configuration["Authentication:Github:ClientSecret"];
+                    o.CallbackPath = new PathString("/signin-github");
 
-                //    o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
-                //    o.TokenEndpoint = "https://github.com/login/oauth/access_token";
-                //    o.UserInformationEndpoint = "https://api.github.com/user";
+                    o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+                    o.TokenEndpoint = "https://github.com/login/oauth/access_token";
+                    o.UserInformationEndpoint = "https://api.github.com/user";
 
-                //    o.Scope.Add("user");
+                    o.Scope.Add("user");
 
-                //    o.Events = new OAuthEvents
-                //    {
-                //        OnCreatingTicket = ctx => ctx.HttpContext.RequestServices.GetRequiredService<GithubAuthenticationManager>().OnCreatingTicket(ctx)
-                //    };
-                //});
+                    o.Events = new OAuthEvents
+                    {
+                        OnCreatingTicket = ctx => ctx.HttpContext.RequestServices.GetRequiredService<GithubAuthenticationManager>().OnCreatingTicket(ctx)
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
