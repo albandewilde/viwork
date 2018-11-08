@@ -38,7 +38,7 @@ namespace ViWork.DAL
             }            
         }
 
-        public async Task<SchemaData> FindSchemaGroup(int schemaId)
+        public async Task<GroupData> FindSchemaGroup(int schemaId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
