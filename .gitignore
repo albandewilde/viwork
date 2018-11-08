@@ -256,11 +256,11 @@ paket-files/
 .cr/
 
 # PrimarySchool project
-src/ITI.PrimarySchool.WebApp/wwwroot/assets/
-src/ITI.PrimarySchool.WebApp/wwwroot/dist/
-src/ITI.PrimarySchool.DAL.Tests/appsettings.json
-src/ITI.PrimarySchool.WebApp/appsettings.json
-src/ITI.PrimarySchool.DB/appsettings.json
+src/ViWork.WebApp/wwwroot/assets/
+src/ViWork.WebApp/wwwroot/dist/
+src/ViWork.DAL.Tests/appsettings.json
+src/ViWork.WebApp/appsettings.json
+src/ViWork.DB/appsettings.json
 
 # js files in object model of the WebApp
 ./WebApp/objects/js/*
