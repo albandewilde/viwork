@@ -22,10 +22,12 @@
     <EmbeddedResource Include="Scripts\20181022150900.0013.Install-sUserDelete.sql" />
     <EmbeddedResource Include="Scripts\20181022150900.0014.Install-sUserUpdate.sql" />
     <EmbeddedResource Include="Scripts\20181022150900.0015.Install-sPasswordUserUpdate.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0023.Install-vAuthenticationProvider.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Scripts\20181022150900.0023.Install-vAuthenticationProvider.sql" />
   </ItemGroup>
 
   <ItemGroup>
