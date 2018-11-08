@@ -29,11 +29,11 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task<GroupData> FindGroupOwner(int groupId)
+        public async Task<UserData> FindGroupOwnerById(int groupId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                return await con.QueryFirstOrDefaultAsync<GroupData>(
+                return await con.QueryFirstOrDefaultAsync<UserData>(
                     "select u.UserID, u.FirstName, u.LastName, u.Email g.GroupName from viw.vGroup g " +
                     "Join viw.vOwnGroup o on @GroupId = o.GroupId " +
                     "Join viw.vUser u on o.UserId = u.UserID ",
@@ -41,11 +41,11 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task<IEnumerable<GroupData>> FindUserList(int groupId)
+        public async Task<IEnumerable<UserData>> FindUserList(int groupId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                return await con.QueryAsync<GroupData>(
+                return await con.QueryAsync<UserData>(
                     " select u.FirstName, u.LastName from viw.tUserList " +
                     "join viw.tUser on m.UserId = u.UserId" +
                     "where m.GroupId = @GroupId",
