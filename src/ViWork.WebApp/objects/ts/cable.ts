@@ -12,9 +12,10 @@ export class Cable {
 
     constructor(is_cross: boolean = true, port_a: Port=null, port_b: Port=null) {
         this.cross_eh = is_cross
+        this.branched = [null, null]
         port_a != null ? this.plug(port_a): null
         port_b != null ? this.plug(port_b): null
-        this.branched = [port_a, port_b]
+        //this.branched = [port_a, port_b]
         this.wire = [null, null]
     }
 
@@ -32,7 +33,7 @@ export class Cable {
     }
 
     plug(port: Port) {
-        if (this.branched[0] != null && this.branched[1] != null) {    // the cable if brancher in two other port
+        if (this.branched[0] != null && this.branched[1] != null) {    // the cable if branched in two other port
             throw new Error("How could you do this ! The cable is already branched to two ports, are you bling or what !")
         }
         port.on_plug(this)

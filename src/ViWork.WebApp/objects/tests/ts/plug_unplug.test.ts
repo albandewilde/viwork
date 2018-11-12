@@ -229,6 +229,6 @@ describe("Create cable with port in constructor", function () {
         let port = new Port()
         let cable = new Cable(false, null, port)
 
-        assert.deepEqual(cable.branched, [null, port])
+        assert.deepEqual(cable.branched, [port, null])
     })
 })
