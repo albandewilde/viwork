@@ -1,6 +1,4 @@
 import {NetworkCard} from "./network_card"
-import { EthernetFrame } from "./ethernet_frame";
-import { IEthernetPayload } from "./IEthernetPayload";
 
 export class Computer{
     network_cards: NetworkCard[]
