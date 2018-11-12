@@ -1,7 +1,8 @@
-import {Port} from "../../js/port"
-import {Cable} from "../../js/cable"
 import "mocha"
 import {assert} from "chai"
+
+import {Port} from "../../js/port"
+import {Cable} from "../../js/cable"
 
 // Plug and unplug test
 
@@ -207,5 +208,27 @@ describe("Plug a second cable in a port", function() {
 
     it("Plug another cable in a port which have already a cable must throw an Error", function() {
         assert.throw(fn, Error)
+    })
+})
+
+describe("Create cable with port in constructor", function () {
+    it("Cable with two port", function() {
+        let p1 = new Port()
+        let p2 = new Port()
+        let cable = new Cable(false, p1, p2)
+
+        assert.deepEqual(cable.branched, [p1, p2])
+    })
+    it("Cable with the first port", function() {
+        let port = new Port()
+        let cable = new Cable(false, port)
+
+        assert.deepEqual(cable.branched, [port, null])
+    })
+    it("Cable with the second port", function() {
+        let port = new Port()
+        let cable = new Cable(false, null, port)
+
+        assert.deepEqual(cable.branched, [null, port])
     })
 })
