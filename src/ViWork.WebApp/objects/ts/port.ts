@@ -41,7 +41,14 @@ export class Port {
         this.cable = null
     }
 
+    new_message() {
+        this.contenair.on_receive(this.cable.Wire, this)
+        this.cable.wire = [null, null]    // remove the paquet in the cable
+    }
+
     send(paquet: EthernetFrame, wire: number) {
-        this.cable.Wire[wire] = paquet
+        if (this.cable != null) {
+            this.cable.send(wire ? [this.cable.wire[0], paquet] : [paquet, this.cable.wire[1]], this)
+        }
     }
 }
