@@ -4,6 +4,11 @@ import AuthService from './services/AuthService'
 import Vue from 'vue'
 import App from './components/App.vue'
 import router from './main.router'
+import ElementUI from 'element-ui';
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(ElementUI)
+Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 

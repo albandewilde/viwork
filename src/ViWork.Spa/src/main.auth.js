@@ -17,6 +17,9 @@ AuthService.providers = {
   'Base': {
     endpoint: host + '/Account/Login'
   },
+  'BaseRegister': {
+    endpoint: host + '/Account/Register'
+  },
   'Google': {
     endpoint: host + '/Account/ExternalLogin?provider=Google'
   },

@@ -56,7 +56,13 @@ class AuthService {
     login(selectedProvider) {
         var provider = this.providers[selectedProvider];
 
-        var popup = window.open(provider.endpoint, "Connexion à ITI.PrimarySchool", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
+        var popup = window.open(provider.endpoint, "Connexion à ViWork", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
+    }
+
+    register(selectedProvider) {
+        var provider = this.providers[selectedProvider];
+
+        var popup = window.open(provider.endpoint, "Connexion à ViWork", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
     }
 
     registerAuthenticatedCallback(cb) {
@@ -76,7 +82,7 @@ class AuthService {
     }
 
     logout() {
-        var popup = window.open(this.logoutEndpoint, "Déconnexion d'ITI.PrimarySchool", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=600");
+        var popup = window.open(this.logoutEndpoint, "Déconnexion de ViWork", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=600");
     }
 
     registerSignedOutCallback(cb) {
