@@ -13,6 +13,11 @@ import Logout from './components/Logout.vue'
 import Test from './components/Test.vue'
 import About from './components/About.vue'
 
+import ViWork from './components/app/ViWork.vue'
+import SchemaList from './components/app/components/SchemaList.vue'
+
+import Alert from './components/Alert.vue'
+
 import ClassList from './components/classes/ClassList.vue'
 import ClassEdit from './components/classes/ClassEdit.vue'
 
@@ -29,6 +34,11 @@ const routes = [
     { path: '', component: Home, },
     { path: '/test', component: Test},
     { path: '/about', component: About},
+
+    { path: '/app/viwork', component: ViWork, beforeEnter: requireAuth },
+    { path: '/app/viwork/schemalist', component: SchemaList, beforeEnter: requireAuth },
+
+    { path: '/alert', component: Alert},
     
     { path: '/login', component: Login },
     { path: '/logout', component: Logout, beforeEnter: requireAuth },

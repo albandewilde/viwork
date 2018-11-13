@@ -15,5 +15,9 @@
         public string GoogleId { get; set; }
 
         public int GithubId { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
     }
 }

@@ -1,78 +1,75 @@
 <template>
     <div id="app">
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container">
-                <router-link class="navbar-brand" to="/">ViWork</router-link>
+            <el-row class="navbarcolor">
+                <el-col :span="4"><div class="grid-content"></div></el-col>
+                <el-col :span="12">
+                    <div class="grid-content">
+                        <el-menu :default-active="activeIndex" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
+                            <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
+                            <el-menu-item index="/">Home</el-menu-item>
+                            <el-menu-item index="/test">Test</el-menu-item>
+                            <el-menu-item index="/about">About</el-menu-item>
+                        </el-menu>
+                    </div>
+                </el-col>
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <el-col :span="6" v-if="auth.isConnected">
+                    <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
+                        <el-submenu index="1">
+                            <template slot="title">{{auth.email}}</template>
+                            <el-menu-item index="/logout">Déconnexion</el-menu-item>
+                        </el-submenu>
+                            <router-link to="/app/viwork/schemalist">
+                                <el-button type="warning" style="margin-top: 10px" index="/app/viwork/schemalist">Lancer</el-button>
+                            </router-link>
+                    </el-menu>
+                </el-col>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent" v-if="auth.isConnected">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/classes">Gestion des classes</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/students">Gestion des élèves</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/teachers">Gestion des professeurs</router-link>
-                        </li>
-                        <li class="nav-item" v-required-providers="['GitHub']">
-                            <router-link class="nav-link" to="/github/following">Elèves suivis sur GitHub</router-link>
-                        </li>
-                    </ul>
+                <el-col :span="4" v-else>
+                        <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange">
+                            <el-menu-item index="0" @click="dialogFormVisible = true">Connexion</el-menu-item>
+                        </el-menu>
+                </el-col>
+            </el-row>
 
-                    <ul class="navbar-nav my-2 my-md-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ auth.email }}
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <router-link class="dropdown-item" to="/logout">Se déconnecter</router-link>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <el-dialog width="30%" top="5vh" :show-close="false" :visible.sync="dialogFormVisible" >
+                <el-tabs type="card" :stretch="true" @tab-click="handleClick" style="margin-top: -60px; margin-right: -20px; margin-left: -20px">
+                    <el-tab-pane label="Connexion"><sign-in></sign-in></el-tab-pane>
+                    <el-tab-pane label="Inscription"><sign-up></sign-up></el-tab-pane>
+                </el-tabs>
+            </el-dialog>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent" v-else>
+<el-row>
+  <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
+</el-row>
+<el-row>
+  <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="12"><div class="grid-content bg-purple-light"></div></el-col>
+</el-row>
+<el-row>
+  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="8"><div class="grid-content bg-purple-light"></div></el-col>
+  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
+</el-row>
+<el-row>
+  <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+  <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+</el-row>
+<el-row>
+  <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
+  <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
+  <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
+  <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
+</el-row>
 
-                  <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/">Home</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/test">Test</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/about">About</router-link>
-                        </li>
-                    </ul>
-
-                    <ul class="navbar-nav my-2 my-md-0">
-                      <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#ModalSignUp">
-                          Inscription
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#ModalSignIn">
-                          Connexion
-                        </a>
-                      </li>
-                    </ul>
-                <sign-in></sign-in>
-                <sign-up></sign-up>
-                </div>
-                </div>
-            </nav>
-
-            <div class="progress" v-if="isLoading">
+            <!--div class="progress" v-if="isLoading">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
             </div>
-        </header>
+        </header-->
 
         <main role="main" class="p-3 p-md-4 p-lg-5">
             <router-view class="child"></router-view>
@@ -91,8 +88,18 @@ import SignUp from './modals/SignUp.vue'
 export default {
     data() {
         return {
-            state
+            state,
+            activeIndex: this.$route.path,
+            activeIndex2: 0,
+            dialogFormVisible: false,
+            form: {},
         }
+    },
+
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab, event);
+      }
     },
 
     computed: {
@@ -117,9 +124,37 @@ export default {
   height: 5px;
 }
 
-a.router-link-active {
-  font-weight: bold;
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+
+.navbarcolor{
+    background-color: #545c64;
 }
+
 </style>
 
 <style lang="scss">

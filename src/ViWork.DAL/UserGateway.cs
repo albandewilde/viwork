@@ -52,7 +52,7 @@ namespace ViWork.DAL
             using( SqlConnection con = new SqlConnection( _connectionString ) )
             {
                 return await con.QueryFirstOrDefaultAsync<UserData>(
-                    "select u.UserId, u.Email, u.[Password], u.GithubAccessToken, u.GithubId from viw.vUser u where u.Email = @Email",
+                    "select u.UserId, u.Email, u.FirstName, u.LastName, u.[Password], u.GithubAccessToken, u.GithubId from viw.vUser u where u.Email = @Email",
                     new { Email = email } );
             }
         }
