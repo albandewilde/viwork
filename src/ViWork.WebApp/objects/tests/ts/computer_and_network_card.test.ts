@@ -70,5 +70,3 @@ describe("Create computer with 6 network cards which reference the computer", fu
         )
     })
 })
-
-// delete a card    # comment lui il va être chiant
