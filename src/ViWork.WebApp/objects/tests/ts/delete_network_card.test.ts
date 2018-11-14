@@ -1,4 +1,3 @@
-// delete a card    # comment lui il va être chiant
 import "mocha"
 import {assert} from "chai"
 
