@@ -40,4 +40,11 @@ export class NetworkCard implements IPortContainer {
     get_ethernet_frame(content: EthernetFrame) {
         return content.content
     }
+
+    remove() {
+        if (this.port.cable != null) {
+            this.port.unplug()
+        }
+        delete(this.port)
+    }
 }

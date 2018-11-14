@@ -23,4 +23,10 @@ export class Computer{
     arrived(content: any) {
         console.log(content)
     }
+
+    delete_network_card(idx: number) {
+        // throw error when if  0 > idx of idx > len(self.networkcard) 
+        this.network_cards[idx].remove()
+        this.network_cards.splice(idx, 1)
+    }
 }
