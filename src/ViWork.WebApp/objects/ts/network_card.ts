@@ -7,7 +7,7 @@ import {Computer} from "./computer"
 export class NetworkCard implements IPortContainer {
     static last_avariable_mac_addr: number = 0x0
     ip_addr: number[]
-    mac_addr: number
+    readonly mac_addr: number
     port: Port
     computer: Computer
     // network_cards write paquet in the element 1 of a cable and listen in the element 0
@@ -20,11 +20,9 @@ export class NetworkCard implements IPortContainer {
         this.computer = cmp
     }
 
-    get Mac_addr() {return this.mac_addr}
-
     on_receive(cable_content: [EthernetFrame, EthernetFrame], port: Port) {
         let frame = cable_content[0]
-        if (frame != null) {
+        if (frame != null && frame.destination == this.mac_addr) {
             let payload = this.get_ethernet_frame(frame)
             this.computer.arrived(payload)
         }
