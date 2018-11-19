@@ -8,7 +8,6 @@ namespace ViWork.DAL
     {
         public int GroupId { get; }
         public string GroupName { get; set; }
-        public int UserId { get; }
         public int OwnerID { get;  }
     }
 }
