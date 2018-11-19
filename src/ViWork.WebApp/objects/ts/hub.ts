@@ -15,7 +15,7 @@ export class Hub implements IPortContainer {
             throw new RangeError("A hub must have more than 3 ports. Otherwise it's a little useless...")
         }
         this.nb_ports = nb_ports
-        this.ports = []    // mettre des null
+        this.ports = []
         for (let idx = 0; idx < this.nb_ports; idx += 1) {this.ports.push(new Port(this))}
     }
 
