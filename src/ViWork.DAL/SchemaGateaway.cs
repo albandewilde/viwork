@@ -70,11 +70,12 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task DeleteSchema(int schemaId)
+        public async Task<Result> DeleteSchema(int schemaId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                await con.ExecuteAsync("viw.sSchemaDelete", new { SchemaId = schemaId }, commandType: CommandType.StoredProcedure);
+                return Result.Success();
             }
         }
         

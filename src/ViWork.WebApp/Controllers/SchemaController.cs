@@ -45,7 +45,7 @@ namespace ViWork.WebApp.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{id}",Name = "Create")]
+        [HttpPost("{id}",Name = "CreateSchema")]
         public async Task<IActionResult> AddSchema(int groupId,[FromBody] SchemaViewModel model)
         {
 
