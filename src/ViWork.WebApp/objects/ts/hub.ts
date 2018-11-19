@@ -35,18 +35,4 @@ export class Hub implements IPortContainer {
             )   
         }
     }
-
-    recv(port){
-        this.ports.forEach(
-            port => {
-                if (port[1]) {
-                    let paquet = port[1]
-                    port[1] = null    // derefecence the paquet
-                    if (paquet != null) {
-                        this.send(paquet, port)
-                    }
-                }
-            }
-        )
-    }
 }
