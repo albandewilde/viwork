@@ -2,6 +2,7 @@ import {NetworkCard} from "./network_card"
 
 export class Computer{
     network_cards: NetworkCard[]
+    last_recv: String
 
     constructor(nb_network_card: number=1) {
         let idx = 0
@@ -10,6 +11,7 @@ export class Computer{
             this.add_network_card()
             idx += 1
         }
+        this.last_recv = null
     }
 
     add_network_card() {
@@ -24,7 +26,7 @@ export class Computer{
     }
 
     arrived(content: any) {
-        console.log(content)
+        this.last_recv = content
     }
 
     delete_network_card(idx: number) {

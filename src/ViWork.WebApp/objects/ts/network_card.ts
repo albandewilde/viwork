@@ -24,8 +24,10 @@ export class NetworkCard implements IPortContainer {
 
     on_receive(cable_content: [EthernetFrame, EthernetFrame], port: Port) {
         let frame = cable_content[0]
-        let payload = this.get_ethernet_frame(frame)
-        this.computer.arrived(payload)
+        if (frame != null) {
+            let payload = this.get_ethernet_frame(frame)
+            this.computer.arrived(payload)
+        }
     }
 
     send(content: any, dest: number) {
