@@ -17,6 +17,9 @@ export class Computer{
     }
 
     send_thing(content: any, dest: number, card_id: number) {
+        if (card_id < 0 || card_id > this.network_cards.length) {
+            throw RangeError("Index of network card out of range")
+        }
         this.network_cards[card_id].send(content, dest)
     }
 
@@ -25,6 +28,9 @@ export class Computer{
     }
 
     delete_network_card(idx: number) {
+        if (idx < 0 || idx > this.network_cards.length) {
+            throw RangeError("Index of network card out of range")
+        }
         // throw error when if  0 > idx of idx > len(self.networkcard) 
         this.network_cards[idx].remove()
         this.network_cards.splice(idx, 1)

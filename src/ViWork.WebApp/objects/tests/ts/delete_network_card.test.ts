@@ -35,3 +35,16 @@ describe("Create computer withe multiple network cards and remove on of them", f
         assert.deepEqual(cables[3].branched, [null, null])
     })
 })
+
+// Remove a network card which does not exist in the computer
+describe("Remove a network card not in the computer", function () {
+    let cmp = new Computer(2)
+
+    let f1 = () => cmp.delete_network_card(4)
+    let f2 = () => cmp.delete_network_card(-4)
+
+    it("Remove non existant network card should throw error", function () {
+        assert.throw(f1, Error)
+        assert.throw(f2, Error)
+    })
+})
