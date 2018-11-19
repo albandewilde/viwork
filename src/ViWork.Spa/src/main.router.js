@@ -15,6 +15,8 @@ import About from './components/About.vue'
 
 import ViWork from './components/app/ViWork.vue'
 import SchemaList from './components/app/components/SchemaList.vue'
+import ShareGroup from './components/app/components/ShareGroup.vue'
+import ShareUser from './components/app/components/ShareUser.vue'
 
 import Alert from './components/Alert.vue'
 
@@ -36,9 +38,25 @@ const routes = [
     { path: '/test', component: Test},
     { path: '/about', component: About},
 
-    { path: '/app/viwork', component: ViWork, beforeEnter: requireAuth },
-    { path: '/app/viwork/schemalist', component: SchemaList, beforeEnter: requireAuth },
-    { path: '/app/viwork/pixiTest', component: PixiTest, beforeEnter: requireAuth},
+    { path: '/app/viwork', component: ViWork, beforeEnter: requireAuth,
+        children: 
+        [
+            {
+            path: 'schemalist',
+            component: SchemaList
+            },
+            {
+            path: 'sharegroup',
+            component: ShareGroup
+            },
+            {
+            path: 'shareuser',
+            component: ShareUser
+            },
+        ] 
+    },
+    //{ path: '/app/viwork/schemalist', component: SchemaList, beforeEnter: requireAuth },
+
     { path: '/alert', component: Alert},
     
     { path: '/login', component: Login },

@@ -1,79 +1,40 @@
 <template>
     <div id="app">
-            <el-row class="navbarcolor">
-                <el-col :span="4"><div class="grid-content"></div></el-col>
-                <el-col :span="12">
-                    <div class="grid-content">
-                        <el-menu :default-active="activeIndex" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
-                            <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
-                            <el-menu-item index="/">Home</el-menu-item>
-                            <el-menu-item index="/test">Test</el-menu-item>
-                            <el-menu-item index="/about">About</el-menu-item>
-                        </el-menu>
-                    </div>
-                </el-col>
+        <el-container>
+            <el-header style="padding: 0">
+                <el-menu :default-active="activeIndex" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
+                    <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
+                    <el-menu-item index="/">Home</el-menu-item>
+                    <el-menu-item index="/test">Test</el-menu-item>
+                    <el-menu-item index="/about">About</el-menu-item>
+                    
+                    <el-submenu index="1" v-if="auth.isConnected">
+                        <template slot="title"><i class="el-icon-setting"></i></template>
+                        <el-menu-item index="/logout">Déconnexion</el-menu-item>
+                    </el-submenu>
+                    <router-link to="/app/viwork/schemalist" v-if="auth.isConnected">
+                        <el-button type="warning" style="margin-top: 10px" index="/app/viwork/schemalist"><i class="el-icon-menu"></i> Lancer</el-button>
+                    </router-link>
 
-                <el-col :span="6" v-if="auth.isConnected">
-                    <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
-                        <el-submenu index="1">
-                            <template slot="title">{{auth.email}}</template>
-                            <el-menu-item index="/logout">Déconnexion</el-menu-item>
-                        </el-submenu>
-                            <router-link to="/app/viwork/schemalist">
-                                <el-button type="warning" style="margin-top: 10px" index="/app/viwork/schemalist">Lancer</el-button>
-                            </router-link>
-                    </el-menu>
-                </el-col>
+                    <el-submenu index="2" v-else>
+                        <template slot="title">Connexion</template>
+                        <el-menu-item @click="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
+                        <el-menu-item @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
+                    </el-submenu>
 
-                <el-col :span="4" v-else>
-                        <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange">
-                            <el-menu-item index="0" @click="dialogFormVisible = true">Connexion</el-menu-item>
-                        </el-menu>
-                </el-col>
-            </el-row>
+                </el-menu>
 
-            <el-dialog width="30%" top="5vh" :show-close="false" :visible.sync="dialogFormVisible" >
-                <el-tabs type="card" :stretch="true" @tab-click="handleClick" style="margin-top: -60px; margin-right: -20px; margin-left: -20px">
-                    <el-tab-pane label="Connexion"><sign-in></sign-in></el-tab-pane>
-                    <el-tab-pane label="Inscription"><sign-up></sign-up></el-tab-pane>
-                </el-tabs>
-            </el-dialog>
-
-<el-row>
-  <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
-</el-row>
-<el-row>
-  <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="12"><div class="grid-content bg-purple-light"></div></el-col>
-</el-row>
-<el-row>
-  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="8"><div class="grid-content bg-purple-light"></div></el-col>
-  <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-</el-row>
-<el-row>
-  <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
-  <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
-</el-row>
-<el-row>
-  <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
-  <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
-  <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-  <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
-</el-row>
-
-            <!--div class="progress" v-if="isLoading">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
-            </div>
-        </header-->
-
-        <main role="main" class="p-3 p-md-4 p-lg-5">
-            <router-view class="child"></router-view>
-        </main>
+                <div class="progress" v-if="isLoading">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                </div>
+            </el-header>
+            
+            <el-main style="padding: 0">
+                <main role="main">
+                    <router-view class="child"></router-view>
+                </main>
+            </el-main>
+        </el-container>
     </div>
 </template>
 <script>
@@ -93,16 +54,31 @@ export default {
         return {
             state,
             activeIndex: this.$route.path,
-            activeIndex2: 0,
             dialogFormVisible: false,
-            form: {},
+            endpoint: null
         }
+    },
+
+    mounted() {
+        AuthService.registerAuthenticatedCallback(() => this.onAuthenticated());
+    },
+
+    beforeDestroy() {
+        AuthService.removeAuthenticatedCallback(() => this.onAuthenticated());
     },
 
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
-      }
+      },
+
+      login(provider) {
+            AuthService.login(provider);
+        },
+
+        onAuthenticated() {
+            this.$router.replace('/');
+        }
     },
 
     computed: {
@@ -111,11 +87,6 @@ export default {
         isLoading() {
             return this.state.isLoading;
         }
-    },
-
-    components: {
-        SignIn,
-        SignUp
     }
 }
 </script>
