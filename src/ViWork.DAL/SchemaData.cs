@@ -7,7 +7,7 @@ namespace ViWork.DAL
     public class SchemaData
     {
         public int SchemaId { get;  }
-        public int SchemaName { get; set; }
+        public string SchemaName { get; set; }
         public int GroupID { get; }
     }
 }

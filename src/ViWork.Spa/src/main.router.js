@@ -29,6 +29,7 @@ import TeacherEdit from './components/teachers/TeacherEdit.vue'
 import TeacherAssign from './components/teachers/TeacherAssign.vue'
 
 import FollowingList from './components/github/FollowingList.vue'
+import PixiTest from './components/PixiTest.vue'
 
 const routes = [
     { path: '', component: Home, },
@@ -37,7 +38,7 @@ const routes = [
 
     { path: '/app/viwork', component: ViWork, beforeEnter: requireAuth },
     { path: '/app/viwork/schemalist', component: SchemaList, beforeEnter: requireAuth },
-
+    { path: '/app/viwork/pixiTest', component: PixiTest, beforeEnter: requireAuth},
     { path: '/alert', component: Alert},
     
     { path: '/login', component: Login },

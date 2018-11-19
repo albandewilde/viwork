@@ -76,7 +76,6 @@
         </main>
     </div>
 </template>
-
 <script>
 
 import AuthService from '../services/AuthService'
@@ -84,6 +83,10 @@ import '../directives/requiredProviders'
 import { state } from "../state"
 import SignIn from './modals/SignIn.vue'
 import SignUp from './modals/SignUp.vue'
+import {Sprite} from 'pixi.js'
+import {Renderer} from 'pixi.js'
+import {Container} from 'pixi.js'
+import {Stage} from 'pixi.js'
 
 export default {
     data() {
