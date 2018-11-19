@@ -29,11 +29,11 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task<GroupData> FindGroupOwner(int groupId)
+        public async Task<UserData> FindGroupOwnerById(int groupId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                return await con.QueryFirstOrDefaultAsync<GroupData>(
+                return await con.QueryFirstOrDefaultAsync<UserData>(
                     "select u.UserID, u.FirstName, u.LastName, u.Email g.GroupName from viw.vGroup g " +
                     "Join viw.vOwnGroup o on @GroupId = o.GroupId " +
                     "Join viw.vUser u on o.UserId = u.UserID ",
@@ -41,11 +41,11 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task<IEnumerable<GroupData>> FindUserList(int groupId)
+        public async Task<IEnumerable<UserData>> FindUserList(int groupId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                return await con.QueryAsync<GroupData>(
+                return await con.QueryAsync<UserData>(
                     " select u.FirstName, u.LastName from viw.tUserList " +
                     "join viw.tUser on m.UserId = u.UserId" +
                     "where m.GroupId = @GroupId",
@@ -87,7 +87,7 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task UpdateGroupName(int groupId, string groupName)
+        public async Task<Result> UpdateGroupName(int groupId, string groupName)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
@@ -95,10 +95,11 @@ namespace ViWork.DAL
                     "viw.sGroupNameUpdate",
                     new { GroupId = groupId, GroupName = groupName },
                     commandType: CommandType.StoredProcedure);
+                return Result.Success();
             }
         }
 
-        public async Task DeleteGroup(int groupId)
+        public async Task<Result> DeleteGroup(int groupId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
@@ -106,10 +107,11 @@ namespace ViWork.DAL
                     "viw.sGroupeDelete",
                     new { GroupId = groupId },
                     commandType: CommandType.StoredProcedure);
+                return Result.Success();
             }
         }
 
-        public async Task DeleteUserInGroup(int groupID, int userId)
+        public async Task<Result> DeleteUserInGroup(int groupID, int userId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
@@ -117,6 +119,7 @@ namespace ViWork.DAL
                     "viw.GroupUserDelete",
                     new { GroupId = groupID, UserId = userId },
                     commandType: CommandType.StoredProcedure);
+                return Result.Success();
             }
         }
 

@@ -34,6 +34,8 @@ namespace ViWork.WebApp
             services.AddSingleton(_ => new UserGateway(Configuration["ConnectionStrings:ViWorkDB"]));
             services.AddSingleton<PasswordHasher>();
             services.AddSingleton<UserService>();
+            services.AddSingleton<GroupService>();
+            services.AddSingleton<SchemaService>();
             services.AddSingleton<TokenService>();
             services.AddSingleton<GitHubService>();
             services.AddSingleton<GitHubClient>();
