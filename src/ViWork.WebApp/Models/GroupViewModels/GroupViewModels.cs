@@ -7,5 +7,8 @@ namespace ViWork.WebApp.Models.GroupViewModels
 {
     public class GroupViewModels
     {
+        public int GroupId { get; }
+        public string GroupName { get; set; }
+        public int OwnerID { get; }
     }
 }

@@ -48,7 +48,12 @@ export default {
         document.body.appendChild(app.view);
 
         
-        PIXI.loader.load(() => LoadImg());
+        PIXI.loader.add([
+            {
+                name: 'test',
+                url: "img/Logo.png"
+            }
+            ]).load(() => LoadImg());
 
 
         function LoadImg()
@@ -57,6 +62,7 @@ export default {
           PIXI.loader.resources.texture
           );
           app.stage.addChild(sprite);
+          PIXI.rendere.render(this.stage)
 
         }
         },

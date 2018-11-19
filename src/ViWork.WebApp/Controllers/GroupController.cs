@@ -45,7 +45,7 @@ namespace ViWork.WebApp.Controllers
             return Ok(result);
         }
 
-        [HttpPost(Name = "Create")]
+        [HttpPost(Name = "CreateGroup")]
         public async Task<IActionResult> AddGroup([FromBody] GroupViewModels model)
         {
 
