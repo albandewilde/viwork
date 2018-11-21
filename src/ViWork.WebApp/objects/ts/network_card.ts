@@ -10,19 +10,21 @@ export class NetworkCard implements IPortContainer {
     readonly mac_addr: number
     port: Port
     computer: Computer
+    paquet_filter: boolean
     // network_cards write paquet in the element 1 of a cable and listen in the element 0
 
-    constructor(cmp: Computer=null) {
+    constructor(cmp: Computer=null, paquet_filter: boolean=true) {
         this.mac_addr = NetworkCard.last_avariable_mac_addr + 1
         NetworkCard.last_avariable_mac_addr += 1
         this.port = new Port(this)
         this.ip_addr = [0, 0, 0, 0]
         this.computer = cmp
+        this.paquet_filter = paquet_filter
     }
 
     on_receive(cable_content: [EthernetFrame, EthernetFrame], port: Port) {
         let frame = cable_content[0]
-        if (frame != null && frame.destination == this.mac_addr) {
+        if (frame != null && (!this.paquet_filter || frame.destination == this.mac_addr)) {
             let payload = this.get_ethernet_frame(frame)
             this.computer.arrived(payload)
         }
