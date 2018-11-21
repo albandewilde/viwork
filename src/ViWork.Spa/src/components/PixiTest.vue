@@ -48,22 +48,24 @@ export default {
         document.body.appendChild(app.view);
 
         
-        PIXI.loader.add([
-            {
-                name: 'test',
-                url: "img/Logo.png"
-            }
-            ]).load(() => LoadImg());
+        PIXI.loader.load((loader,ressources) => LoadImg());
 
 
         function LoadImg()
         {
+          console.log(PIXI.RenderTexture);
+       
           let sprite = new PIXI.Sprite(
-          PIXI.loader.resources.texture
+          PIXI.loader.ressources.test.texture 
           );
           app.stage.addChild(sprite);
-          PIXI.rendere.render(this.stage)
+         
 
+          // throughout the process multiple signals can be dispatched.
+          PIXI.loader.onProgress.add(() => {}); // called once per loaded/errored file
+          PIXI.loader.onError.add(() => {}); // called once per errored file
+          PIXI.loader.onLoad.add(() => {}); // called once per loaded file
+          PIXI.loader.onComplete.add(() => {}); // called once when the queued resources all load.
         }
         },
 
