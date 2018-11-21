@@ -35,6 +35,7 @@ import PixiTest from './components/PixiTest.vue'
 
 const routes = [
     { path: '', component: Home, },
+    { path: '/home', component: Home, },
     { path: '/test', component: Test},
     { path: '/about', component: About},
 

@@ -4,7 +4,7 @@
             <el-header style="padding: 0">
                 <el-menu :default-active="activeIndex" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
                     <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
-                    <el-menu-item index="/">Home</el-menu-item>
+                    <el-menu-item index="/home">Home</el-menu-item>
                     <el-menu-item index="/test">Test</el-menu-item>
                     <el-menu-item index="/about">About</el-menu-item>
                     
@@ -42,12 +42,6 @@
 import AuthService from '../services/AuthService'
 import '../directives/requiredProviders'
 import { state } from "../state"
-import SignIn from './modals/SignIn.vue'
-import SignUp from './modals/SignUp.vue'
-import {Sprite} from 'pixi.js'
-import {Renderer} from 'pixi.js'
-import {Container} from 'pixi.js'
-import {Stage} from 'pixi.js'
 
 export default {
     data() {
@@ -77,7 +71,7 @@ export default {
         },
 
         onAuthenticated() {
-            this.$router.replace('/');
+            this.$router.replace('/home');
         }
     },
 

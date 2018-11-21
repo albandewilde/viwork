@@ -28,19 +28,17 @@
         </el-aside>
 
         <el-dialog title="Créer un groupe" :visible.sync="dialogVisible" width="30%">
-            <span>
-                <el-form ref="form" :model="Form" label-width="120px" size="medium">
+                <el-form model="form" label-width="120px" size="medium">
                     <el-form-item label="Nom du groupe">
-                        <el-input v-model="Form.name" placeholder="Nom du groupe"></el-input>
+                        <el-input v-model="name" placeholder="Nom du groupe"></el-input>
                     </el-form-item>
                     <el-form-item label="Ajouter des personnes">
-                        <el-input v-model="Form.share" placeholder="Personnes à ajouter"></el-input>
+                        <el-input v-model="idUser" placeholder="Personnes à ajouter"></el-input>
                     </el-form-item>
                 </el-form>
-            </span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">Annuler</el-button>
-                <el-button type="primary" @click="dialogVisible = false" @submit="onSubmit($event)">Créer</el-button>
+                <el-button type="primary" @click="createGroup()">Créer</el-button>
             </span>
         </el-dialog>
 
@@ -63,7 +61,9 @@ export default {
             page: this.$route.path,
             activeIndex: null,
             dialogVisible: false,
-            Form: {}
+            model: {},
+            name: {},
+            idUser: {}
         }
     },
 
@@ -81,7 +81,7 @@ export default {
             // Therefore, the code below handles validation but is very naive: a better validation is desirable.
             var errors = [];
 
-            console.log(this.Form);
+            console.log(this.form);
 
             if (!this.Form.name) errors.push("Nom du groupe")
 
@@ -102,6 +102,13 @@ export default {
                     state.isLoading = false;
                 }
             }
+        },
+
+        async createGroup() {
+            this.model.name = this.name;
+            this.model.user = this.idUser;
+            await createGroupAsync(this.model);
+            this.dialogVisible = false;
         }
     }
 
