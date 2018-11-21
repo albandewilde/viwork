@@ -28,8 +28,8 @@ export class Cable {
     send(tup: [EthernetFrame, EthernetFrame], port: Port){
         this.wire = tup
         let my_index = this.branched.indexOf(port)
-        //this.branched[my_index ? 0 : 1].new_message()    // same instruction on the next line
-        this.branched[Number(!my_index)].new_message()
+        // the mystic line
+        this.branched[my_index ? 0 : 1] != null ? this.branched[Number(!my_index)].new_message() : null
     }
 
     plug(port: Port) {

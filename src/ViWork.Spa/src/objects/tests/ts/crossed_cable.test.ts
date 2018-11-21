@@ -93,3 +93,11 @@ describe("Create crossed cable between computers and the hub", function() {
         assert.isNull(cmp2.last_recv)
     })
 })
+
+// Send message in cable which is pluget in only one comlputer
+describe("Send message in cable which is branched in only one computer", function() {
+    let cmp = new Computer()
+    let cable = new Cable(true, cmp.network_cards[0].port, null)
+
+    let fn = cmp.send_thing("thing", cmp.network_cards[0].mac_addr + 1, 0)
+})
