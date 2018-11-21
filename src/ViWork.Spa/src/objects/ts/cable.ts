@@ -10,7 +10,7 @@ export class Cable {
     cross_eh: boolean    // is the clable crossed or not ?
     wire: [EthernetFrame, EthernetFrame]    // represent the two wire in cable, une for write, the second to listen
 
-    constructor(is_cross: boolean = true, port_a: Port=null, port_b: Port=null) {
+    constructor(is_cross: boolean=true, port_a: Port=null, port_b: Port=null) {
         this.cross_eh = is_cross
         this.branched = [null, null]
         port_a != null ? this.plug(port_a): null
