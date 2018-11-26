@@ -29,7 +29,7 @@ import TeacherEdit from './components/teachers/TeacherEdit.vue'
 import TeacherAssign from './components/teachers/TeacherAssign.vue'
 
 import FollowingList from './components/github/FollowingList.vue'
-import PixiTest from './components/PixiTest.vue'
+import PixiTest from './components/PIXI/PixiTest.vue'
 
 const routes = [
     { path: '', component: Home, },
