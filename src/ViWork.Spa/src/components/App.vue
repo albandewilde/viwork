@@ -2,8 +2,38 @@
     <div id="app">
         <el-container>
             <el-header style="padding: 0">
+                <el-row :gutter="0">
+                    <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
+                        <el-col :span="2">
+                            <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
+                        </el-col>
+                        <el-col :span="1">
+                                <el-menu-item index="/home">Home</el-menu-item>
+                            </el-col>
+                            <el-col :span="1">
+                            <el-menu-item index="/test">Test</el-menu-item>
+                            </el-col>
+                            <el-col :span="17">
+                            <el-menu-item index="/about">About</el-menu-item>
+                            </el-col>
+                            <el-submenu index="1" v-if="auth.isConnected">
+                                <template slot="title"><i class="el-icon-setting"></i></template>
+                                <el-menu-item index="/logout">Déconnexion</el-menu-item>
+                            </el-submenu>
+                            <router-link to="/app/viwork/schemalist" v-if="auth.isConnected">
+                                <el-button type="warning" style="margin-top: 10px" index="/app/viwork/schemalist"><i class="el-icon-menu"></i> Lancer</el-button>
+                            </router-link>
+
+                            <el-submenu index="2" v-else>
+                                <template slot="title">Connexion</template>
+                                <el-menu-item @click="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
+                                <el-menu-item @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
+                            </el-submenu>
+                        </el-menu>
+                </el-row>
+            <!--el-header style="padding: 0">
                 <el-menu :default-active="activeIndex" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
-                    <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
+                    <el-menu-item index="/"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
                     <el-menu-item index="/home">Home</el-menu-item>
                     <el-menu-item index="/test">Test</el-menu-item>
                     <el-menu-item index="/about">About</el-menu-item>
@@ -22,7 +52,7 @@
                         <el-menu-item @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
                     </el-submenu>
 
-                </el-menu>
+                </el-menu-->
 
                 <div class="progress" v-if="isLoading">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
