@@ -56,7 +56,6 @@ const routes = [
             },
         ] 
     },
-    //{ path: '/app/viwork/schemalist', component: SchemaList, beforeEnter: requireAuth },
 
     { path: '/alert', component: Alert},
     

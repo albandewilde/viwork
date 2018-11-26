@@ -17,7 +17,7 @@ namespace ViWork.WebApp.Services
             {
                 HttpRequestHeaders headers = client.DefaultRequestHeaders;
                 headers.Add( "Authorization", string.Format( "token {0}", githubAccessToken ) );
-                headers.Add( "User-Agent", "PrimarySchool" );
+                headers.Add( "User-Agent", "ViWork" );
                 HttpResponseMessage response = await client.GetAsync( "https://api.github.com/user/following" );
 
                 using( TextReader tr = new StreamReader( await response.Content.ReadAsStreamAsync() ) )

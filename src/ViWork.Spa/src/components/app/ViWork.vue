@@ -2,30 +2,30 @@
     <div>
         <el-container>
             <el-aside>
-            <el-menu :default-active="activeIndex" :default-openeds="['1']" :router="true" style="padding-top: 20px">
-                <h5 style="margin-left: 25px">Mes Documents</h5>
-                <el-menu-item index="schemalist">
-                    <i class="el-icon-document"></i>
-                    <span>Mes schémas</span>
-                </el-menu-item>
-                <el-submenu index="1">
-                    <template slot="title">
-                    <i class="el-icon-share"></i>
-                    <span>Partagés avec moi</span>
-                    </template>
-                    <el-menu-item-group title="Schémas de :">
-                        <el-menu-item index="shareuser">Baptiste</el-menu-item>
-                        <el-menu-item index="shareuser">Alban</el-menu-item>
-                        <el-menu-item index="shareuser">Mam's</el-menu-item>
-                    </el-menu-item-group>
-                    <el-menu-item-group title="Mes groupes :">
-                        <el-menu-item index="sharegroup">PI 1</el-menu-item>
-                        <el-menu-item index="sharegroup">PI 2</el-menu-item>
-                        <el-menu-item @click="dialogVisible = true"><el-button type="primary" @click="dialogVisible = true">Nouveau groupe</el-button></el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-            </el-menu>
-        </el-aside>
+                <el-menu :default-active="activeIndex" :default-openeds="['1']" :router="true" style="padding-top: 20px">
+                    <h5 style="margin-left: 25px">Mes Documents</h5>
+                    <el-menu-item index="schemalist">
+                        <i class="el-icon-document"></i>
+                        <span>Mes schémas</span>
+                    </el-menu-item>
+                    <el-submenu index="1">
+                        <template slot="title">
+                        <i class="el-icon-share"></i>
+                        <span>Partagés avec moi</span>
+                        </template>
+                        <el-menu-item-group title="Schémas de :">
+                            <el-menu-item index="shareuser">Baptiste</el-menu-item>
+                            <el-menu-item index="shareuser">Alban</el-menu-item>
+                            <el-menu-item index="shareuser">Mam's</el-menu-item>
+                        </el-menu-item-group>
+                        <el-menu-item-group title="Mes groupes :">
+                            <el-menu-item index="sharegroup">PI 1</el-menu-item>
+                            <el-menu-item index="sharegroup">PI 2</el-menu-item>
+                            <el-menu-item @click="dialogVisible = true"><el-button type="primary" @click="dialogVisible = true">Nouveau groupe</el-button></el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
 
         <el-dialog title="Créer un groupe" :visible.sync="dialogVisible" width="30%">
                 <el-form model="form" label-width="120px" size="medium">
@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import {createGroupAsync} from '../../api/groupApi'
+import AuthService from '../../services/AuthService'
+import {createGroupAsync, getGroupListAsync} from '../../api/groupApi'
 import { state } from "../../state"
 
 export default {
@@ -62,8 +63,9 @@ export default {
             activeIndex: null,
             dialogVisible: false,
             model: {},
-            name: {},
-            idUser: {}
+            name: null,
+            idUser: null,
+            data: []
         }
     },
 
@@ -104,12 +106,30 @@ export default {
             }
         },
 
+        async refreshData() {
+            try {
+                state.isLoading = true;
+                this.data = await getGroupListAsync();
+            }
+            catch (e) {
+                console.error(e);
+                state.exceptions.push(e);
+            }
+            finally {
+                state.isLoading = false;
+            }
+        },
+
         async createGroup() {
             this.model.name = this.name;
             this.model.user = this.idUser;
             await createGroupAsync(this.model);
             this.dialogVisible = false;
         }
+    },
+
+    computed: {
+        auth: () => AuthService,
     }
 
 }
