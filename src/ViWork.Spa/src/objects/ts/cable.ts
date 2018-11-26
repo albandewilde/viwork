@@ -10,7 +10,7 @@ export class Cable {
     cross_eh: boolean    // is the clable crossed or not ?
     wire: [EthernetFrame, EthernetFrame]    // represent the two wire in cable, une for write, the second to listen
 
-    constructor(is_cross: boolean = true, port_a: Port=null, port_b: Port=null) {
+    constructor(is_cross: boolean=true, port_a: Port=null, port_b: Port=null) {
         this.cross_eh = is_cross
         this.branched = [null, null]
         port_a != null ? this.plug(port_a): null
@@ -28,8 +28,8 @@ export class Cable {
     send(tup: [EthernetFrame, EthernetFrame], port: Port){
         this.wire = tup
         let my_index = this.branched.indexOf(port)
-        //this.branched[my_index ? 0 : 1].new_message()    // same instruction on the next line
-        this.branched[Number(!my_index)].new_message()
+        // the mystic line
+        this.branched[my_index ? 0 : 1] != null ? this.branched[Number(!my_index)].new_message() : null
     }
 
     plug(port: Port) {

@@ -18,3 +18,17 @@ describe("Simple tests", function() {
         assert.strictEqual(a, 4)
     })
 })
+
+// if a value is modified in precedent it(), he stay modified in the next it()
+// he don't reexecute "initial" statements before each it()
+describe("Simple tests 2", function() {
+    let foo = 3
+
+    it("increment foo", function() {
+        foo += 1
+        assert.strictEqual(foo, 4)
+    })
+    it("what is the value of foo ? (4)", function() {
+        assert.strictEqual(foo, 4)
+    })
+})
