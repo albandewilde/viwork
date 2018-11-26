@@ -125,7 +125,7 @@ export default {
             this.model.user = this.idUser;
             await createGroupAsync(this.model);
             this.dialogVisible = false;
-        }
+        },
     },
 
     computed: {
