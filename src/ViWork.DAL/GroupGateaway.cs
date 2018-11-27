@@ -24,7 +24,7 @@ namespace ViWork.DAL
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 return await con.QueryFirstOrDefaultAsync<GroupData>(
-                    "select g.GroupName, g.UserId from viw.vGroup g where g.GroupId = @GroupId",
+                    "select m.GroupName, m.GroupId from viw.tMemberList m join viw.tGroup g on g.GroupId = m.GroupId where m.UserId = @GroupId",
                     new { GroupId = groupId });
             }
         }

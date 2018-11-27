@@ -14,6 +14,8 @@ set transaction isolation level serializable;
 		rollback;
 		return 1;
 	end;
+		
+	declare @GroupId int;
 
     insert into viw.tGroup(GroupName ) 
 values(@GroupName );

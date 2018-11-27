@@ -68,6 +68,7 @@ export default {
             dialogVisible: false,
             model: {},
             name: null,
+            idUser: null,
             User:[],
             data: [],
             email: null,
@@ -75,10 +76,9 @@ export default {
         }
     },
      async mounted() {
-        console.log(this.auth.email)
-         this.User = this.getUserId();
+        await this.getUserId();
         await this.refreshData(this.User.userId);
-        console.log(this.User);
+        console.log(this.User.userId);
     },
 
   
@@ -93,8 +93,8 @@ export default {
 
     methods: {
         async getUserId(){
-        try{
-        await findByEmail(this.auth.email);
+        try {
+        this.User = await findByEmail(this.auth.email);
         }
         catch (e) {
                     console.error(e);
@@ -136,7 +136,7 @@ export default {
         async refreshData() {
             try {
                 state.isLoading = true;
-                this.data = await getGroupListAsync();
+                this.data = await getGroupListAsync(this.User.userId);
             }
             catch (e) {
                 console.error(e);

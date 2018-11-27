@@ -22,11 +22,27 @@
     <EmbeddedResource Include="Scripts\20181022150900.0013.Install-sUserDelete.sql" />
     <EmbeddedResource Include="Scripts\20181022150900.0014.Install-sUserUpdate.sql" />
     <EmbeddedResource Include="Scripts\20181022150900.0015.Install-sPasswordUserUpdate.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0016.Install-sGroupAdd.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0017.Install-tMemberList.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0018.Install-sUserGroupAdd.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0019.Install-sGroupNameUpdate.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0020.Install-sGroupDelete.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0021.Install-sGroupUserDelete.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0022.Install-sSchemaAdd.sql" />
+    <EmbeddedResource Include="Scripts\20181022150900.0023.Install-sSchemaDelete.sql" />
     <EmbeddedResource Include="Scripts\20181022150900.0023.Install-vAuthenticationProvider.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Scripts\20181022150900.0016.Install-sGroupAdd.sql" />
+    <None Remove="Scripts\20181022150900.0017.Install-tMemberList.sql" />
+    <None Remove="Scripts\20181022150900.0018.Install-sUserGroupAdd.sql" />
+    <None Remove="Scripts\20181022150900.0019.Install-sGroupNameUpdate.sql" />
+    <None Remove="Scripts\20181022150900.0020.Install-sGroupDelete.sql" />
+    <None Remove="Scripts\20181022150900.0021.Install-sGroupUserDelete.sql" />
+    <None Remove="Scripts\20181022150900.0022.Install-sSchemaAdd.sql" />
+    <None Remove="Scripts\20181022150900.0023.Install-sSchemaDelete.sql" />
     <None Remove="Scripts\20181022150900.0023.Install-vAuthenticationProvider.sql" />
   </ItemGroup>
 

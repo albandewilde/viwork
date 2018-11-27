@@ -24,7 +24,7 @@ namespace ViWork.WebApp.Controllers
             _groupGateaway = groupGateaway;
         }
 
-        [HttpGet( "GetGroup/{id}")]
+        [HttpGet( "GetGroup/{userId}")]
         public async Task<IActionResult> GetGroup(int id)
         {
             GroupData result = await _groupGateaway.FindById(id);

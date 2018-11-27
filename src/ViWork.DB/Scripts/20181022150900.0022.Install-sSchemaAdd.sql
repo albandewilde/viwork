@@ -2,7 +2,8 @@ create procedure viw.sSchemaAdd
 (
     @Schema   int,
     @SchemaName varbinary(128),
-	@Status int
+	@Status int,
+	@GroupId int
 )
 as
 begin
@@ -14,6 +15,8 @@ set transaction isolation level serializable;
 		rollback;
 		return 1;
 	end;
+
+	declare @SchemaId int;
 
     insert into viw.tSchema(SchemaName ) 
 values(@SchemaName );
