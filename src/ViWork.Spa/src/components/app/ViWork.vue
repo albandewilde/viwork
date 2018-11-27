@@ -18,9 +18,10 @@
                             <el-menu-item index="shareuser">Alban</el-menu-item>
                             <el-menu-item index="shareuser">Mam's</el-menu-item>
                         </el-menu-item-group>
-                        <el-menu-item-group title="Mes groupes :">
-                            <el-menu-item index="sharegroup">PI 1</el-menu-item>
-                            <el-menu-item index="sharegroup">PI 2</el-menu-item>
+                        <el-menu-item-group title="Mes groupes :" v-for="i of data" :key="i.classId">
+                             
+                            <el-menu-item index="sharegroup">{{i.GroupName}}</el-menu-item>
+                           
                             <el-menu-item @click="dialogVisible = true"><el-button type="primary" @click="dialogVisible = true">Nouveau groupe</el-button></el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
@@ -48,13 +49,16 @@
             </main>
         </el-main>
         </el-container>
+          {{User}}
     </div>
+  
 </template>
 
 <script>
 import AuthService from '../../services/AuthService'
 import {createGroupAsync, getGroupListAsync} from '../../api/groupApi'
 import { state } from "../../state"
+import{ findByEmail} from '../../api/userApi'
 
 export default {
     data() {
@@ -64,9 +68,22 @@ export default {
             dialogVisible: false,
             model: {},
             name: null,
-            idUser: null,
-            data: []
+            User:[],
+            data: [],
+            email: null,
+         
         }
+    },
+     async mounted() {
+        console.log(this.auth.email)
+         this.User = this.getUserId();
+        await this.refreshData(this.User.userId);
+        console.log(this.User);
+    },
+
+  
+     computed: {
+        auth: () => AuthService,
     },
 
     async created() {
@@ -75,6 +92,16 @@ export default {
     },
 
     methods: {
+        async getUserId(){
+        try{
+        await findByEmail(this.auth.email);
+        }
+        catch (e) {
+                    console.error(e);
+                    state.exceptions.push(e);
+            }
+
+    },
         async onSubmit(event) {
             event.preventDefault();
 
@@ -126,12 +153,9 @@ export default {
             await createGroupAsync(this.model);
             this.dialogVisible = false;
         },
-    },
-
-    computed: {
-        auth: () => AuthService,
     }
 
+   
 }
 </script>
 

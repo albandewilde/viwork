@@ -30,5 +30,15 @@ namespace ViWork.WebApp.Controllers
         //        o.RouteValues = id => new { id };
         //    });
         //}
+
+        [HttpGet("FindByEmail/{email}")]
+        public async Task<IActionResult> FindByEmail(string email)
+        {
+            UserData result = await _userGateway.FindByEmail(email);
+            return Ok(result);
+
+        }
+
+
     }
 }

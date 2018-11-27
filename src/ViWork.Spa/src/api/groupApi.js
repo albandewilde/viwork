@@ -11,6 +11,6 @@ export async function createGroupAsync(model) {
     return await postAsync(endpoint, model);
 }
 
-export async function getGroupListAsync(userId) {
-    return await getAsync(`${endpoint}/${userId}`);
+export async function getGroupListAsync(userId) {   
+    return await getAsync(`${endpoint}/GetGroup/${userId}`);
 }
