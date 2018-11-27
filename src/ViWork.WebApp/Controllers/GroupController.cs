@@ -24,17 +24,17 @@ namespace ViWork.WebApp.Controllers
             _groupGateaway = groupGateaway;
         }
 
-        [HttpGet( "{userId}", Name = "GetGroup")]
-        public async Task<IActionResult> GetGroupById(int id)
+        [HttpGet("GetGroup/{userId}")]
+        public async Task<IActionResult> GetGroupById(int userId)
         {
-            GroupData result = await _groupGateaway.FindGroupById(id);
+            IEnumerable<GroupData> result = await _groupGateaway.FindGroupById(userId);
             return Ok(result);
         }
 
         [HttpGet("GetAllGroup/{userId}")]
-        public async Task<IActionResult> FindAllGroupById(int id)
+        public async Task<IActionResult> FindAllGroupById(int userId)
         {
-            GroupData result = await _groupGateaway.FindAllGroupById(id);
+            IEnumerable<GroupData> result = await _groupGateaway.FindAllGroupById(userId);
             return Ok(result);
         }
        

@@ -27,7 +27,8 @@
   export default {
     data() {
       return {
-        dialogVisible: false
+        dialogVisible: false,
+        name: null
       };
     },
   };

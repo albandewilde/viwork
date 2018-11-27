@@ -16,8 +16,8 @@
                             <el-col :sm="2" :md="2" :lg="2" :xl="1">
                             <el-menu-item index="/about">About</el-menu-item>
                             </el-col>
-                            <el-col :sm="11" :md="12" :lg="13" :xl="17" v-if="!auth.isConnected"><el-menu-item disabled></el-menu-item></el-col>
-                            <el-col :sm="10" :md="10" :lg="11" :xl="16" v-if="auth.isConnected"><el-menu-item disabled></el-menu-item></el-col>
+                            <el-col :sm="11" :md="12" :lg="13" :xl="17" v-if="!auth.isConnected"><el-menu-item index="56" disabled></el-menu-item></el-col>
+                            <el-col :sm="10" :md="10" :lg="11" :xl="16" v-if="auth.isConnected"><el-menu-item index="57" disabled></el-menu-item></el-col>
                             <el-col :sm="2" :md="2" :lg="2" :xl="1"  v-if="auth.isConnected">
                                 <el-submenu index="1" >
                                     <template slot="title"><i class="el-icon-setting"></i></template>
@@ -33,8 +33,8 @@
                             <el-col :sm="4" :md="3" :lg="3" :xl="2"  v-if="!auth.isConnected">
                                 <el-submenu index="2">
                                     <template slot="title">Connexion</template>
-                                    <el-menu-item @click="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
-                                    <el-menu-item @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
+                                    <el-menu-item index="2-1" @click="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
+                                    <el-menu-item index="2-2" @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
                                 </el-submenu>
                             </el-col>
                         </el-menu>

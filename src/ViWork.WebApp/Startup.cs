@@ -32,6 +32,7 @@ namespace ViWork.WebApp
 
             services.AddMvc();
             services.AddSingleton(_ => new UserGateway(Configuration["ConnectionStrings:ViWorkDB"]));
+            services.AddSingleton(_ => new GroupGateaway(Configuration["ConnectionStrings:ViWorkDB"]));
             services.AddSingleton<PasswordHasher>();
             services.AddSingleton<UserService>();
             services.AddSingleton<GroupService>();

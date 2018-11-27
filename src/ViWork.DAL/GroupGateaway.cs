@@ -19,22 +19,22 @@ namespace ViWork.DAL
             _connectionString = connectionString;
         }
 
-        public async Task<GroupData> FindGroupById(int userId)
+        public async Task<IEnumerable<GroupData>> FindGroupById(int userId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                return await con.QueryFirstOrDefaultAsync<GroupData>(
-                    "select g.GroupName, m.GroupId from viw.tOwnGroup m join viw.tGroup g on g.GroupId = m.GroupId where m.UserId = @UserId",
+                return await con.QueryAsync<GroupData>(
+                    "select g.GroupName, m.GroupId, m.UserId from viw.tOwnGroup m join viw.tGroup g on g.GroupId = m.GroupId where m.UserId = @UserId",
                     new { UserId = userId });
             }
         }
 
 
-        public async Task<GroupData> FindAllGroupById(int userId)
+        public async Task<IEnumerable<GroupData>> FindAllGroupById(int userId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                return await con.QueryFirstOrDefaultAsync<GroupData>(
+                return await con.QueryAsync<GroupData>(
                     "select g.GroupName, m.GroupId from viw.tMemberList m join viw.tGroup g on g.GroupId = m.GroupId where m.UserId = @UserId",
                     new { UserId = userId });
             }

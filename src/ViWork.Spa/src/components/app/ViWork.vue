@@ -18,11 +18,11 @@
                             <el-menu-item index="shareuser">Alban</el-menu-item>
                             <el-menu-item index="shareuser">Mam's</el-menu-item>
                         </el-menu-item-group>
-                        <el-menu-item-group title="Mes groupes :" v-for="i of data" :key="i.classId">
-                             
-                            <el-menu-item index="sharegroup">{{i.GroupName}}</el-menu-item>
-                           
-                            <el-menu-item @click="dialogVisible = true"><el-button type="primary" @click="dialogVisible = true">Nouveau groupe</el-button></el-menu-item>
+                        <el-menu-item-group title="Mes groupes :" >
+                            <div v-for="i of data" :key="i.groupId">
+                                <el-menu-item :index="`sharegroup/${i.groupId}`">{{i.groupName}}</el-menu-item>
+                            </div>
+                            <el-menu-item><el-button type="primary" @click="dialogVisible = true" style="margin auto;">Nouveau groupe</el-button></el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -49,7 +49,7 @@
             </main>
         </el-main>
         </el-container>
-          {{User}}
+          {{data}}
     </div>
   
 </template>
@@ -66,9 +66,11 @@ export default {
             page: this.$route.path,
             activeIndex: null,
             dialogVisible: false,
-            model: {},
-            name: null,
-            idUser: null,
+            model: {
+                name: null,
+                user: null,
+                ownId: null
+            },
             User:[],
             data: [],
             email: null,
@@ -112,7 +114,8 @@ export default {
 
             console.log(this.form);
 
-            if (!this.Form.name) errors.push("Nom du groupe")
+            if (!this.Form.name) errors.push("Nom du groupe");
+
 
             this.errors = errors;
 
@@ -150,6 +153,8 @@ export default {
         async createGroup() {
             this.model.name = this.name;
             this.model.user = this.idUser;
+            this.model.ownId = this.User.userId;
+            console.log(this.model);
             await createGroupAsync(this.model);
             this.dialogVisible = false;
         },
