@@ -11,8 +11,8 @@ export class Switch implements IPortContainer {
     ports: Array<Port>
     // this is the cam table of the switch
     // keys are port number and values are mac address
-    cam: Array<Array<Number>>
-    vlan: {}
+    cam: Array<Array<number>>
+    vlan: {[lan: string]: Array<number>}
 
     constructor(nb_port: number=5) {
         if (nb_port < 3) {
@@ -43,26 +43,31 @@ export class Switch implements IPortContainer {
             this.cam[this.ports.indexOf(port)].push(frame.source)
         }
 
-        // if wa have the address of the destinataire in out cam table
-        // we send the paquet to him
-        // otherwise
-        // we send the paquet to every body
-        let no_break = true
-        for (let idx = 0; idx < this.cam.length && no_break; idx += 1) {
-            if (this.cam[idx].includes(frame.destination)) {
-                this.ports[idx].send(frame, 0)
-                no_break = false
-            }
-        } if (no_break) {
-            this.ports.forEach(
-                port => {
-                    port.send(frame, 0)
+        let index = this.ports.indexOf(port)    // index of the sender (a port)
+        for (let vlan of Object.values(this.vlan)) {    // for each vlan
+            if (vlan.includes(index)) {    // search in which vlan we are
+
+                // if wa have the address of the destinataire in out cam table
+                // we send the paquet to him
+                // otherwise
+                // we send the paquet to every body in the vlan we are in
+                let no_break = true
+                for (let port_idx of vlan) {
+                    if (this.cam[port_idx].includes(frame.destination)) {
+                        this.ports[port_idx].send(frame, 0)
+                        no_break = false
+                        break
+                    }
+                } if (no_break) {
+                    for (let port_idx of vlan) {
+                        this.ports[port_idx].send(frame, 0)
+                    }
                 }
-            )
+            }
         }
     }
 
-    vlan_add(name: string, ports_idx: Array<Number>) {
+    vlan_add(name: string, ports_idx: Array<number>) {
         if (name === "vlan0") {
             throw new Error("You can't name a vlan like this")
         }
@@ -89,7 +94,7 @@ export class Switch implements IPortContainer {
         )
     }
 
-    vlan_remove(name: string, ports_idx: Array<Number>) {
+    vlan_remove(name: string, ports_idx: Array<number>) {
         if (name === "vlan0") {
             throw new Error("Bad vlan name")
         }
