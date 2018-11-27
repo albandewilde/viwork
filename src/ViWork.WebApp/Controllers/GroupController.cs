@@ -27,11 +27,19 @@ namespace ViWork.WebApp.Controllers
         [HttpGet( "GetGroup/{userId}")]
         public async Task<IActionResult> GetGroup(int id)
         {
-            GroupData result = await _groupGateaway.FindById(id);
+            GroupData result = await _groupGateaway.FindGroupById(id);
             return Ok(result);
         }
 
-        [HttpGet("{id}", Name = "GetOwner")]
+        [HttpGet("GetAllGroup/{userId}")]
+        public async Task<IActionResult> FindAllGroupById(int id)
+        {
+            GroupData result = await _groupGateaway.FindAllGroupById(id);
+            return Ok(result);
+        }
+       
+
+       [HttpGet("{id}", Name = "GetOwner")]
         public async Task<IActionResult> GetOwner(int groupId)
         {
             UserData result = await _groupGateaway.FindGroupOwnerById(groupId);

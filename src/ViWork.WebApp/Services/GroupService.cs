@@ -15,9 +15,19 @@ namespace ViWork.WebApp.Services
             _groupGateway = groupGateway;
         }
 
-        public async Task<GroupData> FindById(int groupId)
+        public async Task<GroupData> FindById(int userId)
         {
-            GroupData group = await _groupGateway.FindById(groupId);
+            GroupData group = await _groupGateway.FindGroupById(userId);
+            if (group != null)
+            {
+                return group;
+            }
+            return null;
+        }
+
+        public async Task<GroupData> FindAllGroupById(int userId)
+        {
+            GroupData group = await _groupGateway.FindAllGroupById(userId);
             if (group != null)
             {
                 return group;
