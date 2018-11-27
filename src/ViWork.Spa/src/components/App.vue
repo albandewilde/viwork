@@ -16,8 +16,8 @@
                             <el-col :sm="2" :md="2" :lg="2" :xl="1">
                             <el-menu-item index="/about">About</el-menu-item>
                             </el-col>
-                            <el-col :sm="11" :md="12" :lg="13" :xl="17" v-if="!auth.isConnected"><el-menu-item></el-menu-item></el-col>
-                            <el-col :sm="10" :md="10" :lg="11" :xl="16" v-if="auth.isConnected"><el-menu-item></el-menu-item></el-col>
+                            <el-col :sm="11" :md="12" :lg="13" :xl="17" v-if="!auth.isConnected"><el-menu-item disabled></el-menu-item></el-col>
+                            <el-col :sm="10" :md="10" :lg="11" :xl="16" v-if="auth.isConnected"><el-menu-item disabled></el-menu-item></el-col>
                             <el-col :sm="2" :md="2" :lg="2" :xl="1"  v-if="auth.isConnected">
                                 <el-submenu index="1" >
                                     <template slot="title"><i class="el-icon-setting"></i></template>
