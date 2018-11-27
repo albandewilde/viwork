@@ -2,33 +2,41 @@
     <div id="app">
         <el-container>
             <el-header style="padding: 0">
-                <el-row :gutter="0">
+                <el-row>
                     <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
-                        <el-col :span="2">
+                        <el-col :sm="3" :md="3" :lg="2" :xl="2">
                             <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
                         </el-col>
-                        <el-col :span="1">
+                        <el-col :sm="2" :md="2" :lg="2" :xl="1">
                                 <el-menu-item index="/home">Home</el-menu-item>
                             </el-col>
-                            <el-col :span="1">
+                            <el-col :sm="2" :md="2" :lg="2" :xl="1">
                             <el-menu-item index="/test">Test</el-menu-item>
                             </el-col>
-                            <el-col :span="17">
+                            <el-col :sm="2" :md="2" :lg="2" :xl="1">
                             <el-menu-item index="/about">About</el-menu-item>
                             </el-col>
-                            <el-submenu index="1" v-if="auth.isConnected">
-                                <template slot="title"><i class="el-icon-setting"></i></template>
-                                <el-menu-item index="/logout">Déconnexion</el-menu-item>
-                            </el-submenu>
-                            <router-link to="/app/viwork/schemalist" v-if="auth.isConnected">
-                                <el-button type="warning" style="margin-top: 10px" index="/app/viwork/schemalist"><i class="el-icon-menu"></i> Lancer</el-button>
-                            </router-link>
+                            <el-col :sm="11" :md="12" :lg="13" :xl="17" v-if="!auth.isConnected"><el-menu-item></el-menu-item></el-col>
+                            <el-col :sm="10" :md="10" :lg="11" :xl="16" v-if="auth.isConnected"><el-menu-item></el-menu-item></el-col>
+                            <el-col :sm="2" :md="2" :lg="2" :xl="1"  v-if="auth.isConnected">
+                                <el-submenu index="1" >
+                                    <template slot="title"><i class="el-icon-setting"></i></template>
+                                    <el-menu-item index="/logout">Déconnexion</el-menu-item>
+                                </el-submenu>
+                            </el-col>
+                            <el-col :sm="3" :md="2" :lg="3" :xl="2"  v-if="auth.isConnected">
+                                <router-link to="/app/viwork/schemalist" >
+                                    <el-button type="warning" style="margin-top: 10px" index="/app/viwork/schemalist"><i class="el-icon-menu"></i> Lancer</el-button>
+                                </router-link>
+                            </el-col>
 
-                            <el-submenu index="2" v-else>
-                                <template slot="title">Connexion</template>
-                                <el-menu-item @click="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
-                                <el-menu-item @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
-                            </el-submenu>
+                            <el-col :sm="4" :md="3" :lg="3" :xl="2"  v-if="!auth.isConnected">
+                                <el-submenu index="2">
+                                    <template slot="title">Connexion</template>
+                                    <el-menu-item @click="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
+                                    <el-menu-item @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
+                                </el-submenu>
+                            </el-col>
                         </el-menu>
                 </el-row>
             <!--el-header style="padding: 0">
@@ -130,6 +138,7 @@ export default {
   }
   .el-col {
     border-radius: 4px;
+    text-align: center;
   }
   .bg-purple-dark {
     background: #99a9bf;
