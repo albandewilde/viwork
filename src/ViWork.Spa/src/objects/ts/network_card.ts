@@ -6,7 +6,7 @@ import {Computer} from "./computer"
 
 export class NetworkCard implements IPortContainer {
     static last_avariable_mac_addr: number = 0x0
-    ip_addr: number[]
+    ip_addr: [[number, number, number, number], [number]]    // ip addresse and mask
     readonly mac_addr: number
     port: Port
     computer: Computer
@@ -17,7 +17,7 @@ export class NetworkCard implements IPortContainer {
         this.mac_addr = NetworkCard.last_avariable_mac_addr + 1
         NetworkCard.last_avariable_mac_addr += 1
         this.port = new Port(this)
-        this.ip_addr = [0, 0, 0, 0]
+        this.ip_addr = [[0, 0, 0, 0], [0]]
         this.computer = cmp
         this.paquet_filter = paquet_filter
     }
