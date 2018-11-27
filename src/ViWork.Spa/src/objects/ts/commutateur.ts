@@ -1,6 +1,6 @@
 import {IPortContainer} from "./IPortContainer"
 import {Port} from "./port"
-import { EthernetFrame } from "./ethernet_frame";
+import {EthernetFrame} from "./ethernet_frame";
 
 export class Switch implements IPortContainer {
     // el commutator
@@ -110,8 +110,7 @@ export class Switch implements IPortContainer {
 
                     // may the port is in another vlan ?
                     let in_other_vlan = false
-                    for (let key of Object.keys(this.vlan)) {
-                        let value = this.vlan[key]
+                    for (let [key, value] of Object.entries(this.vlan)) {
                         if (key != "vlan0" && value.includes(idx)) {
                             in_other_vlan = true
                             break
