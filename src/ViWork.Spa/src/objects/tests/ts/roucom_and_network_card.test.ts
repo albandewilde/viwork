@@ -70,3 +70,12 @@ describe("Create roucom with 6 network cards which reference the roucom", functi
         )
     })
 })
+
+// Negative number of network card
+describe("Create a roucom with less than 0 network card should throw error", function() {
+    let fn = function() {new Roucom(-2)}
+
+    it("Negative throw error sa mère", function() {
+        assert.throw(fn, Error)
+    })
+})

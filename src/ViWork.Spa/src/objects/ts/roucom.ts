@@ -1,13 +1,15 @@
 // This class is the mother of computer ans routeur
-
 import {NetworkCard} from "./network_card"
 
 export class Roucom{
     network_cards: NetworkCard[]
     last_recv: String
-    route_table: any // a changer
+    route_table: Map<[[number, number, number, number], number], [number, number, number, number]>
 
     constructor(nb_network_card: number=1) {
+        if (nb_network_card < 0) {
+            throw new Error("How get a negative number of network card is possible ? You have 4 houres.")
+        }
         let idx = 0
         this.network_cards = []
         while (idx < nb_network_card) {
@@ -15,6 +17,7 @@ export class Roucom{
             idx += 1
         }
         this.last_recv = null
+        this.route_table = new Map()
     }
 
     add_network_card() {
