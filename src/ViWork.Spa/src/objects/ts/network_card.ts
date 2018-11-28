@@ -2,23 +2,23 @@ import {IPortContainer} from "./IPortContainer"
 import {Port} from "./port"
 import {EthernetFrame} from "./ethernet_frame"
 import {IEthernetPayload} from "./IEthernetPayload"
-import {Computer} from "./computer"
+import {Roucom} from "./roucom"
 
 export class NetworkCard implements IPortContainer {
     static last_avariable_mac_addr: number = 0x0
     ip_addr: [[number, number, number, number], [number]]    // ip addresse and mask
     readonly mac_addr: number
     port: Port
-    computer: Computer
+    roucom: Roucom
     paquet_filter: boolean
     // network_cards write paquet in the element 1 of a cable and listen in the element 0
 
-    constructor(cmp: Computer=null, paquet_filter: boolean=true) {
+    constructor(cmp: Roucom=null, paquet_filter: boolean=true) {
         this.mac_addr = NetworkCard.last_avariable_mac_addr + 1
         NetworkCard.last_avariable_mac_addr += 1
         this.port = new Port(this)
         this.ip_addr = [[0, 0, 0, 0], [0]]
-        this.computer = cmp
+        this.roucom = cmp
         this.paquet_filter = paquet_filter
     }
 
@@ -26,7 +26,7 @@ export class NetworkCard implements IPortContainer {
         let frame = cable_content[0]
         if (frame != null && (!this.paquet_filter || frame.destination == this.mac_addr)) {
             let payload = this.get_ethernet_frame(frame)
-            this.computer.arrived(payload)
+            this.roucom.arrived(payload)
         }
     }
 
