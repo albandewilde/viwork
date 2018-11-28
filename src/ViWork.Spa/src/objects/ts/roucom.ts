@@ -1,10 +1,11 @@
 // This class is the mother of computer ans routeur
 import {NetworkCard} from "./network_card"
+import {ip} from "./ip"
 
 export class Roucom{
     network_cards: NetworkCard[]
     last_recv: String
-    route_table: Map<[[number, number, number, number], number], [number, number, number, number]>
+    route_table: Map<ip, ip>    // Destination, Gateway 
 
     constructor(nb_network_card: number=1) {
         if (nb_network_card < 0) {
