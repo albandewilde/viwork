@@ -27,7 +27,5 @@ namespace ViWork.WebApp.Controllers
             return Ok(result);
 
         }
-
-
     }
 }

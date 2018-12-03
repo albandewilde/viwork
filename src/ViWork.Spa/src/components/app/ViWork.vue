@@ -117,6 +117,7 @@ export default {
         async createGroup() {
             this.model.GroupName = this.name;
             this.model.OwnerID = this.User.userId;
+            console.log(this.model);
             await createGroupAsync(this.model);
             this.dialogVisible = false;
             window.location = "/app/viwork/schemalist";

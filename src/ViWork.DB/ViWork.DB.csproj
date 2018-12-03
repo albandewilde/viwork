@@ -35,6 +35,9 @@
     <EmbeddedResource Include="Scripts\20181128151500.0025.Alter-sAddGroup.sql" />
     <EmbeddedResource Include="Scripts\20181202161100.0026.Alter-sGroupDelete.sql" />
     <EmbeddedResource Include="Scripts\20181203161100.0027.Alter-sGroupDelete.sql" />
+    <EmbeddedResource Include="Scripts\20181203167800.0028.Alter-sSchemaAdd.sql" />
+    <EmbeddedResource Include="Scripts\20181203167800.0029.Alter-sSchemaAdd.sql" />
+    <EmbeddedResource Include="Scripts\20181203167800.0030.Alter-sSchemaAdd.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +55,9 @@
     <None Remove="Scripts\20181128151500.0025.Alter-sAddGroup.sql" />
     <None Remove="Scripts\20181202161100.0026.Alter-sGroupDelete.sql" />
     <None Remove="Scripts\20181203161100.0027.Alter-sGroupDelete.sql" />
+    <None Remove="Scripts\20181203167800.0028.Alter-sSchemaAdd.sql" />
+    <None Remove="Scripts\20181203167800.0029.Alter-sSchemaAdd.sql" />
+    <None Remove="Scripts\20181203167800.0030.Alter-sSchemaAdd.sql" />
   </ItemGroup>
 
   <ItemGroup>

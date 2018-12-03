@@ -51,22 +51,20 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task<Result<int>> AddSchema(string name, int groupID)
+        public async Task<Result> AddSchema(string name, int groupId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 var p = new DynamicParameters();
                 p.Add("@SchemaName", name);
-                p.Add("@GroupId", groupID);
+                p.Add("@GroupId", groupId);
                 p.Add("@Statut", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
-
                 await con.ExecuteAsync("viw.sSchemaAdd", p, commandType: CommandType.StoredProcedure);
-
                 int status = p.Get<int>("@Status");
                 if (status == 1) return Result.Failure<int>(Status.BadRequest, "An schema with this name already exists.");
 
                 Debug.Assert(status == 0);
-                return Result.Success(p.Get<int>("@SchemaId"));
+                return Result.Success();
             }
         }
 

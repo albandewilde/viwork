@@ -5,7 +5,7 @@ import {
     deleteAsync
 } from "../helpers/apiHelper";
 
-const endpoint = process.env.VUE_APP_BACKEND + "/Account/Register";
+const endpoint = process.env.VUE_APP_BACKEND + "/api/schema";
 
 export async function createSchemaAsync(model) {
     return await postAsync(`${endpoint}/CreateSchema`, model);

@@ -9,6 +9,6 @@ namespace ViWork.WebApp.Models.SchemaViewModels
     {
         public int SchemaId { get; }
         public string SchemaName { get; set; }
-        public int GroupID { get; }
+        public int GroupId { get; set; }
     }
 }
