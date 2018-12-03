@@ -6,8 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\PIXI\**" />
+    <Content Remove="wwwroot\PIXI\**" />
+    <EmbeddedResource Remove="wwwroot\PIXI\**" />
+    <None Remove="wwwroot\PIXI\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Views\Account\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

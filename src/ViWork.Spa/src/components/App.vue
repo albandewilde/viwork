@@ -59,9 +59,13 @@ import AuthService from '../services/AuthService'
 import '../directives/requiredProviders'
 import { state } from "../state"
 
+
+
+
 export default {
     data() {
         return {
+            
             state,
             activeIndex: this.$route.path,
             dialogFormVisible: false,

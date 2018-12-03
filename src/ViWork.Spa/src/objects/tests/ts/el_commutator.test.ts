@@ -35,3 +35,77 @@ describe("Create a switch and send some paquets", function() {
         assert.strictEqual(cmp2.last_recv, "poulet")
     })
 })
+
+describe("Create some vlan", function() {
+    it ("Unauhtorised vlan name", function() {
+        let sw = new Switch()
+        let fn = function() {sw.vlan_add("vlan0", [1, 2])}
+        assert.throws(fn, Error)
+    })
+
+    it("Create one vlan", function() {
+        let sw = new Switch(10)
+        sw.vlan_add("vl1", [1, 2, 3])
+        assert.deepEqual(sw.vlan["vl1"], [1, 2, 3])
+        assert.deepEqual(sw.vlan["vlan0"], [0, 4, 5, 6, 7, 8, 9])
+    })
+
+    it("Create two vlan", function() {
+        let sw = new Switch(10)
+        sw.vlan_add("vl1", [1, 2, 3])
+        sw.vlan_add("vl1", [4])
+        sw.vlan_add("vl2", [9, 8, 7])
+        assert.deepEqual(sw.vlan, {"vlan0": [0, 5, 6], "vl1": [1, 2, 3, 4], "vl2": [9, 8, 7]})
+    })
+
+    it("Create vlan with one port in two vlan", function() {
+        let sw = new Switch(10)
+        sw.vlan_add("vl1", [1, 2, 3])
+        sw.vlan_add("vl2", [5, 6, 1])
+        assert.deepEqual(sw.vlan, {"vlan0": [0, 4, 7, 8, 9], "vl1": [1, 2, 3], "vl2": [5, 6, 1]})
+    })
+    
+    it("Out of range port number", function() {
+        let sw = new Switch()
+        let fn = function() {sw.vlan_add("vl1", [9])}
+        assert.throw(fn, Error)
+        fn = function() {sw.vlan_add("vl1", [-4])}
+        assert.throw(fn, Error)
+    })
+})
+
+describe("Remove some vlan", function() {
+    it("Unauthorized vlan name", function() {
+        let sw = new Switch()
+        let fn = function() {sw.vlan_remove("vlan0", [1, 2])}
+        assert.throws(fn, Error)
+    })
+
+    it("Remove a port in vlan but the vlan not exist", function() {
+        let sw = new Switch()
+        let fn = function() {sw.vlan_remove("vl1", [3, 4])}
+        assert.throw(fn, Error)
+    })
+
+    it("Remove port which isn't in vlan", function() {
+        let sw = new Switch()
+        sw.vlan_add("vl1", [1, 2, 3])
+        let fn = function() {sw.vlan_remove("vl1", [0])}
+        assert.throw(fn, Error)
+    })
+
+    it("Remove one port of a vlan", function() {
+        let sw = new Switch()
+        sw.vlan_add("vl1", [0, 1, 2, 3])
+        sw.vlan_remove("vl1", [0])
+        assert.deepEqual(sw.vlan, {"vlan0": [4, 0], "vl1": [1, 2, 3]})
+    })
+
+    it("Remove one port of only one of him vlan", function() {
+        let sw = new Switch()
+        sw.vlan_add("vl1", [1, 2, 3])
+        sw.vlan_add("vl2", [0, 1, 4])
+        sw.vlan_remove("vl2", [1])
+        assert.deepEqual(sw.vlan, {"vlan0": [], "vl1": [1, 2, 3], "vl2": [0, 4]})
+    })
+})

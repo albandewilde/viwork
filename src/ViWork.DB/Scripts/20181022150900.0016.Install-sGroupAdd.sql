@@ -1,7 +1,7 @@
 create procedure viw.sGroupAdd
 (
     @UserId   int,
-    @GroupName varbinary(128),
+    @GroupName nvarchar(128),
 	@Status int
 )
 as
