@@ -11,6 +11,7 @@ describe("Create ip object", function() {
     let addr4 = new ipv4("100.0.52.12/10")
     let addr5 = new ipv4("255.255.255.255/1")
     let addr6 = new ipv4("0.0.0.0/32")
+    let addr7 = new ipv4("34.98.0.21/0")
     
     it("the ip.toString", function() {
         assert.strictEqual(addr0.toString(), "10.0.1.34/24")
@@ -20,6 +21,7 @@ describe("Create ip object", function() {
         assert.strictEqual(addr4.toString(), "100.0.52.12/10")
         assert.strictEqual(addr5.toString(), "255.255.255.255/1")
         assert.strictEqual(addr6.toString(), "0.0.0.0/32")
+        assert.strictEqual(addr7.toString(), "34.98.0.21/0")
     })
     it("the network address", function() {
         assert.strictEqual(ipv4.toString(addr0.network), "10.0.1.0")
@@ -29,6 +31,7 @@ describe("Create ip object", function() {
         assert.strictEqual(ipv4.toString(addr4.network), "100.0.0.0")
         assert.strictEqual(ipv4.toString(addr5.network), "128.0.0.0")
         assert.strictEqual(ipv4.toString(addr6.network), "0.0.0.0")
+        assert.strictEqual(ipv4.toString(addr7.network), "0.0.0.0")
     })
     it("the mask", function() {
         assert.strictEqual(ipv4.toString(addr0.mask), "255.255.255.0")
@@ -38,8 +41,10 @@ describe("Create ip object", function() {
         assert.strictEqual(ipv4.toString(addr4.mask), "255.192.0.0")
         assert.strictEqual(ipv4.toString(addr5.mask), "128.0.0.0")
         assert.strictEqual(ipv4.toString(addr6.mask), "255.255.255.255")
-    })        
+        assert.strictEqual(ipv4.toString(addr7.mask), "0.0.0.0")
+    })
     it("the wildcard", function() {
+        assert.strictEqual(ipv4.toString(addr7.wildcard), "255.255.255.255")
         assert.strictEqual(ipv4.toString(addr6.wildcard), "0.0.0.0")
         assert.strictEqual(ipv4.toString(addr5.wildcard), "127.255.255.255")
         assert.strictEqual(ipv4.toString(addr4.wildcard), "0.63.255.255")
@@ -56,5 +61,6 @@ describe("Create ip object", function() {
         assert.strictEqual(ipv4.toString(addr4.broadcast), "100.63.255.255")
         assert.strictEqual(ipv4.toString(addr5.broadcast), "255.255.255.255")
         assert.strictEqual(ipv4.toString(addr6.broadcast), "0.0.0.0")
+        assert.strictEqual(ipv4.toString(addr7.broadcast), "255.255.255.255")
     })
 })
