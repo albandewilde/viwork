@@ -35,11 +35,6 @@ namespace ViWork.WebApp.Services
             return null;
         }
 
-        public async Task<Result<int>> AddGroup(int userId,string groupName)
-        {
-            return await _groupGateway.AddGroup(userId, groupName);
-        }
-
         public async Task<Result<int>> AddUsersGroup(int groupId, int userId)
         {
             return await _groupGateway.AddUserGroup(groupId, userId);

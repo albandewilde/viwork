@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-aside>
-                <el-menu :default-active="activeIndex" :default-openeds="['1']" :router="true" style="padding-top: 20px">
+                <el-menu :default-active="activeIndex" :default-openeds="['1']" :router="true" style="padding-top: 10px">
                     <h5 style="margin-left: 25px">Mes Documents</h5>
                     <el-menu-item index="schemalist">
                         <i class="el-icon-document"></i>
@@ -14,13 +14,13 @@
                         <span>Partagés avec moi</span>
                         </template>
                         <el-menu-item-group title="Schémas de :">
-                            <el-menu-item index="shareuser">Baptiste</el-menu-item>
-                            <el-menu-item index="shareuser">Alban</el-menu-item>
-                            <el-menu-item index="shareuser">Mam's</el-menu-item>
+                            <el-menu-item index="/app/viwork/shareuser">Baptiste</el-menu-item>
+                            <el-menu-item index="/app/viwork/shareuser">Alban</el-menu-item>
+                            <el-menu-item index="/app/viwork/shareuser">Mam's</el-menu-item>
                         </el-menu-item-group>
                         <el-menu-item-group title="Mes groupes :" >
                             <div v-for="i of data" :key="i.groupId">
-                                <el-menu-item :index="`sharegroup/${i.groupId}`">{{i.groupName}}</el-menu-item>
+                                <el-menu-item :index="`/app/viwork/sharegroup/${i.groupId}`">{{i.groupName}}</el-menu-item>
                             </div>
                             <el-menu-item><el-button type="primary" @click="dialogVisible = true" style="margin auto;">Nouveau groupe</el-button></el-menu-item>
                         </el-menu-item-group>
@@ -32,9 +32,6 @@
                 <el-form model="form" label-width="120px" size="medium">
                     <el-form-item label="Nom du groupe">
                         <el-input v-model="name" placeholder="Nom du groupe"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Ajouter des personnes">
-                        <el-input v-model="idUser" placeholder="Personnes à ajouter"></el-input>
                     </el-form-item>
                 </el-form>
             <span slot="footer" class="dialog-footer">
@@ -49,7 +46,6 @@
             </main>
         </el-main>
         </el-container>
-          {{data}}
     </div>
   
 </template>
@@ -67,20 +63,20 @@ export default {
             activeIndex: null,
             dialogVisible: false,
             model: {
-                name: null,
-                user: null,
-                ownId: null
+                GroupName: null,
+                OwnerID: null
             },
             User:[],
             data: [],
             email: null,
+            name: null
          
         }
     },
      async mounted() {
         await this.getUserId();
         await this.refreshData(this.User.userId);
-        console.log(this.User.userId);
+        //console.log(this.User.userId);
     },
 
   
@@ -104,38 +100,6 @@ export default {
             }
 
     },
-        async onSubmit(event) {
-            event.preventDefault();
-
-            // Google Chrome handles form validation based on type of the input, and presence of the "required" attribute.
-            // However, it's not (yet) fully supported by all the web browsers.
-            // Therefore, the code below handles validation but is very naive: a better validation is desirable.
-            var errors = [];
-
-            console.log(this.form);
-
-            if (!this.Form.name) errors.push("Nom du groupe");
-
-
-            this.errors = errors;
-
-            if (errors.length == 0) {
-                try {
-                    state.isLoading = true;
-
-                    await createGroupAsync(this.Form)
-                    this.$router.replace('app/viwork/schemalist');
-                }
-                catch (e) {
-                    console.error(e);
-                    state.exceptions.push(e);
-                }
-                finally {
-                    state.isLoading = false;
-                }
-            }
-        },
-
         async refreshData() {
             try {
                 state.isLoading = true;
@@ -151,12 +115,11 @@ export default {
         },
 
         async createGroup() {
-            this.model.name = this.name;
-            this.model.user = this.idUser;
-            this.model.ownId = this.User.userId;
-            console.log(this.model);
+            this.model.GroupName = this.name;
+            this.model.OwnerID = this.User.userId;
             await createGroupAsync(this.model);
             this.dialogVisible = false;
+            window.location = "/app/viwork/schemalist";
         },
     }
 

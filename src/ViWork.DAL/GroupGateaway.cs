@@ -64,7 +64,7 @@ namespace ViWork.DAL
             }
         }
 
-        public async Task<Result<int>> AddGroup(int userId ,string groupName)
+        public async Task<Result> AddGroup(int userId ,string groupName)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
@@ -72,12 +72,12 @@ namespace ViWork.DAL
                 p.Add("@GroupName", groupName);
                 p.Add("@UserID", userId);
                 p.Add("@Status", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
-                await con.ExecuteAsync("sGroupAdd", p, commandType: CommandType.StoredProcedure);
-                int status = p.Get<int>("@Staus");
+                await con.ExecuteAsync("viw.sGroupAdd", p, commandType: CommandType.StoredProcedure);
+                int status = p.Get<int>("@Status");
                 if (status == 1) return Result.Failure<int>(Status.BadRequest, "A group with this name already exists.");
 
                 Debug.Assert(status == 0);
-                return Result.Success(p.Get<int>("@GroupId"));
+                return Result.Success();
             }
         }
 
@@ -115,7 +115,7 @@ namespace ViWork.DAL
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 await con.ExecuteAsync(
-                    "viw.sGroupeDelete",
+                    "viw.sGroupDelete",
                     new { GroupId = groupId },
                     commandType: CommandType.StoredProcedure);
                 return Result.Success();
@@ -131,6 +131,26 @@ namespace ViWork.DAL
                     new { GroupId = groupID, UserId = userId },
                     commandType: CommandType.StoredProcedure);
                 return Result.Success();
+            }
+        }
+
+        //public async Task<GroupData> GetGroupData(int groupId)
+        //{
+        //    using (SqlConnection con = new SqlConnection(_connectionString))
+        //    {
+        //        return await con.QueryAsync<GroupData>( " select g.GroupName, g.GroupId from viw.tGroup where g.GroupId = @GroupId",
+        //            new { GroupId = groupId });
+        //    }
+        //}
+
+        public async Task<GroupData> GetGroupData(int groupId)
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                return await con.QueryFirstOrDefaultAsync<GroupData>(
+                    "select g.GroupName, g.GroupId from viw.tGroup g " +
+                    "where g.GroupId = @GroupId ",
+                    new { GroupId = groupId });
             }
         }
 

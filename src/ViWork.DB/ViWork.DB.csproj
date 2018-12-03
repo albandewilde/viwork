@@ -31,6 +31,10 @@
     <EmbeddedResource Include="Scripts\20181022150900.0022.Install-sSchemaAdd.sql" />
     <EmbeddedResource Include="Scripts\20181022150900.0023.Install-sSchemaDelete.sql" />
     <EmbeddedResource Include="Scripts\20181022150900.0023.Install-vAuthenticationProvider.sql" />
+    <EmbeddedResource Include="Scripts\20181128151500.0024.Alter-sAddGroup.sql" />
+    <EmbeddedResource Include="Scripts\20181128151500.0025.Alter-sAddGroup.sql" />
+    <EmbeddedResource Include="Scripts\20181202161100.0026.Alter-sGroupDelete.sql" />
+    <EmbeddedResource Include="Scripts\20181203161100.0027.Alter-sGroupDelete.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +48,10 @@
     <None Remove="Scripts\20181022150900.0022.Install-sSchemaAdd.sql" />
     <None Remove="Scripts\20181022150900.0023.Install-sSchemaDelete.sql" />
     <None Remove="Scripts\20181022150900.0023.Install-vAuthenticationProvider.sql" />
+    <None Remove="Scripts\20181128151500.0024.Alter-sAddGroup.sql" />
+    <None Remove="Scripts\20181128151500.0025.Alter-sAddGroup.sql" />
+    <None Remove="Scripts\20181202161100.0026.Alter-sGroupDelete.sql" />
+    <None Remove="Scripts\20181203161100.0027.Alter-sGroupDelete.sql" />
   </ItemGroup>
 
   <ItemGroup>

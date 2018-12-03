@@ -53,16 +53,12 @@ namespace ViWork.WebApp.Controllers
             return Ok(result);
         }
 
-        [HttpPost(Name = "CreateGroup")]
+        [HttpPost("CreateGroup")]
         public async Task<IActionResult> AddGroup([FromBody] GroupViewModels model)
         {
 
-            Result<int> result = await _groupGateaway.AddGroup(model.OwnerID, model.GroupName);
-            return this.CreateResult(result, o =>
-            {
-                o.RouteName = "GetGroup";
-                o.RouteValues = id => new { id };
-            });
+            Result result = await _groupGateaway.AddGroup(model.OwnerID, model.GroupName);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -83,10 +79,10 @@ namespace ViWork.WebApp.Controllers
             return this.CreateResult(result);
         }
 
-        [HttpDelete ("{id}", Name = "DeleteGroup")]
-        public async Task<IActionResult> DeleteGroup(int groupId)
+        [HttpDelete ("{id}")]
+        public async Task<IActionResult> DeleteGroup(int id)
         {
-            Result result = await _groupGateaway.DeleteGroup(groupId);
+            Result result = await _groupGateaway.DeleteGroup(id);
             return this.CreateResult(result);
         }
 
@@ -96,6 +92,13 @@ namespace ViWork.WebApp.Controllers
         {
             Result result = await _groupGateaway.DeleteUserInGroup(groupId, userId);
             return this.CreateResult(result);
+        }
+
+        [HttpGet("GetGroupData/{groupId}")]
+        public async Task<IActionResult> GetGroupData(int groupId)
+        {
+            GroupData result = await _groupGateaway.GetGroupData(groupId);
+            return Ok(result);
         }
     }
 }

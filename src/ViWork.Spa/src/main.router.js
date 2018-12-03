@@ -35,7 +35,7 @@ const routes = [
             component: SchemaList
             },
             {
-            path: 'sharegroup',
+            path: 'sharegroup/:id',
             component: ShareGroup
             },
             {
