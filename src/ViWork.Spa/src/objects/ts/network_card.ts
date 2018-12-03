@@ -3,11 +3,11 @@ import {Port} from "./port"
 import {EthernetFrame} from "./ethernet_frame"
 import {IEthernetPayload} from "./IEthernetPayload"
 import {Roucom} from "./roucom"
-import {ip} from "./ip"
+import {ipv4} from "./ipv4"
 
 export class NetworkCard implements IPortContainer {
     static last_avariable_mac_addr: number = 0x0
-    ip_addr: ip
+    ip_addr: ipv4
     readonly mac_addr: number
     port: Port
     roucom: Roucom
@@ -18,7 +18,7 @@ export class NetworkCard implements IPortContainer {
         this.mac_addr = NetworkCard.last_avariable_mac_addr + 1
         NetworkCard.last_avariable_mac_addr += 1
         this.port = new Port(this)
-        this.ip_addr = new ip()
+        this.ip_addr = new ipv4()
         this.roucom = cmp
         this.paquet_filter = paquet_filter
     }
