@@ -10,3 +10,7 @@ const endpoint = process.env.VUE_APP_BACKEND + "/api/schema";
 export async function createSchemaAsync(model) {
     return await postAsync(`${endpoint}/CreateSchema`, model);
 }
+
+export async function GetSchemaByIdAsync(userId) {
+    return await getAsync(`${endpoint}/GetSchemaById/${userId}`);
+}

@@ -9,5 +9,6 @@ namespace ViWork.DAL
         public int SchemaId { get;  }
         public string SchemaName { get; set; }
         public int GroupID { get; }
+        public string GroupName { get; }
     }
 }

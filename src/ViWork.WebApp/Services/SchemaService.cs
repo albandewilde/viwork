@@ -14,11 +14,7 @@ namespace ViWork.WebApp.Services
         {
             _schemaGateaway = schemaGateaway;
         }
-
-        public async Task<SchemaData> FindById(int schemaId)
-        {
-            return await _schemaGateaway.FindById(schemaId);
-        }
+        
 
         public async Task<SchemaData> FindByName(string schemaName)
         {

@@ -24,10 +24,10 @@ namespace ViWork.WebApp.Controllers
             _schemaGateaway = schemaGateaway;
         }
 
-        [HttpGet("{id}", Name = "GetSchema")]
-        public async Task<IActionResult> GetSchema(int id)
+        [HttpGet("GetSchemaById/{userId}")]
+        public async Task<IActionResult> GetSchema(int userId)
         {
-            SchemaData result = await _schemaGateaway.FindById(id);
+            IEnumerable<SchemaData>  result = await _schemaGateaway.FindById(userId);
             return Ok(result);
         }
 

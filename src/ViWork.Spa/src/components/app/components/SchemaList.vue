@@ -1,6 +1,12 @@
 <template>
     <div>
             <h1>This is the schema list page </h1>
+            <el-table :data="data" style="width: 100%">
+                <el-table-column prop="schemaId" label="ID" width="100"></el-table-column>
+                <el-table-column prop="schemaName" label="Nom"></el-table-column>
+                <el-table-column  prop="groupName" label="Groupe"></el-table-column>
+                <el-table-column  prop="action" label="Action"></el-table-column>
+            </el-table>
         
     </div>
 </template>
@@ -9,17 +15,17 @@
 import AuthService from '../../../services/AuthService'
 import { state } from "../../../state"
 import{ findByEmail} from '../../../api/userApi'
+import { GetSchemaByIdAsync} from "../../../api/schemaApi"
   export default {
     data() {
       return {
-        
+          data: null,
       }
     },
 
     async mounted() {
         await this.getUserId();
-        //await this.refreshData(this.User.userId);
-        console.log(this.User.userId);
+        await this.refreshData(this.User.userId);
     },
 
   
@@ -38,6 +44,12 @@ import{ findByEmail} from '../../../api/userApi'
             }
 
         },
+
+        async refreshData(userId){
+            state.isLoading = true;
+            this.data = await GetSchemaByIdAsync(userId);
+            state.isLoading = false;
+        }
     }
 
   };

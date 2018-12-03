@@ -18,13 +18,17 @@ namespace ViWork.DAL
             _connectionString = connectionString;
         }
         
-        public async Task<SchemaData> FindById(int schemaId)
+        public async Task<IEnumerable<SchemaData>> FindById(int userId)
         {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                return await con.QueryFirstOrDefault(
-                    "Select * from viw.tSchema where SchemaId = @SchemaId",
-                    new { SchemaId = schemaId});
+                return await con.QueryAsync<SchemaData>(
+                    "select s.SchemaId, s.SchemaName, s.GroupId, g.GroupName " +
+                    "from viw.vSchema s " +
+                    "join viw.vGroup g on g.GroupId = s.GroupId " +
+                    "join viw.tOwnGroup o on o.GroupId = g.GroupId " +
+                    "where UserId = @UserId",
+                    new { UserId = userId});
             }
         }
 
@@ -60,7 +64,7 @@ namespace ViWork.DAL
                 p.Add("@GroupId", groupId);
                 p.Add("@Statut", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
                 await con.ExecuteAsync("viw.sSchemaAdd", p, commandType: CommandType.StoredProcedure);
-                int status = p.Get<int>("@Status");
+                int status = p.Get<int>("@Statut");
                 if (status == 1) return Result.Failure<int>(Status.BadRequest, "An schema with this name already exists.");
 
                 Debug.Assert(status == 0);

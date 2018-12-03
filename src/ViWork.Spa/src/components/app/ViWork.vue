@@ -13,11 +13,11 @@
                         <i class="el-icon-share"></i>
                         <span>Partagés avec moi</span>
                         </template>
-                        <el-menu-item-group title="Schémas de :">
+                        <!--el-menu-item-group title="Schémas de :">
                             <el-menu-item index="/app/viwork/shareuser">Baptiste</el-menu-item>
                             <el-menu-item index="/app/viwork/shareuser">Alban</el-menu-item>
                             <el-menu-item index="/app/viwork/shareuser">Mam's</el-menu-item>
-                        </el-menu-item-group>
+                        </el-menu-item-group-->
                         <el-menu-item-group title="Mes groupes :" >
                             <div v-for="i of data" :key="i.groupId">
                                 <el-menu-item :index="`/app/viwork/sharegroup/${i.groupId}`">{{i.groupName}}</el-menu-item>
