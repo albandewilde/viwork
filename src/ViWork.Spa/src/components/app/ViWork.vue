@@ -6,7 +6,7 @@
                     <h5 style="margin-left: 25px">Mes Documents</h5>
                     <el-menu-item index="schemalist">
                         <i class="el-icon-document"></i>
-                        <span>Mes schémas</span>
+                        <span>Tableau de bord</span>
                     </el-menu-item>
                     <el-submenu index="1">
                         <template slot="title">

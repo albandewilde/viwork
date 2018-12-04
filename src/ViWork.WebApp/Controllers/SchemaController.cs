@@ -54,7 +54,7 @@ namespace ViWork.WebApp.Controllers
         }
 
 
-        [HttpDelete("{id}", Name = "DeleteScema")]
+        [HttpDelete("DeleteSchemaById/{schemaId}")]
         public async Task<IActionResult> DeleteGroup(int schemaId)
         {
             Result result = await _schemaGateaway.DeleteSchema(schemaId);

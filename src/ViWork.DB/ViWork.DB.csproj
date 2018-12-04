@@ -38,6 +38,7 @@
     <EmbeddedResource Include="Scripts\20181203167800.0028.Alter-sSchemaAdd.sql" />
     <EmbeddedResource Include="Scripts\20181203167800.0029.Alter-sSchemaAdd.sql" />
     <EmbeddedResource Include="Scripts\20181203167800.0030.Alter-sSchemaAdd.sql" />
+    <EmbeddedResource Include="Scripts\20181204134400.0031.Alter-sDeleteSchema.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +59,7 @@
     <None Remove="Scripts\20181203167800.0028.Alter-sSchemaAdd.sql" />
     <None Remove="Scripts\20181203167800.0029.Alter-sSchemaAdd.sql" />
     <None Remove="Scripts\20181203167800.0030.Alter-sSchemaAdd.sql" />
+    <None Remove="Scripts\20181204134400.0031.Alter-sDeleteSchema.sql" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@
     <div>
         <el-row>
             <el-col :span="10">
-                <h1>This is the ShareGroup page of <strong>{{data.groupName}}</strong></h1>
+                <h1>Voici la page du groupe : <strong>{{data.groupName}}</strong></h1>
             </el-col>
             <el-col :span="6">
                 <el-button type="danger" @click="deleteGroup()">Supprimer groupe</el-button>
