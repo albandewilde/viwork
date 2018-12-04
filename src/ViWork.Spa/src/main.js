@@ -6,6 +6,7 @@ import App from './components/App.vue'
 import router from './main.router'
 import ElementUI from 'element-ui';
 import BootstrapVue from 'bootstrap-vue'
+import './plugins/element.js'
 
 Vue.use(ElementUI)
 Vue.use(BootstrapVue)
