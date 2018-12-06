@@ -24,10 +24,10 @@ namespace ViWork.WebApp.Controllers
             _schemaGateaway = schemaGateaway;
         }
 
-        [HttpGet("{id}", Name = "GetSchema")]
-        public async Task<IActionResult> GetSchema(int id)
+        [HttpGet("GetSchemaById/{userId}")]
+        public async Task<IActionResult> GetSchema(int userId)
         {
-            SchemaData result = await _schemaGateaway.FindById(id);
+            IEnumerable<SchemaData>  result = await _schemaGateaway.FindById(userId);
             return Ok(result);
         }
 
@@ -45,20 +45,16 @@ namespace ViWork.WebApp.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{id}",Name = "CreateSchema")]
-        public async Task<IActionResult> AddSchema(int groupId,[FromBody] SchemaViewModel model)
+        [HttpPost("CreateSchema")]
+        public async Task<IActionResult> AddSchema([FromBody] SchemaViewModel model)
         {
 
-            Result<int> result = await _schemaGateaway.AddSchema(model.SchemaName, model.GroupID);
-            return this.CreateResult(result, o =>
-            {
-                o.RouteName = "GetSchema";
-                o.RouteValues = id => new { id };
-            });
+            Result result = await _schemaGateaway.AddSchema(model.SchemaName, model.GroupId);
+            return Ok(result);
         }
 
 
-        [HttpDelete("{id}", Name = "DeleteScema")]
+        [HttpDelete("DeleteSchemaById/{schemaId}")]
         public async Task<IActionResult> DeleteGroup(int schemaId)
         {
             Result result = await _schemaGateaway.DeleteSchema(schemaId);

@@ -1,8 +1,6 @@
-create procedure viw.sSchemaAdd
+alter procedure viw.sSchemaAdd
 (
-    @Schema   int,
-    @SchemaName varbinary(128),
-	@Status int,
+    @SchemaName varchar(128),
 	@GroupId int
 )
 as

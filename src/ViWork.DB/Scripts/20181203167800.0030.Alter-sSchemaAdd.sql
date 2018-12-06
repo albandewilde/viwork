@@ -1,8 +1,6 @@
-create procedure viw.sSchemaAdd
+alter procedure viw.sSchemaAdd
 (
-    @Schema   int,
-    @SchemaName varbinary(128),
-	@Status int,
+    @SchemaName varchar(128),
 	@GroupId int
 )
 as
@@ -18,8 +16,8 @@ set transaction isolation level serializable;
 
 	declare @SchemaId int;
 
-    insert into viw.tSchema(SchemaName ) 
-values(@SchemaName );
+    insert into viw.tSchema(SchemaName, GroupId) 
+values(@SchemaName, @GroupId);
 		select @SchemaId = scope_identity();
     insert into viw.tLnkSchema(SchemaId,  GroupId)
                            values(@SchemaId, @GroupId)

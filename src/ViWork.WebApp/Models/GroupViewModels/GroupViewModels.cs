@@ -9,6 +9,6 @@ namespace ViWork.WebApp.Models.GroupViewModels
     {
         public int GroupId { get; }
         public string GroupName { get; set; }
-        public int OwnerID { get; }
+        public int OwnerID { get; set; }
     }
 }

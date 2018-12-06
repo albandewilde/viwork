@@ -24,14 +24,22 @@ namespace ViWork.WebApp.Controllers
             _groupGateaway = groupGateaway;
         }
 
-        [HttpGet("{id}", Name = "GetGroup")]
-        public async Task<IActionResult> GetGroup(int id)
+        [HttpGet("GetGroup/{userId}")]
+        public async Task<IActionResult> GetGroupById(int userId)
         {
-            GroupData result = await _groupGateaway.FindById(id);
+            IEnumerable<GroupData> result = await _groupGateaway.FindGroupById(userId);
             return Ok(result);
         }
 
-        [HttpGet("{id}", Name = "GetOwner")]
+        [HttpGet("GetAllGroup/{userId}")]
+        public async Task<IActionResult> FindAllGroupById(int userId)
+        {
+            IEnumerable<GroupData> result = await _groupGateaway.FindAllGroupById(userId);
+            return Ok(result);
+        }
+       
+
+       [HttpGet("{id}", Name = "GetOwner")]
         public async Task<IActionResult> GetOwner(int groupId)
         {
             UserData result = await _groupGateaway.FindGroupOwnerById(groupId);
@@ -45,16 +53,12 @@ namespace ViWork.WebApp.Controllers
             return Ok(result);
         }
 
-        [HttpPost(Name = "CreateGroup")]
+        [HttpPost("CreateGroup")]
         public async Task<IActionResult> AddGroup([FromBody] GroupViewModels model)
         {
 
-            Result<int> result = await _groupGateaway.AddGroup(model.OwnerID, model.GroupName);
-            return this.CreateResult(result, o =>
-            {
-                o.RouteName = "GetGroup";
-                o.RouteValues = id => new { id };
-            });
+            Result result = await _groupGateaway.AddGroup(model.OwnerID, model.GroupName);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -75,10 +79,10 @@ namespace ViWork.WebApp.Controllers
             return this.CreateResult(result);
         }
 
-        [HttpDelete ("{id}", Name = "DeleteGroup")]
-        public async Task<IActionResult> DeleteGroup(int groupId)
+        [HttpDelete ("{id}")]
+        public async Task<IActionResult> DeleteGroup(int id)
         {
-            Result result = await _groupGateaway.DeleteGroup(groupId);
+            Result result = await _groupGateaway.DeleteGroup(id);
             return this.CreateResult(result);
         }
 
@@ -88,6 +92,13 @@ namespace ViWork.WebApp.Controllers
         {
             Result result = await _groupGateaway.DeleteUserInGroup(groupId, userId);
             return this.CreateResult(result);
+        }
+
+        [HttpGet("GetGroupData/{groupId}")]
+        public async Task<IActionResult> GetGroupData(int groupId)
+        {
+            GroupData result = await _groupGateaway.GetGroupData(groupId);
+            return Ok(result);
         }
     }
 }

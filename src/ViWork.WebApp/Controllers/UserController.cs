@@ -20,15 +20,12 @@ namespace ViWork.WebApp.Controllers
             _userGateway = userGateway;
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> CreateUser([FromBody] UserViewModel form)
-        //{
-        //    Result<int> result = await _userGateway.CreatePasswordUser(form.Name, model.Level);
-        //    return this.CreateResult(result, o =>
-        //    {
-        //        o.RouteName = "GetClass";
-        //        o.RouteValues = id => new { id };
-        //    });
-        //}
+        [HttpGet("FindByEmail/{email}")]
+        public async Task<IActionResult> FindByEmail(string email)
+        {
+            UserData result = await _userGateway.FindByEmail(email);
+            return Ok(result);
+
+        }
     }
 }

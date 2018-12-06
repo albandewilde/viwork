@@ -15,16 +15,6 @@ namespace ViWork.WebApp.Services
             _groupGateway = groupGateway;
         }
 
-        public async Task<GroupData> FindById(int groupId)
-        {
-            GroupData group = await _groupGateway.FindById(groupId);
-            if (group != null)
-            {
-                return group;
-            }
-            return null;
-        }
-
         public async Task<UserData> FindGroupOwnnerById(int groupId)
         {
             UserData user = await _groupGateway.FindGroupOwnerById(groupId);
@@ -43,11 +33,6 @@ namespace ViWork.WebApp.Services
                 return userList;
             }
             return null;
-        }
-
-        public async Task<Result<int>> AddGroup(int userId,string groupName)
-        {
-            return await _groupGateway.AddGroup(userId, groupName);
         }
 
         public async Task<Result<int>> AddUsersGroup(int groupId, int userId)

@@ -1,4 +1,4 @@
-create procedure viw.sUserDelete
+create procedure viw.sSchemaDelete
 (
     @SchemaId int
 )

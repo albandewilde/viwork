@@ -14,11 +14,7 @@ namespace ViWork.WebApp.Services
         {
             _schemaGateaway = schemaGateaway;
         }
-
-        public async Task<SchemaData> FindById(int schemaId)
-        {
-            return await _schemaGateaway.FindById(schemaId);
-        }
+        
 
         public async Task<SchemaData> FindByName(string schemaName)
         {
@@ -29,11 +25,7 @@ namespace ViWork.WebApp.Services
         {
             return await _schemaGateaway.FindSchemaGroup(schemaId);
         }
-
-        public async Task<Result<int>> AddSchema(string schemaName, int groupId)
-        {
-            return await _schemaGateaway.AddSchema(schemaName, groupId);
-        }
+        
 
         public async Task DeleteSchema(int schemaId)
         {
