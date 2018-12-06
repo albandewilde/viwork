@@ -268,9 +268,12 @@ src/ITI.PrimarySchool.DAL.Tests/appsettings.json
 src/ITI.PrimarySchool.WebApp/appsettings.json
 src/ITI.PrimarySchool.DB/appsettings.json
 
-# js files in object model of the WebApp
+# js files in object model of the SPA
 src/ViWork.Spa/src/objects/js/*
 !src/ViWork.Spa/src/objects/js/.gitkeep
 src/ViWork.Spa/src/objects/tests/js/*
 !src/ViWork.Spa/src/objects/tests/js/.gitkeep
 src/ViWork.Spa/src/objects/node_modules
+# js files in pixi_object of the SPA
+/src/ViWork.Spa/src/pixi_objects/js/*
+src/ViWork.Spa/src/pixi_objects/js/.gitkeep
