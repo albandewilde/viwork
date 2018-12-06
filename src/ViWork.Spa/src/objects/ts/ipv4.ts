@@ -1,19 +1,27 @@
-export class ip {
-    addresse: number
+export class ipv4 {
+    address: number
     mask: number
+    network: number
+    wildcard: number
+    broadcast: number
 
-    constructor(string: string=null) {
-        [this.addresse, this.mask] = ip.parse(string)
+    constructor(str: string=null) {
+        [this.address, this.mask] = ipv4.parse(str)
+        this.network = ipv4.network_addresse(this)
+        this.wildcard = ipv4.wildcard_addresse(this)
+        this.broadcast = ipv4.broadcast_addresse(this)
     }
 
-    static parse(string: string) {
-        if (string != null) {
+    static parse(str: string) {
+        if (str != null) {
             // assure we only have 1 mask
-            if (string.split("/").length > 2) {
+            if (str.split("/").length > 2) {
                 throw new Error("Invalid ip address.")
             }
-            let [ip, mask] = string.split("/")
+            
+            let [ip, mask] = str.split("/")
 
+            // get the ip
             // assure we only have 4 elements in the addresse
             let ip_addr = ip.split(".")
             if (ip_addr.length != 4) {
@@ -35,10 +43,11 @@ export class ip {
                 }
             }
 
-            let addresse_number: number = (addr[0]<<24) | (addr[1]<<16) | (addr[2]<<8) | (addr[3]) 
-            
-            let mask_number: number
-            if (mask != "") {
+            let address = (addr[0]<<24) | (addr[1]<<16) | (addr[2]<<8) | (addr[3])
+
+            // get the mask
+            let masque
+            if (mask != undefined && mask != "") {
                 // assure the mask is valid and a number
                 try{
                     let nombre = Number(mask)
@@ -46,33 +55,37 @@ export class ip {
                         throw new Error()
                     }
                     let bin_mask = "1".repeat(nombre) + "0".repeat(32 - nombre)    // string of the binary mask
-                    mask_number = parseInt(bin_mask, 2)
+                    masque = parseInt(bin_mask, 2)
                 } catch {
                     throw new Error("Invalid mask")
                 }
             } else {
-                mask_number = null
+                masque = null
             }
 
-            return [addresse_number, mask_number]
+            return [address, masque]
+
         } else {
             return [null, null]
         }
     }
+    
+    static network_addresse(ipa: ipv4) {
+        return ipa == null ? null : ipa.address & ipa.mask
+    }
 
-    network_addresse() {
-        return this == null ? null : this.addresse & this.mask
+    static wildcard_addresse(ipa: ipv4) {
+        return ipa != null ? ~ipa.mask : null
+    }
+
+    static broadcast_addresse(ipa: ipv4) {
+        return ipa != null ? ipa.address | ipa.wildcard : null
     }
 
     toString() {
         let str = "There is no ip addresse"
-        if (this.addresse != null) {
-            str = (
-                String(this.addresse >> 24) + "." +
-                String((this.addresse >> 16) & 255) + "." +
-                String((this.addresse >> 8) & 255) + "." +
-                String(this.addresse & 255)
-            )
+        if (this.address != null) {
+            str = ipv4.toAddress(this.address)
         }
         if (this.mask != null) {
             str += "/" + String(this.mask.toString(2).split("1").length - 1)
@@ -85,8 +98,12 @@ export class ip {
             throw new Error("The ip given is null")
         }
         // Convert number to ip addresse but this isn't a realy ip because we don't have mask
+        return ipv4.toAddress(nombre)
+    }
+
+    private static toAddress(nombre: number) {
         return(
-            String(nombre >> 24) + "." +
+            String((nombre >> 24) & 255) + "." +
             String((nombre >> 16) & 255) + "." +
             String((nombre >> 8) & 255) + "." +
             String(nombre & 255)
