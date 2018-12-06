@@ -260,17 +260,6 @@ src/ViWork.WebApp/wwwroot/assets/
 src/ViWork.WebApp/wwwroot/dist/
 src/ViWork.DAL.Tests/appsettings.json
 src/ViWork.WebApp/appsettings.json
-src/ViWork.DB/appsettings.json
-=======
-src/ITI.PrimarySchool.WebApp/wwwroot/assets/
-src/ITI.PrimarySchool.WebApp/wwwroot/dist/
-src/ITI.PrimarySchool.DAL.Tests/appsettings.json
-src/ITI.PrimarySchool.WebApp/appsettings.json
-src/ITI.PrimarySchool.DB/appsettings.json
+src/ViWork  .DB/appsettings.json
 
-# js files in object model of the WebApp
-src/ViWork.Spa/src/objects/js/*
-!src/ViWork.Spa/src/objects/js/.gitkeep
-src/ViWork.Spa/src/objects/tests/js/*
-!src/ViWork.Spa/src/objects/tests/js/.gitkeep
-src/ViWork.Spa/src/objects/node_modules
+DB/appsettings\.json
