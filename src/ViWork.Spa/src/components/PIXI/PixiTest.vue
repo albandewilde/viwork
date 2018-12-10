@@ -1,7 +1,7 @@
 <template>
   <div class="Canva">
     <button v-on:click="Screen">Demarrer</button>
-    <!-- <img src= "../../assets/BLAC.png"> -->
+ 
      
   </div>
 </template>
@@ -55,9 +55,20 @@ hub.interactive = true;
 hub.buttonMode = true;
 
 hub.on('click',onCreateHub); 
+
 // Add the graphics to the stage
 
 stage.addChild(hub);
+
+var sprite = new PIXI.Sprite.fromImage("../../assets/computer.png");
+
+
+// move the sprite to the center of the screen
+sprite.x = 200;
+sprite.y = 300;
+
+
+stage.addChild(sprite)
 
 // Add sprite to the stage
 // var superSquare = PIXI.Texture.fromImage('../../assets/BLAC.png');
@@ -74,6 +85,8 @@ function animate() {
     
     requestAnimationFrame(animate);
 }
+
+
 
 function onCreateRect(){
     var computerContainer = new PIXI.Container();
