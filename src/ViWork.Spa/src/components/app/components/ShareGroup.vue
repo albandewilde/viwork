@@ -44,15 +44,20 @@ export default {
     },
 
     async mounted() {
-        await this.refreshData()
+        await this.refreshData(this.$route.params.id);
+    },
+
+    computed: {
+        refresh: function() {
+            return this.refreshData(this.$route.params.id);
+        }
     },
 
     methods: {
-         async refreshData() {
+         async refreshData(groupId) {
             try {
                 state.isLoading = true;
-                console.log( " " + this.$route.params.id)
-                this.data = await getGroupData(this.$route.params.id);
+                this.data = await getGroupData(groupId);
             }
             catch (e) {
                 console.error(e);
@@ -65,7 +70,6 @@ export default {
 
         async deleteGroup() {
             this.groupId = this.$route.params.id;
-            console.log(this.$route.params.id)
             await deleteGroupAsync(this.groupId);
             window.location = "/app/viwork/schemalist";
         },
@@ -74,7 +78,6 @@ export default {
             this.groupId = this.$route.params.id;
             this.model.SchemaName = this.name;
             this.model.GroupId = parseInt(this.groupId, 10);
-            console.log(this.model);
             await createSchemaAsync(this.model);
             window.location = "/app/viwork/schemalist";
         }

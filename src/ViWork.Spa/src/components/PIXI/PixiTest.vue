@@ -1,6 +1,6 @@
 <template>
   <div class="Canva">
-    <button v-on:click="Screen">Demarrer</button>
+    <!--button v-on:click="Screen">Demarrer</button-->
     <!-- <img src= "../../assets/BLAC.png"> -->
      
   </div>
@@ -18,14 +18,17 @@ import {Renderer} from 'pixi.js'
 
 export default  {
   mounted(){
+      this.Screen()
   },
 methods: {
 Screen(){
-  var renderer = PIXI.autoDetectRenderer(1080,800, { backgroundColor: 0x000000, antialias: true });
-document.body.appendChild(renderer.view);
-var link = new Object();
-var FromLink;
-var linking;
+    var pageWidth = document.documentElement.clientWidth;
+    var pageHeight = document.documentElement.clientHeight - 55;
+    var renderer = PIXI.autoDetectRenderer(pageWidth,pageHeight, { backgroundColor: 0xE7E7E7, antialias: true });
+    document.body.appendChild(renderer.view);
+    var link = new Object();
+    var FromLink;
+    var linking;
 
 // Create the main stage for your display objects
 var stage = new PIXI.Container();

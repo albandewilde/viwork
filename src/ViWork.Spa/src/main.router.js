@@ -19,7 +19,7 @@ import ShareGroup from './components/app/components/ShareGroup.vue'
 import ShareUser from './components/app/components/ShareUser.vue'
 
 import Alert from './components/Alert.vue'
-//import PixiTest from './components/PixiTest.vue'
+import PixiTest from './components/PIXI/PixiTest.vue'
 
 const routes = [
     { path: '', component: Home, },
@@ -44,6 +44,8 @@ const routes = [
             },
         ] 
     },
+
+    {path: '/pixitest', component: PixiTest},
 
     { path: '/alert', component: Alert},
     

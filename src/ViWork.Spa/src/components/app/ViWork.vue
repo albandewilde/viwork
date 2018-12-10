@@ -4,7 +4,7 @@
             <el-aside>
                 <el-menu :default-active="activeIndex" :default-openeds="['1']" :router="true" style="padding-top: 10px">
                     <h5 style="margin-left: 25px">Mes Documents</h5>
-                    <el-menu-item index="schemalist">
+                    <el-menu-item index="/app/viwork/schemalist">
                         <i class="el-icon-document"></i>
                         <span>Tableau de bord</span>
                     </el-menu-item>
@@ -13,13 +13,16 @@
                         <i class="el-icon-share"></i>
                         <span>Partagés avec moi</span>
                         </template>
-                        <!--el-menu-item-group title="Schémas de :">
-                            <el-menu-item index="/app/viwork/shareuser">Baptiste</el-menu-item>
-                            <el-menu-item index="/app/viwork/shareuser">Alban</el-menu-item>
-                            <el-menu-item index="/app/viwork/shareuser">Mam's</el-menu-item>
-                        </el-menu-item-group-->
-                        <el-menu-item-group title="Mes groupes :" >
-                            <div v-for="i of data" :key="i.groupId">
+                        <el-menu-item-group title="Mes relations :" style="font-weight: bold;">
+                            <div v-if="dataFriends == null" style="font-weight: normal;">
+                                <i><el-menu-item-group title="Vous n'avez pas de relation"></el-menu-item-group></i>
+                            </div>
+                            <div v-else v-for="i of data" :key='i.Id'>
+                                <el-menu-item :index="`/app/viwork/shareuser/${i.userId}`">{{i.userFirstName}} {{i.userLastName}}</el-menu-item>
+                            </div>
+                        </el-menu-item-group>
+                        <el-menu-item-group title="Mes groupes :" style="font-weight: bold;">
+                            <div v-for="i of data" :key="i.groupId" style="font-weight: normal;">
                                 <el-menu-item :index="`/app/viwork/sharegroup/${i.groupId}`">{{i.groupName}}</el-menu-item>
                             </div>
                             <el-menu-item><el-button type="primary" @click="dialogVisible = true" style="margin auto;">Nouveau groupe</el-button></el-menu-item>
@@ -69,7 +72,8 @@ export default {
             User:[],
             data: [],
             email: null,
-            name: null
+            name: null,
+            dataFriends: null
          
         }
     },
