@@ -109,4 +109,8 @@ export class ipv4 {
             String(nombre & 255)
         )
     }
+
+    static compare(ip1: ipv4, ip2: ipv4) {
+        return ip1.network === ip2.network && ip1.address === ip2.address
+    }
 }

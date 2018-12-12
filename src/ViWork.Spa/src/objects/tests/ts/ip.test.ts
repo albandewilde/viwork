@@ -64,3 +64,22 @@ describe("Create ip object", function() {
         assert.strictEqual(ipv4.toString(addr7.broadcast), "255.255.255.255")
     })
 })
+
+describe("Compare two ip", function() {
+    let ip1 = new ipv4("10.10.10.5/4")
+    let ip2 = new ipv4("10.10.10.5/4")
+    let ip3 = new ipv4("192.168.1.70/24")
+
+    it("ip are differents objects", function() {
+        assert.notStrictEqual(ip1, ip2)
+        assert.notStrictEqual(ip1, ip3)
+    })
+    it("ip are deeply equal", function() {
+        assert.deepEqual(ip1, ip2)
+        assert.notDeepEqual(ip1, ip3)
+    })
+    it("the compare class method work fine", function() {
+        assert.isTrue(ipv4.compare(ip1, ip2))
+        assert.isFalse(ipv4.compare(ip1, ip3))
+    })
+})
