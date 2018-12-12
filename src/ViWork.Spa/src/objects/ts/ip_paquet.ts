@@ -1,15 +1,16 @@
 import {IEthernetPayload} from "./IEthernetPayload"
 import {IIpPayload} from "./IIpPayload"
+import {ipv4} from "./ipv4"
 
-export class ip_paquer implements IEthernetPayload {
-    ip_src: [number, number, number, number]
-    ip_dest: [number, number, number, number]
-    content: IIpPayload
+export class ip_paquet implements IEthernetPayload {
+    ip_src: ipv4
+    ip_dest: ipv4
+    content: String //IIpPayload
 
     constructor(
-        ip_src: [number, number, number, number],
-        ip_dest: [number, number, number, number],
-        content: IIpPayload
+        ip_src: ipv4,
+        ip_dest: ipv4,
+        content: String//IIpPayload
     ) {
         this.ip_src = ip_src
         this.ip_dest = ip_dest
