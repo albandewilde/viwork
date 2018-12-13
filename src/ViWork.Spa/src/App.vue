@@ -5,7 +5,7 @@
                 <el-row>
                     <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
                         <el-col :sm="3" :md="3" :lg="2" :xl="2">
-                            <el-menu-item index="/" class="brand"><img src="../../public/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
+                            <el-menu-item index="/" class="brand"><img src="./assets/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
                         </el-col>
                         <el-col :sm="2" :md="2" :lg="2" :xl="1">
                                 <el-menu-item index="/home">Home</el-menu-item>
@@ -54,10 +54,11 @@
     </div>
 </template>
 
-<script>
-import AuthService from '../services/AuthService'
-import '../directives/requiredProviders'
-import { state } from "../state"
+<script lang="ts">
+
+import AuthService from './services/AuthService'
+import './directives/requiredProviders'
+import { state } from "./state"
 
 
 export default {
@@ -101,9 +102,7 @@ export default {
             return this.state.isLoading;
         }
     },
-  components: {
-    HelloWorld
-  }
+
 }
 </script>
 
@@ -147,5 +146,5 @@ export default {
 }
 </style>
 <style lang="scss">
-@import "../styles/global.scss";
+@import "./styles/global.scss";
 </style>

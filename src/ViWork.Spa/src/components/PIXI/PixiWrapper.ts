@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { filters } from 'pixi.js';
+
 
 class PixiWrapper
 {
@@ -10,10 +10,10 @@ class PixiWrapper
     private _event : any;
     
     constructor(){
-        this.app = null
-        this.canvasWidth = null
-        this.canvasHeight = null
-        this._triggers = {} //event trigger
+        this.app = null;
+        this.canvasWidth = null;
+        this.canvasHeight = null;
+        this._triggers = {}; //event trigger
         this._event = {
             openModal: 'open-modal',
             wantWire: 'want-wire',
@@ -25,42 +25,42 @@ class PixiWrapper
         }
     }
 
-    initCanvas(canvas){
+    initCanvas(canvas: any){
         this.purgeTriggers()
-        this.canvasWidth = canvas.offsetWidth
-        this.canvasHeight = canvas.offsetHeight
+        this.canvasWidth = canvas.offsetWidth;
+        this.canvasHeight = canvas.offsetHeight;
 
         this.app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {
             view: canvas,
             backgroundColor: 0x424242
         });
 
-        this.app.stage.interactive = true
+        this.app.stage.interactive = true;
     }
 
     purgeTriggers(){
         for(var trig in this._triggers){
-            if(trig != this._event.openModal) this._triggers[trig] = new Array()
+            if(trig != this._event.openModal) this._triggers[trig] = new Array();
         }
     }
 
     get PIXIApp(){
-        if(this.app) return this.app
+        if(this.app) return this.app;
     }
 
     get PIXI(){
-        return PIXI
+        return PIXI;
     }
 
     get Width(){
-        return this.canvasWidth
+        return this.canvasWidth;
     }
 
     get Height(){
-        return this.canvasHeight
+        return this.canvasHeight;
     }
 
-    post(event, params){
+    post(event: any, params: any){
         if( this._triggers[event] ) {
             for( var i in this._triggers[event] ){
                 this._triggers[event][i](params);
@@ -68,35 +68,35 @@ class PixiWrapper
         }
     }
 
-    on(event, callback){
+    on(event: any, callback: any){
         if(!this._triggers[event]) this._triggers[event] = new Array();
         this._triggers[event].push( callback );
     }
 
-    destroy(event, callback){
+    destroy(event: any, callback:any){
         for(var i in this._triggers[event]){
             if(this._triggers[event][i] == callback){
-                this._triggers[event][i] = null
-                break
+                this._triggers[event][i] = null;
+                break;
             }
         }
-        this._triggers[event] = this.filterByNull(this._triggers[event])
+        this._triggers[event] = this.filterByNull(this._triggers[event]);
     }
 
-    filterByNull(array){
-        var data_return = Array()
+    filterByNull(array: any){
+        var data_return = Array();
         for(var i in array){
-            if(array[i]) data_return.push(array[i])
+            if(array[i]) data_return.push(array[i]);
         }
-        return data_return
+        return data_return;
     }
 
     get Event(){
-        return this._event
+        return this._event;
     }
 
 
-    sleep(ms) {
+    sleep(ms: any) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 

@@ -6,6 +6,7 @@ class AuthService {
     public providers: any;
     public logoutEndpoint: any;
 
+
     private authenticatedCallbacks: any;
     private signedOutCallbacks: any;
 
@@ -54,6 +55,7 @@ class AuthService {
 
         return identity ? identity.boundProviders : [];
     }
+
     public isBoundToProvider(expectedProviders: any) {
         let isBound = false;
 
@@ -121,6 +123,7 @@ class AuthService {
     }
 
     public async getToken() {
+        let host: any;
         const result = await fetch(host + '/api/token', {
             credentials: 'include',
             method: 'GET',
