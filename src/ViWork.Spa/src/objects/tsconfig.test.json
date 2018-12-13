@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "outDir": "./tests/js",
+        "lib": ["es2016", "es2017"],
+    },
+    "include": [
+        "./tests/ts/*.ts"
+    ]
+}
