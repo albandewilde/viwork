@@ -1,9 +1,9 @@
 
-//import {all} from "pixi.js"
+import {all} from "pixi.js"
 
 import {Cable} from "../../objects/js/cable"
 
-class pixi_Cable {
+class pixi_Cable implements Idrawable {
     computer: Cable
     position: [number, number]
     sprite_path: string
