@@ -2,7 +2,7 @@
 
 import {Switch} from "../../objects/js/commutateur"
 
-class pixi_Switch {
+class pixi_Switch implements Idrawable {
     computer: Switch
     position: [number, number]
     sprite_path: string
