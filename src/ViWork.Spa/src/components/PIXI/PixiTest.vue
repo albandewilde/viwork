@@ -1,12 +1,45 @@
 <template>
-  <div class="Canva">
-    <!--button v-on:click="Screen">Demarrer</button-->
-    <!-- <img src= "../../assets/BLAC.png"> -->
-     
-  </div>
+    <div>
+        <el-container>
+            <el-aside id="navAside" >
+                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${divHeight}px`">
+                    <el-submenu index="1">
+                        <template slot="title">
+                        <i class="el-icon-mobile-phone"></i>
+                        <span>Machines</span>
+                        </template>
+                        <el-menu-item index="1-1">Ordinateur <i>1 carte réseau</i></el-menu-item>
+                        <el-menu-item index="1-2">Ordinateur <i>2 cartes réseaux</i></el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title">
+                        <i class="el-icon-tickets"></i>
+                        <span>Commutateurs</span>
+                        </template>
+                        <el-menu-item index="2-1">Hub</el-menu-item>
+                        <el-menu-item index="2-2">Switch</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title">
+                        <i class="el-icon-sort"></i>
+                        <span>Câbles</span>
+                        </template>
+                        <el-menu-item index="3-1">Simple</el-menu-item>
+                        <el-menu-item index="3-2">Croisé</el-menu-item>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+            <el-main style="padding: 0">
+                <canvas id="myCanva" :style="`height: ${divHeight}px; width: ${divWidth}px;`">
+                    
+                </canvas>
+            </el-main>
+        </el-container>
+    </div>
 </template>
+
  
-<script >
+<!--script >
 
 import Vue  from 'vue'
 import * as PIXI from 'pixi.js'
@@ -17,66 +50,82 @@ import {Renderer} from 'pixi.js'
 //import Render from './PixiRender.vue'
 
 export default  {
+    data() {
+        return {
+            divHeight: document.documentElement.clientHeight - 58,
+            divWidth: document.documentElement.clientWidth
+        }
+    },
   mounted(){
+      console.log(this.divWidth);
       this.Screen()
   },
+  
 methods: {
-Screen(){
-    var pageWidth = document.documentElement.clientWidth;
-    var pageHeight = document.documentElement.clientHeight - 55;
-    var renderer = PIXI.autoDetectRenderer(pageWidth,pageHeight, { backgroundColor: 0xE7E7E7, antialias: true });
-    document.body.appendChild(renderer.view);
-    var link = new Object();
-    var FromLink;
-    var linking;
 
-// Create the main stage for your display objects
-var stage = new PIXI.Container();
-var cables = new PIXI.Container();
-
-// Initialize the pixi Graphics class
-var graphics = new PIXI.Graphics();
-var hub = new PIXI.Graphics();
-
-// Set a new fill color
-graphics.beginFill(0x3498db); // Blue
+    Screen(){
+        // GET the size of the current page
+        var delWidth = document.getElementById("aside").offsetWidth;
+        var divWidth = document.documentElement.clientWidth - delWidth;
+        var divHeight = document.documentElement.clientHeight;
+        var canva = document.getElementById('myCanva');
+        var info = document.getElementById("test");
+        let app = PIXI.Application({width: 3000, height: 3000, view: canva, backgroundColor: 0xE7E7E7, antialias: true, resolution: 1});
+        console.log(renderer);
+        document.body.appendChild(app.view);
 
 
+        var link = new Object();
+        var FromLink;
+        var linking;
 
-// Draw a rectangle
-graphics.drawRect(10, 10, 75, 75); // drawRect(x, y, width, height)
-graphics.interactive = true;
-graphics.buttonMode = true;
+        // Create the main stage for your display objects
+        var stage = new PIXI.Container();
+        var cables = new PIXI.Container();
 
-// Add a hit area..
-graphics.on('click', onCreateRect)
+        // Initialize the pixi Graphics class
+        var graphics = new PIXI.Graphics();
+        var hub = new PIXI.Graphics();
 
-stage.addChild(graphics);
-hub.beginFill(0x3498aa);
-hub.drawRect(10, 100 ,120, 30);
-hub.interactive = true;
-hub.buttonMode = true;
-
-hub.on('click',onCreateHub); 
-// Add the graphics to the stage
-
-stage.addChild(hub);
-
-// Add sprite to the stage
-// var superSquare = PIXI.Texture.fromImage('../../assets/BLAC.png');
-
-// 	superSquare.x = 75;
-//   superSquare.y = 50;
+        // Set a new fill color
+        graphics.beginFill(0x3498db); // Blue
 
 
-// Start animating
-animate();
-function animate() {
-    //Render the stage
-    renderer.render(stage);
-    
-    requestAnimationFrame(animate);
-}
+
+        // Draw a rectangle
+        graphics.drawRect(10, 10, 75, 75); // drawRect(x, y, width, height)
+        graphics.interactive = true;
+        graphics.buttonMode = true;
+
+        // Add a hit area..
+        graphics.on('click', onCreateRect)
+
+        stage.addChild(graphics);
+        hub.beginFill(0x3498aa);
+        hub.drawRect(10, 100 ,120, 30);
+        hub.interactive = true;
+        hub.buttonMode = true;
+
+        hub.on('click',onCreateHub); 
+        // Add the graphics to the stage
+
+        stage.addChild(hub);
+
+        // Add sprite to the stage
+        // var superSquare = PIXI.Texture.fromImage('../../assets/BLAC.png');
+
+        // 	superSquare.x = 75;
+        //   superSquare.y = 50;
+
+
+        // Start animating
+        animate();
+        function animate() {
+            //Render the stage
+            renderer.render(stage);
+            
+            requestAnimationFrame(animate);
+    }
 
 function onCreateRect(){
     var computerContainer = new PIXI.Container();
@@ -231,11 +280,64 @@ function onDragMove(event) {
  }
 }
 
-</script>
+</script-->
+
+
+<script type="text/javascript">
+import * as PIXI from 'pixi.js';
+
+export default {
+    data() {
+        return {
+            divHeight: null,
+            divWidth: null,
+            navWidth: null,
+            navHeight: null
+        }
+    },
+    mounted() {
+        this.GetElement();
+        this.RunPixi(this.divHeight, this.divWidth);
+    },
+
+    methods: {
+        GetElement() {
+        var navWidth = document.getElementById("navAside").offsetWidth;
+        console.log("Largeur de barre latérale " + navWidth);
+
+        this.navHeight = document.getElementById("header").offsetHeight;
+        console.log("Hauteur de barre nav " + this.navHeight);
+
+        this.divHeight = document.documentElement.clientHeight - this.navHeight - 6;
+        console.log("Hauteur après calcul " + this.divHeight);
+        
+        this.divWidth = document.documentElement.clientWidth - navWidth - 0;
+        console.log("Largeur après calcul " + this.divWidth);
+        },
+        RunPixi(divHeight, divWidth) {
+            let type = "WebGL"
+            if(!PIXI.utils.isWebGLSupported()){
+            type = "canvas"
+            }
+
+            PIXI.utils.sayHello(type); 
+
+            //Create a Pixi Application
+            var myView = document.getElementById('myCanva');
+            console.log(myView);
+            let app = new PIXI.Application({width: divWidth, height: divHeight, backgroundColor: 0xE7E7E7, view: myView,});
+            console.log(app);
+        }
+    }
+}
+
+    
+  </script>
 
 <style lang="scss">
-  canvas {
-  width: 100%;
-  height:100%;
-}
+#myCanva {
+    height: 100%;
+    width: 100%;
+};
 </style>
+

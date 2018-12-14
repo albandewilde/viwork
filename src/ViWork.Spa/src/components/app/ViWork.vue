@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-aside>
-                <el-menu :default-active="activeIndex" :default-openeds="['1']" :router="true" style="padding-top: 10px">
+                <el-menu :default-active="activeIndex" :default-openeds="['1']" :router="true" style="padding-top: 10px" :style="`height: ${pageHeight}px`">
                     <h5 style="margin-left: 25px">Mes Documents</h5>
                     <el-menu-item index="/app/viwork/schemalist">
                         <i class="el-icon-document"></i>
@@ -31,23 +31,23 @@
                 </el-menu>
             </el-aside>
 
-        <el-dialog title="Créer un groupe" :visible.sync="dialogVisible" width="30%">
-                <el-form model="form" label-width="120px" size="medium">
-                    <el-form-item label="Nom du groupe">
-                        <el-input v-model="name" placeholder="Nom du groupe"></el-input>
-                    </el-form-item>
-                </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">Annuler</el-button>
-                <el-button type="primary" @click="createGroup()">Créer</el-button>
-            </span>
-        </el-dialog>
+            <el-dialog title="Créer un groupe" :visible.sync="dialogVisible" width="30%">
+                    <el-form model="form" label-width="120px" size="medium">
+                        <el-form-item label="Nom du groupe">
+                            <el-input v-model="name" placeholder="Nom du groupe"></el-input>
+                        </el-form-item>
+                    </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">Annuler</el-button>
+                    <el-button type="primary" @click="createGroup()">Créer</el-button>
+                </span>
+            </el-dialog>
 
-        <el-main>
-            <main role="main">
-                <router-view class="child"></router-view>
-            </main>
-        </el-main>
+            <el-main>
+                <main role="main">
+                    <router-view class="child"></router-view>
+                </main>
+            </el-main>
         </el-container>
     </div>
   
@@ -73,7 +73,8 @@ export default {
             data: [],
             email: null,
             name: null,
-            dataFriends: null
+            dataFriends: null,
+            pageHeight: document.documentElement.clientHeight - 58
          
         }
     },
