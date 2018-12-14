@@ -1,0 +1,84 @@
+import * as PIXI from 'pixi.js';
+class PixiWrapper {
+    constructor() {
+        this.app = null;
+        this.canvasWidth = null;
+        this.canvasHeight = null;
+        this._triggers = {}; //event trigger
+        this._event = {
+            openModal: 'open-modal',
+            wantWire: 'want-wire',
+            globalMouseMove: 'global-mouse-move',
+            globalMouseClick: 'global-mouse-click',
+            containerMove: 'container-move',
+            delete: 'delete',
+            traceLog: 'trace-log'
+        };
+    }
+    initCanvas(canvas) {
+        this.purgeTriggers();
+        this.canvasWidth = canvas.offsetWidth;
+        this.canvasHeight = canvas.offsetHeight;
+        this.app = new PIXI.Application(this.canvasWidth, this.canvasHeight, {
+            view: canvas,
+            backgroundColor: 0x424242
+        });
+        this.app.stage.interactive = true;
+    }
+    purgeTriggers() {
+        for (var trig in this._triggers) {
+            if (trig != this._event.openModal)
+                this._triggers[trig] = new Array();
+        }
+    }
+    get PIXIApp() {
+        if (this.app)
+            return this.app;
+    }
+    get PIXI() {
+        return PIXI;
+    }
+    get Width() {
+        return this.canvasWidth;
+    }
+    get Height() {
+        return this.canvasHeight;
+    }
+    post(event, params) {
+        if (this._triggers[event]) {
+            for (var i in this._triggers[event]) {
+                this._triggers[event][i](params);
+            }
+        }
+    }
+    on(event, callback) {
+        if (!this._triggers[event])
+            this._triggers[event] = new Array();
+        this._triggers[event].push(callback);
+    }
+    destroy(event, callback) {
+        for (var i in this._triggers[event]) {
+            if (this._triggers[event][i] == callback) {
+                this._triggers[event][i] = null;
+                break;
+            }
+        }
+        this._triggers[event] = this.filterByNull(this._triggers[event]);
+    }
+    filterByNull(array) {
+        var data_return = Array();
+        for (var i in array) {
+            if (array[i])
+                data_return.push(array[i]);
+        }
+        return data_return;
+    }
+    get Event() {
+        return this._event;
+    }
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+export default new PixiWrapper();
+//# sourceMappingURL=PixiWrapper.js.map

@@ -59,7 +59,7 @@ export class NetworkCard implements IPortContainer {
         // serach who is the gateway to join the network of the destinataire of the paquet
         let gateway: ipv4 = null
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        gateway = this.roucom.get_gateway(paquet.ip_dest)
+        //gateway = this.roucom.get_gateway(paquet.ip_dest)
         // ==============================================================================================
         let no_break = true
         for (let ip of Array.from(this.roucom.route_table.keys())) {
@@ -77,7 +77,7 @@ export class NetworkCard implements IPortContainer {
 
         let network_card_idx = null
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        network_card_idx = this.roucom.get_network_card_idx_on_network(paquet.ip_dest)
+        //network_card_idx = this.roucom.get_network_card_idx_on_network(paquet.ip_dest)
         // ==============================================================================================
         for (let idx = 0; idx < this.roucom.network_cards.length; idx += 1) {   
             let card = this.roucom.network_cards[idx]
@@ -91,11 +91,11 @@ export class NetworkCard implements IPortContainer {
         // we know on which interface to send the paquet if we don't break before
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        let mac_dest = this.roucom.get_mac_by_ip(gateway)
-        if (mac_dest != null) {
-            let content = this.get_payload_content(paquet)
-            this.roucom.network_cards[network_card_idx].send(content, mac_dest, paquet.ip_dest, 0x0800)
-        }
+        //let mac_dest = this.roucom.get_mac_by_ip(gateway)
+        //if (mac_dest != null) {
+        //    let content = this.get_payload_content(paquet)
+        //    this.roucom.network_cards[network_card_idx].send(content, mac_dest, paquet.ip_dest, 0x0800)
+        //}
         // ==============================================================================================
         if (network_card_idx != null) {
             // we seek in the arp table of the roucom if we have the ethernet address of the ip to reach

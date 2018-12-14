@@ -1,25 +1,29 @@
-import {PIXI} from "pixi.js"
+import * as PIXI from'pixi.js'
 
-import {Idrawable} from "./Idrawable"
-import {Computer} from "../../objects/js/computer"
+import {Idrawable} from "./Idrawable";
+import {Computer} from "../../objects/js/computer";
 
 class pixi_Computer implements Idrawable {
-    material: Computer
-    container_position: [number, number]
-    sprite_path: string
-    container: PIXI.container
-    sprite: PIXI.sprite
+    material: Computer;
+    texture: PIXI.Texture;
+    sprite_path: string;
+    container: PIXI.Container;
+    sprite: PIXI.Sprite;
 
     constructor() {
-        this.material = new Computer()
-        this.container_position = PIXI.renderer.interaction.mouse.global    // position du pointeur de la souris
-        this.sprite_path = "../../images/sprites/computer.png"
-        this.container = new PIXI.contenair()
-        this.sprite = new PIXI.sprite.fromImage(this.sprite_path)
-        this.sprite.interactive = true
+        this.material = new Computer();
+            // position du pointeur de la souris
+        this.sprite_path = "../../images/sprites/computer.png";
+        
+        this.container = new PIXI.Container();
+        this.texture = PIXI.Texture.fromImage(this.sprite_path);
+        this.sprite = new PIXI.Sprite(this.texture);
+        this.sprite.interactive = true;
     }
 
-    take() {
+    take(positionX: number , positionY: number ) {
+        
+    
         // the computer change his sprite and his position is under the pointer while he don't put ip
     }
 
@@ -31,9 +35,14 @@ class pixi_Computer implements Idrawable {
         this.container.addChild(this.sprite)
     }
 
+    async GetPosition(positionX: number , positionY:number){
+        this.container.position.x = positionX;
+        this.container.position.y = positionY;
+    }
     remove() {
     }
 
     async animation(){
     }
+    
 }

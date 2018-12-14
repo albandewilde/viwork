@@ -1,8 +1,3 @@
-// Type definitions for Pixi.js 4.8.2
-// Project: https://github.com/pixijs/pixi.js/tree/dev
-// Definitions by: clark-stevenson <https://github.com/pixijs/pixi-typescript>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
 declare namespace PIXI {
   // from CONST
   export const VERSION: typeof CONST.VERSION;
@@ -415,6 +410,7 @@ declare namespace PIXI {
       worldTransform: Matrix;
       localTransform: Matrix;
       protected _worldID: number;
+      protected _parentID: number;
       updateLocalTransform(): void;
       updateTransform(parentTransform: TransformBase): void;
       updateWorldTransform(parentTransform: TransformBase): void;
@@ -430,14 +426,13 @@ declare namespace PIXI {
       protected _cr?: number;
       protected _cy?: number;
       protected _sy?: number;
-      protected _nsx?: number;
+      protected _sx?: number;
       protected _cx?: number;
+      protected _localID: number;
       protected _currentLocalID: number;
 
       protected onChange(): void;
       updateSkew(): void;
-      updateLocalTransform(): void;
-      updateTransform(parentTransform: TransformBase): void;
       setFromMatrix(matrix: Matrix): void;
 
       rotation: number;

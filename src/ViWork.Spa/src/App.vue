@@ -1,8 +1,8 @@
 <template>
-   <div id="app">
+    <div id="app">
         <el-container>
             <el-header style="padding: 0; margin-bottom: -3px">
-                <el-row>
+                <el-row  id="header">
                     <el-menu mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="orange" :router="true">
                         <el-col :sm="3" :md="3" :lg="2" :xl="2">
                             <el-menu-item index="/" class="brand"><img src="./assets/favicon.png" height="30" width="30"><span> ViWork</span></el-menu-item>
@@ -53,17 +53,13 @@
         </el-container>
     </div>
 </template>
-
-<script lang="ts">
+<script>
 
 import AuthService from './services/AuthService'
 import './directives/requiredProviders'
 import { state } from "./state"
-
-
 export default {
-  name: 'app',
-   data() {
+    data() {
         return {
             
             state,
@@ -72,37 +68,30 @@ export default {
             endpoint: null
         }
     },
-
     mounted() {
         AuthService.registerAuthenticatedCallback(() => this.onAuthenticated());
     },
-
     beforeDestroy() {
         AuthService.removeAuthenticatedCallback(() => this.onAuthenticated());
     },
-
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
       },
-
       login(provider) {
             AuthService.login(provider);
         },
-
         onAuthenticated() {
             window.location = "/";
         }
     },
-
     computed: {
         auth: () => AuthService,
         
         isLoading() {
             return this.state.isLoading;
         }
-    },
-
+    }
 }
 </script>
 
@@ -112,7 +101,6 @@ export default {
   padding: 0px;
   height: 10px;
 }
-
   .el-row {
     margin-bottom: 20px;
     &:last-child {
@@ -140,11 +128,11 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
   }
-
 .navbarcolor{
     background-color: #545c64;
 }
 </style>
+
 <style lang="scss">
-@import "./styles/global.scss";
+@import "../styles/global.scss";
 </style>

@@ -1,19 +1,19 @@
-import {PIXI} from "pixi.js"
+import * as PIXI from "pixi.js";
 
 export interface Idrawable {
-    material: any
-    container_position: [number, number]
-    sprite_path: string
-    container: PIXI.container
-    sprite: PIXI.sprite
+    material: any;
+    texture: PIXI.Texture;
+    sprite_path: string;
+    container: PIXI.Container;
+    sprite: PIXI.Sprite;
 
-    take()
+    take(positionX: number , positionY: number ): any;
 
-    put()
+    put(): any;
 
-    draw()
+    draw(): any;
 
-    remove()
+    remove(): any;
 
-    animation()
+    animation(): any;
 }
