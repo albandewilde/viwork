@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./components/App.vue";
 import AuthService from "./services/AuthService.js";
-import router from "./main.router.js";
+import router from "./main.router.js"
 import store from "./store";
 import "./main.vendors.js";
 import "./main.auth.js";
