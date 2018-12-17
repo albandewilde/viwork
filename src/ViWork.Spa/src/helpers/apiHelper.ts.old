@@ -1,4 +1,4 @@
-import AuthService from "../services/AuthService";
+import AuthService from "../services/AuthService.js";
 
 function dataFilter(data: any, type: any) {
     if (data === "") { return null; }
