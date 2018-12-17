@@ -51,6 +51,7 @@ export class Switch implements IPortContainer {
                 // we send the paquet to him
                 // otherwise
                 // we send the paquet to every body in the vlan we are in
+                
                 let no_break = true
                 for (let port_idx of vlan) {
                     if (this.cam[port_idx].includes(frame.destination)) {
