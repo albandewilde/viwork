@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-aside id="navAside" >
-                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${divHeight}px`">
+                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${divHeight}px`" @select="returnIndex">
                     <el-submenu index="1">
                         <template slot="title">
                         <i class="el-icon-mobile-phone"></i>
@@ -30,6 +30,23 @@
                 </el-menu>
             </el-aside>
             <el-main style="padding: 0">
+                <el-menu mode="horizontal" id="navTop">
+                    <el-menu-item index="1">Processing Center</el-menu-item>
+                        <el-submenu index="2">
+                            <template slot="title">Workspace</template>
+                            <el-menu-item index="2-1">item one</el-menu-item>
+                            <el-menu-item index="2-2">item two</el-menu-item>
+                            <el-menu-item index="2-3">item three</el-menu-item>
+                            <el-submenu index="2-4">
+                            <template slot="title">item four</template>
+                            <el-menu-item index="2-4-1">item one</el-menu-item>
+                            <el-menu-item index="2-4-2">item two</el-menu-item>
+                            <el-menu-item index="2-4-3">item three</el-menu-item>
+                            </el-submenu>
+                        </el-submenu>
+                    <el-menu-item index="3" disabled>Info</el-menu-item>
+                    <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
+                </el-menu>
                 <canvas id="myCanva" :style="`height: ${divHeight}px; width: ${divWidth}px;`">
                     
                 </canvas>
@@ -292,7 +309,8 @@ export default {
             divHeight: null,
             divWidth: null,
             navWidth: null,
-            navHeight: null
+            navHeight: null,
+            navTop: null
         }
     },
     mounted() {
@@ -302,18 +320,22 @@ export default {
 
     methods: {
         GetElement() {
-        var navWidth = document.getElementById("navAside").offsetWidth;
-        console.log("Largeur de barre latérale " + navWidth);
+            var navWidth = document.getElementById("navAside").offsetWidth;
+            console.log("Largeur de barre latérale " + navWidth);
 
-        this.navHeight = document.getElementById("header").offsetHeight;
-        console.log("Hauteur de barre nav " + this.navHeight);
+            this.navTop = document.getElementById("navTop").offsetHeight;
+            console.log("Hauteur de la petite navBar " + this.navTop);
 
-        this.divHeight = document.documentElement.clientHeight - this.navHeight - 6;
-        console.log("Hauteur après calcul " + this.divHeight);
-        
-        this.divWidth = document.documentElement.clientWidth - navWidth - 0;
-        console.log("Largeur après calcul " + this.divWidth);
+            this.navHeight = document.getElementById("header").offsetHeight;
+            console.log("Hauteur de barre nav " + this.navHeight);
+
+            this.divHeight = document.documentElement.clientHeight - this.navHeight - 7 - this.navTop;
+            console.log("Hauteur après calcul " + this.divHeight);
+            
+            this.divWidth = document.documentElement.clientWidth - navWidth - 0;
+            console.log("Largeur après calcul " + this.divWidth);
         },
+
         RunPixi(divHeight, divWidth) {
             let type = "WebGL"
             if(!PIXI.utils.isWebGLSupported()){
@@ -327,6 +349,11 @@ export default {
             console.log(myView);
             let app = new PIXI.Application({width: divWidth, height: divHeight, backgroundColor: 0xE7E7E7, view: myView,});
             console.log(app);
+
+        },
+        
+        returnIndex(key) {
+            console.log(key);
         }
     }
 }

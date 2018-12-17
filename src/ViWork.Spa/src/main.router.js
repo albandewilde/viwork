@@ -24,7 +24,7 @@ import PixiTest from './components/PIXI/PixiTest.vue'
 const routes = [
     { path: '', component: Home, },
     { path: '/home', component: Home, },
-    { path: '/test', component: Test},
+    { path: '/test', component: PixiTest},
     { path: '/about', component: About},
 
     { path: '/app/viwork', component: ViWork, beforeEnter: requireAuth,
