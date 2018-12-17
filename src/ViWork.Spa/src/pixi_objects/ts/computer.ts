@@ -1,9 +1,9 @@
 import * as PIXI from'pixi.js'
 
 import {Idrawable} from "./Idrawable";
-import {Computer} from "../../objects/js/computer";
+import {Computer} from "../../objects/ts/computer";
 
-class pixi_Computer implements Idrawable {
+export class pixi_Computer implements Idrawable {
     material: Computer;
     texture: PIXI.Texture;
     sprite_path: string;
@@ -33,6 +33,7 @@ class pixi_Computer implements Idrawable {
 
     draw() {
         this.container.addChild(this.sprite)
+        
     }
 
     async GetPosition(positionX: number , positionY:number){

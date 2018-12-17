@@ -300,8 +300,9 @@ function onDragMove(event) {
 </script-->
 
 
-<script type="text/javascript">
+<script>
 import * as PIXI from 'pixi.js';
+import {pixi_Computer} from'../../pixi_objects/ts/computer'
 
 export default {
     data() {
@@ -310,7 +311,8 @@ export default {
             divWidth: null,
             navWidth: null,
             navHeight: null,
-            navTop: null
+            navTop: null,
+            stage: null
         }
     },
     mounted() {
@@ -348,10 +350,27 @@ export default {
             var myView = document.getElementById('myCanva');
             console.log(myView);
             let app = new PIXI.Application({width: divWidth, height: divHeight, backgroundColor: 0xE7E7E7, view: myView,});
+            const stage = new PIXI.Container()
+            const computer = new Computer()
+            computer.GetPosition(0,0)
+            stage.addChild(computer.container);
+
             console.log(app);
 
         },
+        CreateComputer(event){
+            const computer = new Computer()
+            computer.GetPosition(event.data.originalEvent.movementX,event.data.originalEvent.movementY)
+            
+        },
         
+      
+        animate(stage) {
+            //Render the stage
+            renderer.render(stage);          
+            requestAnimationFrame(animate);
+        },
+
         returnIndex(key) {
             console.log(key);
         }

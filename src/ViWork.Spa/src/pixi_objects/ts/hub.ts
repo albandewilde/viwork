@@ -1,6 +1,6 @@
 //import {all} from "pixi.js"
 
-import {Hub} from "../../objects/js/hub"
+import {Hub} from "../../objects/ts/hub"
 
 class pixi_Hub {
     computer: Hub

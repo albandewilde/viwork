@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "outDir": "js",
-        "lib": ["es2016"]
-    },
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "outDir": "js",
+    "lib": [ "es2016" ]   
+  },
     "include": [
         "./ts/*.ts"
     ]
