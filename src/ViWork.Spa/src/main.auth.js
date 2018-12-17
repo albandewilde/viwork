@@ -1,4 +1,4 @@
-import AuthService from "./services/AuthService";
+import AuthService from "./services/AuthService.js";
 
 const host = process.env.VUE_APP_BACKEND;
 
@@ -25,4 +25,4 @@ AuthService.providers = {
   },
 };
 
-// AuthService.appRedirect = () => router.replace('/');
+AuthService.appRedirect = () => router.replace('/');

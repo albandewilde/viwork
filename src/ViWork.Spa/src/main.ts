@@ -1,9 +1,9 @@
 import Vue from "vue";
 import App from "./components/App.vue";
-import AuthService from "./services/AuthService";
-import router from "./main.router";
+import AuthService from "./services/AuthService.js";
+import router from "./main.router.js";
 import store from "./store";
-import "./main.vendors";
+import "./main.vendors.js";
 import "./plugins/element.js";
 import './plugins/element.js';
 import ElementUI from "element-ui"
@@ -21,4 +21,3 @@ const main = async () => {
 };
 
 main();
-
