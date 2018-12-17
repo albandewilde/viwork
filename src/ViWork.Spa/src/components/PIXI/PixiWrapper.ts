@@ -13,7 +13,7 @@ class PixiWrapper
         this.app = null;
         this.canvasWidth = null;
         this.canvasHeight = null;
-        this._triggers = {}; //event trigger
+        this._triggers = {}; // event trigger
         this._event = {
             openModal: 'open-modal',
             wantWire: 'want-wire',
@@ -25,7 +25,7 @@ class PixiWrapper
         }
     }
 
-    initCanvas(canvas: any){
+    public initCanvas(canvas: any){
         this.purgeTriggers()
         this.canvasWidth = canvas.offsetWidth;
         this.canvasHeight = canvas.offsetHeight;
@@ -38,14 +38,14 @@ class PixiWrapper
         this.app.stage.interactive = true;
     }
 
-    purgeTriggers(){
+    public purgeTriggers(){
         for(var trig in this._triggers){
-            if(trig != this._event.openModal) this._triggers[trig] = new Array();
+            if(trig != this._event.openModal) { this._triggers[trig] = new Array(); }
         }
     }
 
     get PIXIApp(){
-        if(this.app) return this.app;
+        if(this.app) { return this.app; }
     }
 
     get PIXI(){
@@ -60,7 +60,7 @@ class PixiWrapper
         return this.canvasHeight;
     }
 
-    post(event: any, params: any){
+    public post(event: any, params: any){
         if( this._triggers[event] ) {
             for( var i in this._triggers[event] ){
                 this._triggers[event][i](params);
@@ -68,12 +68,12 @@ class PixiWrapper
         }
     }
 
-    on(event: any, callback: any){
-        if(!this._triggers[event]) this._triggers[event] = new Array();
+    public on(event: any, callback: any){
+        if(!this._triggers[event]) { this._triggers[event] = new Array(); }
         this._triggers[event].push( callback );
     }
 
-    destroy(event: any, callback:any){
+    public destroy(event: any, callback:any){
         for(var i in this._triggers[event]){
             if(this._triggers[event][i] == callback){
                 this._triggers[event][i] = null;
@@ -83,10 +83,10 @@ class PixiWrapper
         this._triggers[event] = this.filterByNull(this._triggers[event]);
     }
 
-    filterByNull(array: any){
+    public filterByNull(array: any){
         var data_return = Array();
         for(var i in array){
-            if(array[i]) data_return.push(array[i]);
+            if(array[i]) { data_return.push(array[i]); }
         }
         return data_return;
     }
@@ -96,8 +96,8 @@ class PixiWrapper
     }
 
 
-    sleep(ms: any) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+    public sleep(ms: any) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
 }

@@ -18,7 +18,7 @@ class AuthService {
         this.authenticatedCallbacks = [];
         this.signedOutCallbacks = [];
 
-        window.addEventListener('message', (e) => this.onMessage(e), false);
+        window.addEventListener("message", (e) => this.onMessage(e), false);
     }
 
     get identity() {
@@ -60,7 +60,7 @@ class AuthService {
         let isBound = false;
 
         for ( const p of expectedProviders) {
-            if ( this.boundProviders.indexOf(p) > -1){
+            if ( this.boundProviders.indexOf(p) > -1) {
                 isBound = true;
             }
         }
@@ -69,18 +69,18 @@ class AuthService {
     }
 
     public onMessage(e: any) {
-        if (!e.origin || this.allowedOrigins.indexOf(e.origin) < 0 || e.data === '') {return; }
-        const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-        if ( data.type === 'authenticated') { this.onAuthenticated(data.payload); 
-        } else if (data.type === 'signedOut') { this.onSignedOut(); }
+        if (!e.origin || this.allowedOrigins.indexOf(e.origin) < 0 || e.data === "") {return; }
+        const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+        if ( data.type === "authenticated") { this.onAuthenticated(data.payload);
+        } else if (data.type === "signedOut") { this.onSignedOut(); }
     }
 
     public login(selectedProvider: any) {
         const provider = this.providers[selectedProvider];
         const popup = window.open(
             provider.endpoint,
-            'Connexion',
-            'menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700');
+            "Connexion",
+            "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
     }
 
     public registerAuthenticatedCallback(cb: any) {
@@ -102,8 +102,8 @@ class AuthService {
     public logout() {
         const popup = window.open(
             this.logoutEndpoint,
-             'Déconnexion',
-              'menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=600');
+             "Déconnexion",
+              "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=600");
     }
 
    public registerSignedOutCallback(cb: any) {
@@ -117,24 +117,24 @@ class AuthService {
    public onSignedOut() {
         this.identity = null;
 
-        for( const cb of this.signedOutCallbacks) {
+        for ( const cb of this.signedOutCallbacks) {
             cb();
         }
     }
 
     public async getToken() {
         let host: any;
-        const result = await fetch(host + '/api/token', {
-            credentials: 'include',
-            method: 'GET',
-            mode: 'cors',
+        const result = await fetch(host + "/api/token", {
+            credentials: "include",
+            method: "GET",
+            mode: "cors",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
         });
         if (result.ok) {
             const token = await result.json();
-            if (token.success) return token;
+            if (token.success) { return token; }
         }
 
         return null;
@@ -146,7 +146,7 @@ class AuthService {
 
    public  async init() {
         const token = await this.getToken();
-        if (token !== null) this.onAuthenticated(token);
+        if (token !== null) { this.onAuthenticated(token); }
     }
 }
 
