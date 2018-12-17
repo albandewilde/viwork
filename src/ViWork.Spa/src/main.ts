@@ -1,11 +1,12 @@
 import Vue from "vue";
-import App from "./App.vue";
+import App from "./components/App.vue";
 import AuthService from "./services/AuthService";
-import ElementUI from "element-ui";
-import router from "./router";
+import router from "./main.router";
 import store from "./store";
 import "./main.vendors";
 import "./plugins/element.js";
+import './plugins/element.js';
+import ElementUI from "element-ui"
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
