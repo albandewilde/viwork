@@ -4,6 +4,7 @@ import AuthService from "./services/AuthService.js";
 import router from "./main.router.js";
 import store from "./store";
 import "./main.vendors.js";
+import "./main.auth.js";
 import "./plugins/element.js";
 import './plugins/element.js';
 import ElementUI from "element-ui"

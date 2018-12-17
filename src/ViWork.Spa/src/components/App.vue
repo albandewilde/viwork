@@ -33,8 +33,8 @@
                             <el-col :sm="4" :md="3" :lg="3" :xl="2"  v-if="!auth.isConnected">
                                 <el-submenu index="2">
                                     <template slot="title">Connexion</template>
-                                    <el-menu-item index="2-1" @select="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
-                                    <el-menu-item index="2-2" @select="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
+                                    <el-menu-item index="2-1" @click="login('GitHub')"><el-button type="success">via GitHub</el-button></el-menu-item>
+                                    <el-menu-item index="2-2" @click="login('Base')"><el-button type="primary">via ViWork</el-button></el-menu-item>
                                 </el-submenu>
                             </el-col>
                         </el-menu>

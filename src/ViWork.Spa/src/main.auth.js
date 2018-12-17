@@ -14,13 +14,13 @@ AuthService.logoutEndpoint = host + "/Account/LogOff";
 
 // Allowed providers to log in our application, and the corresponding server-side endpoints
 AuthService.providers = {
-  Base: {
+  'Base': {
     endpoint: host + "/Account/Login",
   },
-  Google: {
+  'Google': {
     endpoint: host + "/Account/ExternalLogin?provider=Google",
   },
-  GitHub: {
+  'GitHub': {
     endpoint: host + "/Account/ExternalLogin?provider=GitHub",
   },
 };
