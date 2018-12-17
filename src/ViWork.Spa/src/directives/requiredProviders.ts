@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import AuthService from '../services/AuthService'
+import Vue from "vue";
+import AuthService from "../services/AuthService";
 
-export default Vue.directive('required-providers', {
+export default Vue.directive("required-providers", {
     bind(el: any, binding: any) {
-         let providers = binding.value;
+         const providers = binding.value;
 
-        if(!providers) throw new Error("v-required-providers Expected Array value.");
+         if (!providers) { throw new Error("v-required-providers Expected Array value."); }
 
-        el.style.visibility = AuthService.isBoundToProvider(providers) ? 'visible' : 'hidden';
-    }
+         el.style.visibility = AuthService.isBoundToProvider(providers) ? "visible" : "hidden";
+    },
 });
 
- 
+
