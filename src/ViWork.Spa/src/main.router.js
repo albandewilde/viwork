@@ -11,7 +11,7 @@ import Login from './components/Login.vue'
 import Logout from './components/Logout.vue'
 
 //import Test from './components/Test.vue'
-import About from './components/About.vue'
+import About from './components/PIXI/About.vue'
 
 import ViWork from './components/app/ViWork.vue'
 import SchemaList from './components/app/components/SchemaList.vue'

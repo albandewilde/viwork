@@ -5,10 +5,10 @@
     "outDir": "js",
     "lib": [ "es2016", "es2017" ]
   },
-    "include": [
-        "./ts/*.ts"
-    ],
-    "exclude": [
-        "./tests"
-    ]
+  "include": [
+    "./ts/*.ts"
+  ],
+  "exclude": [
+    "./tests"
+  ]
 }

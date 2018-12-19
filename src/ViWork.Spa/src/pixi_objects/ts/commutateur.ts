@@ -1,10 +1,10 @@
 import * as PIXI from "pixi.js"
 
-//import {Switch} from "../../objects/ts/commutateur"
+import {Switch} from "../../objects/ts/commutateur"
 import {Idrawable} from "./Idrawable"
 
 class pixi_Switch implements Idrawable {
-    //material: Switch;
+    material: Switch;
     texture: PIXI.Texture;
     sprite_path: string;
     container: PIXI.Container;

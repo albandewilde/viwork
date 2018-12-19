@@ -300,9 +300,10 @@ function onDragMove(event) {
 </script-->
 
 
-<script>
+<script >
 import * as PIXI from 'pixi.js';
-import {pixi_Computer} from'../../pixi_objects/ts/computer'
+import{Renderer} from 'pixi.js';
+import {pixi_Computer} from'../../pixi_objects/ts/computer';
 
 export default {
     data() {
@@ -349,11 +350,29 @@ export default {
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
             console.log(myView);
-            let app = new PIXI.Application({width: divWidth, height: divHeight, backgroundColor: 0xE7E7E7, view: myView,});
+            let renderer = new PIXI.autoDetectRenderer(divWidth,divHeight,{backgroundColor: 0xE7E7E7, view: myView,});
+          
             const stage = new PIXI.Container()
-            const computer = new Computer()
-            computer.GetPosition(0,0)
-            stage.addChild(computer.container);
+            stage.width = this.divWidth;
+            stage.height = this.divHeight;
+            let container = new PIXI.Container()
+            let computer = new pixi_Computer()
+            
+            const rt = new PIXI.RenderTexture(renderer,50,50);
+           
+
+            computer.GetPosition(stage,0,0);
+            let sprite = computer.draw(stage);
+            console.log(sprite);
+    
+            function animate(){
+                rt.render(sprite)
+                requestAnimationFrame(animate);
+                renderer.render(s)
+            }
+            animate();
+
+            console.log(stage);
 
             console.log(app);
 
@@ -363,13 +382,18 @@ export default {
             computer.GetPosition(event.data.originalEvent.movementX,event.data.originalEvent.movementY)
             
         },
-        
-      
-        animate(stage) {
-            //Render the stage
-            renderer.render(stage);          
-            requestAnimationFrame(animate);
+
+        update(app, stage){
+            this.render(app, stage);
+            requestAnimationFrame(this.update)
         },
+
+        render(app, stage){
+           app.renderer.render(stage)
+        },
+
+
+
 
         returnIndex(key) {
             console.log(key);

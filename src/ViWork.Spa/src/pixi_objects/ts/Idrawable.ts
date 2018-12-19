@@ -11,7 +11,7 @@ export interface Idrawable {
 
     put(): any;
 
-    draw(): any;
+    draw(container: PIXI.Container, path: string): any;
 
     remove(): any;
 
