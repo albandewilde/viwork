@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-aside id="navAside" >
-                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${divHeight}px`" @select="returnIndex">
+                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${goodNavAsideHeight}px`" @select="returnIndex">
                     <el-submenu index="1">
                         <template slot="title">
                         <i class="el-icon-mobile-phone"></i>
@@ -29,7 +29,7 @@
                     </el-submenu>
                 </el-menu>
             </el-aside>
-            <el-main style="padding: 0">
+            <el-main :style="`height: ${goodNavAsideHeight}px; width: ${divWidth}px; padding: 0;`">
                 <el-menu mode="horizontal" id="navTop">
                     <el-menu-item index="1">Processing Center</el-menu-item>
                         <el-submenu index="2">
@@ -47,9 +47,11 @@
                     <el-menu-item index="3" disabled>Info</el-menu-item>
                     <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
                 </el-menu>
-                <canvas id="myCanva" :style="`height: ${divHeight}px; width: ${divWidth}px;`">
+                <div :style="`height: ${divHeight}px; width: ${divWidth}px`">
+                <canvas id="myCanva">
                     
                 </canvas>
+                </div>
             </el-main>
         </el-container>
     </div>
@@ -318,7 +320,7 @@ export default {
     },
     mounted() {
         this.GetElement();
-        this.RunPixi(this.divHeight, this.divWidth);
+        this.RunPixi();
     },
 
     methods: {
@@ -332,14 +334,17 @@ export default {
             this.navHeight = document.getElementById("header").offsetHeight;
             console.log("Hauteur de barre nav " + this.navHeight);
 
-            this.divHeight = document.documentElement.clientHeight - this.navHeight - 7 - this.navTop;
+            this.goodNavAsideHeight = document.documentElement.clientHeight - this.navHeight;
+            console.log("Hauteur de la barre latérale : " + this.goodNavAsideHeight);
+
+            this.divHeight = document.documentElement.clientHeight - this.navHeight - this.navTop - 6;
             console.log("Hauteur après calcul " + this.divHeight);
             
-            this.divWidth = document.documentElement.clientWidth - navWidth - 0;
+            this.divWidth = document.documentElement.clientWidth - navWidth - 1;
             console.log("Largeur après calcul " + this.divWidth);
         },
 
-        RunPixi(divHeight, divWidth) {
+        RunPixi() {
             let type = "WebGL"
             if(!PIXI.utils.isWebGLSupported()){
             type = "canvas"
