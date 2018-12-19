@@ -134,7 +134,7 @@ methods: {
         // Add sprite to the stage
         // var superSquare = PIXI.Texture.fromImage('../../assets/BLAC.png');
 
-        // 	superSquare.x = 75;
+        // 	superSquar e.x = 75;
         //   superSquare.y = 50;
 
 
@@ -357,10 +357,10 @@ export default {
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
             console.log(myView);
-            let renderer = new PIXI.WebGLRenderer(1800,1600,{backgroundColor: 0xE7E7E7, view: myView,});
+            let renderer = new PIXI.WebGLRenderer(1800,1600 ,{backgroundColor: 0xE7E7E7, view: myView,});
             const stage = new PIXI.Container();
-            stage.width = 10000;
-            stage.height = 10000;
+            stage.width = 1800;
+            stage.height = 1600;
             let container = new PIXI.Container();
             let computer = new pixi_Computer()   ;    
 
