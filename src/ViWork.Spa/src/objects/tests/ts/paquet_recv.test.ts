@@ -72,3 +72,42 @@ describe("Send message to computer which is in the same vlan of us", function() 
         assert.strictEqual(cmp3.last_recv, "pouet")
     })
 })
+
+describe("Send message to broadcast", function() {
+    let cmp1 = new Computer()
+    let cmp2 = new Computer()
+    let cable = new Cable(true, cmp1.network_cards[0].port, cmp2.network_cards[0].port)
+
+    cmp1.send_thing("thing", 0xFFFFFFFFFFFF, 0)
+
+    it("cmp2 get the broadcast message", function() {
+        assert.strictEqual("thing", cmp2.last_recv)
+    })
+})
+
+describe("One computer have his network card in bad configuration", function() {
+    let cmp1 = new Computer(1, false, 1)
+    let cmp2 = new Computer(1, false, 0)
+    let cab1 = new Cable(true)
+    let cab2 = new Cable(false)
+
+    it("cmp2 don't have the paquet because his network card configuration is totaly broken", function() {
+        // plug the cable in computers
+        cab1.plug(cmp1.network_cards[0].port)
+        cab1.plug(cmp2.network_cards[0].port)
+
+        cmp1.send_thing("¤", cmp2.network_cards[0].mac_addr, 0)
+        assert.isNull(cmp2.last_recv)
+    })
+    it("A bad network configuration and a straight cable between two computer should transmit the message", function() {
+        // unplug to the first cable
+        cab1.unplug(cmp1.network_cards[0].port)
+        cab1.unplug(cmp2.network_cards[0].port)
+        // plug to the second cable
+        cab2.plug(cmp1.network_cards[0].port)
+        cab2.plug(cmp2.network_cards[0].port)
+
+        cmp2.send_thing("<°)))<", cmp1.network_cards[0].mac_addr, 0)
+        assert.strictEqual("<°)))<", cmp1.last_recv)
+    })
+})
