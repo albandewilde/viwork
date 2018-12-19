@@ -1,4 +1,4 @@
-// This class is the mother of computer ans routeur
+// This class is the mother of computer and routeur
 import {NetworkCard} from "./network_card"
 import {ipv4} from "./ipv4"
 
@@ -56,23 +56,25 @@ export class Roucom{
         let no_break = true
         let gateway: ipv4
         for (let ip of Array.from(this.route_table.keys())) {
-            if (ipv4.compare(ip, ip_reach)) {
+            // it's on the same network if the network address AND the mask are the same
+            if (ip.network === ip_reach.network && ip.mask === ip_reach.mask) {}
+            if (ipv4.on_same_network(ip, ip_reach)) {
                 gateway = this.route_table.get(ip)
                 no_break = false
                 break
             }
         } if (no_break) {
-            gateway = this.route_table.get(new ipv4("0.0.0.0/0"))    // the default route
+            gateway = this.get_gateway(new ipv4("0.0.0.0/0"))    // the default route
         }
         return gateway
     }
 
-    get_network_card_idx_on_network(network_ip) {
+    get_network_card_idx_on_network(network_ip: ipv4) {
         // given a ip address, we return the first network card which is on the same network to the ip given
         let network_card_idx: number = null
         for (let idx = 0; idx < this.network_cards.length; idx += 1) {   
             let card = this.network_cards[idx]
-            if (ipv4.compare(card.ip_addr, network_ip)) {
+            if (ipv4.on_same_network(card.ip_addr, network_ip)) {
                 network_card_idx = idx
                 break
             }
@@ -82,25 +84,23 @@ export class Roucom{
 
     get_mac_by_ip(search: ipv4, card_idx: number) {
         // given an ip, we return the mac address corresponding with the arp table
-
-        let get_mac = function(target: ipv4, obj: Roucom=this) {
+        let get_mac = function(target: ipv4, obj: Roucom) {
             // searche in the arp table the ip
             for (let ip of Array.from(obj.arp_table.keys())) {
                 if (ipv4.compare(ip, target)) {
                     // we got the mac address
-                    return this.arp_table.get(ip)
+                    return obj.arp_table.get(ip)
                 }
             }
             return null
         }
 
-        let mac_addr = get_mac(search)
-        if (mac_addr === null) {
+        let mac_addr = get_mac(search, this)
+        if (mac_addr === null ) {
             // if we don't have the mac address we send a broadcast_arp to find if
             this.network_cards[card_idx].broadcast_arp(search)
-            mac_addr = get_mac(search)
+            mac_addr = get_mac(search, this)
         }
-
         return mac_addr
     }
 }
