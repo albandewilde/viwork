@@ -33,9 +33,10 @@ export class pixi_Computer implements Idrawable {
         
         console.log(sprite)
         sprite.anchor.x = 0;
-        sprite.anchor.y = 0;      
-        sprite.x = container.width /2;
-        sprite.y = container.height /2;
+        sprite.anchor.y = 0;
+             
+        sprite.x =container.position.x/2;
+        sprite.y = container.position.y/2;
         this.Move(sprite);
         this.sprite= sprite;
         container.addChild(sprite);

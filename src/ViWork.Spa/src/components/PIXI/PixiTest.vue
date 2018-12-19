@@ -8,6 +8,7 @@
                         <i class="el-icon-mobile-phone"></i>
                         <span>Machines</span>
                         </template>
+                        <el-button @click="CreateComputer">New</el-button>
                         <el-menu-item index="1-1">Ordinateur <i>1 carte réseau</i></el-menu-item>
                         <el-menu-item index="1-2">Ordinateur <i>2 cartes réseaux</i></el-menu-item>
                     </el-submenu>
@@ -228,21 +229,9 @@ function onCreateHub(){
 	    .on('touchendoutside', onDragEnd)
 		.on('mousemove', onDragMove)
         .on('touchmove', onDragMove)
-      
-    
+        
     stage.addChild(hubContainer);
 }
-
-function onDragStart(event) {
-    // store a reference to the data
-    	this.data = event.data;
-	    this.alpha = 0.5;
-	    this.dragging = true;
-	    this.dragPoint = event.data.getLocalPosition(this.parent);
-	    this.dragPoint.x = this.position.x;
-	    this.dragPoint.y = this.position.y;
-}
-
 
 
 function onLink(destinator,receptor){  
@@ -282,23 +271,7 @@ function onLinkEnd(){
     linking = false;
 }
 
-function onDragEnd() {
-    this.alpha = 1;
-    this.dragging = false;
-    // set the interaction data to null
-    this.data = null;
-}
 
-function onDragMove(event) {
-    if (this.dragging) {
-        this.x += event.data.originalEvent.movementX;
-        this.y += event.data.originalEvent.movementY;
-    }
-}
- 
-}
- }
-}
 
 </script-->
 
@@ -317,7 +290,8 @@ export default {
             navHeight: null,
             navTop: null,
             goodNavAsideHeight: null,
-            stage: null
+            stage: null,
+            renderer: null
         }
     },
     mounted() {
@@ -357,21 +331,20 @@ export default {
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
             console.log(myView);
-            let renderer = new PIXI.WebGLRenderer(1800,1600 ,{backgroundColor: 0xE7E7E7, view: myView,});
-            const stage = new PIXI.Container();
-            stage.width = 1800;
-            stage.height = 1600;
+            this.renderer = new PIXI.WebGLRenderer(1800,1600 ,{backgroundColor: 0xE7E7E7, view: myView,});
+            
+            this.stage = new PIXI.Container();
+            this.stage.width = 1800;
+            this.stage.height = 1600;
+            
+           
+        },
+        CreateComputer(){
             let container = new PIXI.Container();
             let computer = new pixi_Computer()   ;    
 
-            computer.GetPosition(stage,0,0);
-            computer.draw(stage,renderer);
-
-        },
-        CreateComputer(event){
-           // const computer = new Computer()
-           // computer.GetPosition(event.data.originalEvent.movementX,event.data.originalEvent.movementY)
-            
+            computer.GetPosition(this.stage,0,0);
+            computer.draw(this.stage,this.renderer);
         },
 
 
