@@ -83,3 +83,26 @@ describe("Compare two ip", function() {
         assert.isFalse(ipv4.compare(ip1, ip3))
     })
 })
+
+describe("is ip are on the same network", function() {
+    // on the same network
+    it("exactly the same ip", function() {
+        assert.isTrue(ipv4.on_same_network(new ipv4("192.168.1.32/24"), new ipv4("192.168.1.32/24")))
+    })
+    it("not the same ip, bu on the same network", function() {
+        assert.isTrue(ipv4.on_same_network(new ipv4("10.8.111.150/20"), new ipv4("10.8.110.150/20")))
+        assert.isTrue(ipv4.on_same_network(new ipv4("172.168.80.6/24"), new ipv4("172.168.80.56/24")))
+        assert.isTrue(ipv4.on_same_network(new ipv4("172.136.12.0/22"), new ipv4("172.136.12.255/22")))
+    })
+
+    // not on the same network
+    it("not on the same network with a mask higher", function() {
+        assert.isFalse(ipv4.on_same_network(new ipv4("192.168.2.167/16"), new ipv4("192.168.2.167/18")))
+    })
+    it("not on the same network with a mask lower", function() {
+        assert.isFalse(ipv4.on_same_network(new ipv4("192.168.2.167/16"), new ipv4("192.168.2.167/18")))
+    })
+    it("not on the same network with a mask higher", function() {
+        assert.isFalse(ipv4.on_same_network(new ipv4("10.0.5.16/8"), new ipv4("10.0.5.16/3")))
+    })
+})
