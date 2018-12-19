@@ -13,7 +13,7 @@ export class pixi_Computer implements Idrawable {
     constructor() {
         this.material = new Computer();
             // position du pointeur de la souris
-        this.sprite_path = "../../images/sprites/computer.png";
+        this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/desktop.png";
         
       
         
@@ -32,14 +32,25 @@ export class pixi_Computer implements Idrawable {
         // put the computer at his new position (fixed position), don't forget to change his sprite
     }
 
-    draw(container: PIXI.Container) {
+    draw(container: PIXI.Container, renderer:any) {
+   
+        const sprite = PIXI.Sprite.fromImage(this.sprite_path)
+        
+        console.log(sprite)
+        sprite.anchor.x = 0;
+        sprite.anchor.y = 0;
 
-        let sprite = PIXI.Sprite.fromImage(this.sprite_path);
-        sprite.interactive = true;
-        sprite.x = 200;
-        sprite.y = 200;
+        sprite.x = 0;
+        sprite.y = 0;
         container.addChild(sprite);
-        return sprite
+       
+
+        function animate(){      
+            requestAnimationFrame(animate);
+            renderer.render(container);
+            
+        }
+        animate();
         
     }
 

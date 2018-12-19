@@ -52,6 +52,7 @@
                     
                 </canvas>
                 </div>
+               
             </el-main>
         </el-container>
     </div>
@@ -315,6 +316,7 @@ export default {
             navWidth: null,
             navHeight: null,
             navTop: null,
+            goodNavAsideHeight: null,
             stage: null
         }
     },
@@ -345,9 +347,9 @@ export default {
         },
 
         RunPixi() {
-            let type = "WebGL"
+            let type = "canvas";
             if(!PIXI.utils.isWebGLSupported()){
-            type = "canvas"
+                 type = "canvas";
             }
 
             PIXI.utils.sayHello(type); 
@@ -355,46 +357,21 @@ export default {
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
             console.log(myView);
-            let renderer = new PIXI.autoDetectRenderer(divWidth,divHeight,{backgroundColor: 0xE7E7E7, view: myView,});
-          
-            const stage = new PIXI.Container()
-            stage.width = this.divWidth;
-            stage.height = this.divHeight;
-            let container = new PIXI.Container()
-            let computer = new pixi_Computer()
-            
-            const rt = new PIXI.RenderTexture(renderer,50,50);
-           
+            let renderer = new PIXI.WebGLRenderer(1800,1600,{backgroundColor: 0xE7E7E7, view: myView,});
+            const stage = new PIXI.Container();
+            stage.width = 10000;
+            stage.height = 10000;
+            let container = new PIXI.Container();
+            let computer = new pixi_Computer()   ;    
 
             computer.GetPosition(stage,0,0);
-            let sprite = computer.draw(stage);
-            console.log(sprite);
-    
-            function animate(){
-                rt.render(sprite)
-                requestAnimationFrame(animate);
-                renderer.render(s)
-            }
-            animate();
-
-            console.log(stage);
-
-            console.log(app);
+            computer.draw(stage,renderer);
 
         },
         CreateComputer(event){
-            const computer = new Computer()
-            computer.GetPosition(event.data.originalEvent.movementX,event.data.originalEvent.movementY)
+           // const computer = new Computer()
+           // computer.GetPosition(event.data.originalEvent.movementX,event.data.originalEvent.movementY)
             
-        },
-
-        update(app, stage){
-            this.render(app, stage);
-            requestAnimationFrame(this.update)
-        },
-
-        render(app, stage){
-           app.renderer.render(stage)
         },
 
 
