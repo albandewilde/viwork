@@ -8,8 +8,7 @@
                         <i class="el-icon-mobile-phone"></i>
                         <span>Machines</span>
                         </template>
-                        <el-button @click="CreateComputer">New</el-button>
-                        <el-menu-item index="1-1">Ordinateur <i>1 carte réseau</i></el-menu-item>
+                        <el-menu-item index="1-1" @click="CreateComputer">Ordinateur <i>1 carte réseau</i></el-menu-item>
                         <el-menu-item index="1-2">Ordinateur <i>2 cartes réseaux</i></el-menu-item>
                     </el-submenu>
                     <el-submenu index="2">
@@ -17,10 +16,8 @@
                         <i class="el-icon-tickets"></i>
                         <span>Commutateurs</span>
                         </template>
-                        <el-button @click="CreateHub">New Hub</el-button>
-                        <el-menu-item index="2-1">Hub</el-menu-item>
-                         <el-button @click="CreateCommutateur">New Switch</el-button>
-                        <el-menu-item index="2-2">Switch</el-menu-item>
+                        <el-menu-item index="2-1" @click="CreateHub">Hub</el-menu-item>
+                        <el-menu-item index="2-2" @click="CreateCommutateur">Switch</el-menu-item>
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title">

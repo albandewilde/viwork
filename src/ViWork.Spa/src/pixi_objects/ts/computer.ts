@@ -29,7 +29,6 @@ export class pixi_Computer implements Idrawable {
     draw(container: PIXI.Container, renderer:any) {
    
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
-        const sprite2 = PIXI.Sprite.fromImage(process.env.VUE_APP_BACKEND + "/images/icons/port.png");
        
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
