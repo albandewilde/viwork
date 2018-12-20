@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-aside id="navAside" >
-                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${goodNavAsideHeight}px`" @select="returnIndex">
+                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${goodNavAsideHeight}px`" @select="GetSelectedItem">
                     <el-submenu index="1">
                         <template slot="title">
                         <i class="el-icon-mobile-phone"></i>
@@ -297,7 +297,8 @@ export default {
             navTop: null,
             goodNavAsideHeight: null,
             stage: null,
-            renderer: null
+            renderer: null,
+            selectedIndex: null
         }
     },
     mounted() {
@@ -337,7 +338,7 @@ export default {
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
             console.log(myView);
-            this.renderer = new PIXI.WebGLRenderer(1800,1600 ,{backgroundColor: 0xE7E7E7, view: myView,});
+            this.renderer = new PIXI.WebGLRenderer(this.divWidth, this.divHeight ,{backgroundColor: 0xE7E7E7, view: myView,});
             
             this.stage = new PIXI.Container();
             this.stage.width = 1800;
@@ -377,7 +378,7 @@ export default {
         },
 
         returnIndex(key) {
-            console.log(key);
+            console.log(key)
         }
     }
 }
