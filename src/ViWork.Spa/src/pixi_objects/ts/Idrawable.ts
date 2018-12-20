@@ -13,7 +13,7 @@ export interface Idrawable {
 
     draw(container: PIXI.Container, renderer:any): any;
 
-    Move(sprite: PIXI.Sprite)
+    Move(sprite: PIXI.Sprite) : any;
     remove(): any;
 
 }
