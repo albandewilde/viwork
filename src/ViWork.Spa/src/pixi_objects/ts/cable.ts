@@ -1,18 +1,19 @@
-
 import * as PIXI from "pixi.js"
 
 import {Idrawable} from"./Idrawable"
 import {Cable} from "../../objects/ts/cable"
+import { Container } from 'element-ui';
 
-class pixi_Cable implements Idrawable {
+export class pixi_Cable implements Idrawable {
     material: Cable;
     texture: PIXI.Texture;
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
 
-    constructor(cross_eh: boolean=true) {
+    constructor(cross_eh: boolean) {
         this.material = new Cable()
+        this.container = new PIXI.Container();
         this.sprite_path = cross_eh ? process.env.VUE_APP_BACKEND+"/images/icons/cable_cross.png" : process.env.VUE_APP_BACKEND+"/images/icons/cable_straight.png"
     }
     
@@ -35,14 +36,14 @@ class pixi_Cable implements Idrawable {
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
         // set image scale
-        sprite.width = 100;
-        sprite.height =100;
+        sprite.width = 50;
+        sprite.height =50;
 
            
         sprite.x =container.position.x/2;
         sprite.y = container.position.y/2;
         this.Move(sprite);
-        this.sprite= sprite;
+        this.sprite= sprite;    
         container.addChild(sprite);
         
 

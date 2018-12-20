@@ -24,8 +24,8 @@
                         <i class="el-icon-sort"></i>
                         <span>Câbles</span>
                         </template>
-                        <el-menu-item index="3-1">Simple</el-menu-item>
-                        <el-menu-item index="3-2">Croisé</el-menu-item>
+                        <el-menu-item index="3-1" @click="CreateCable">Simple</el-menu-item>
+                        <el-menu-item index="3-2" @click="CreateCable">Croisé</el-menu-item>
                     </el-submenu>
                 </el-menu>
             </el-aside>
@@ -283,6 +283,8 @@ import { pixi_Hub } from '@/pixi_objects/ts/hub';
 import { pixi_NetWorkCard } from '@/pixi_objects/ts/networkcard';
 import { pixi_Router } from '@/pixi_objects/ts/routeur';
 import { pixi_Switch } from '@/pixi_objects/ts/commutateur';
+import { pixi_Cable } from '@/pixi_objects/ts/cable';
+import { pixi_Port} from '@/pixi_objects/ts/port';
 
 export default {
     data() {
@@ -323,6 +325,9 @@ export default {
             this.divWidth = document.documentElement.clientWidth - navWidth - 1;
             console.log("Largeur après calcul " + this.divWidth);
         },
+        GetSelectedItem(key){
+            this.selectedIndex = key
+        },
 
         RunPixi() {
             let type = "canvas";
@@ -347,6 +352,10 @@ export default {
         CreateComputer(){
             let computer = new pixi_Computer();    
             computer.GetPosition(this.stage,0,0);
+            console.log(computer.material.network_cards.length)
+            for (var i=0; i < computer.material.network_cards.length; i++ ){
+                 this.CreatePort(computer.container,20*i,20*i);
+            }
             computer.draw(this.stage,this.renderer);
         },
 
@@ -372,6 +381,22 @@ export default {
             let hub = new pixi_Hub;
             hub.GetPosition(this.stage,0,0);
             hub.draw(this.stage, this.renderer);
+        },
+
+        CreateCable(){
+         
+            let  cross_eh = true? this.selectedIndex == "3-2" : false
+               console.log(cross_eh)
+            let cable = new pixi_Cable(cross_eh);
+            cable.GetPosition(this.stage,0,0);
+            cable.draw(this.stage,this.renderer);
+
+        },
+        
+        CreatePort(container,positionX,positionY){
+            let port = new pixi_Port();
+            port.GetPosition(positionX,positionY);
+            port.draw(container,this.renderer)
         },
 
         returnIndex(key) {

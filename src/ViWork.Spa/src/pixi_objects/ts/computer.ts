@@ -9,10 +9,12 @@ export class pixi_Computer implements Idrawable {
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
+    positionX: any;
+    positionY: any;
 
     constructor() {
         this.material = new Computer();
-            // position du pointeur de la souris
+        this.container = new PIXI.Container();
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/computer.png";       
     }
 
@@ -35,11 +37,12 @@ export class pixi_Computer implements Idrawable {
         
         sprite.width = 110;
         sprite.height = 110;
-        sprite.x =container.position.x/2;
-        sprite.y = container.position.y/2;
+        sprite.x = this.positionX
+        sprite.y = this.positionY;
         this.Move(sprite);
         this.sprite= sprite;
-        container.addChild(sprite);
+        this.container.addChild(sprite)
+        container.addChild(this.container);
         
 
         function animate(){      
@@ -52,9 +55,9 @@ export class pixi_Computer implements Idrawable {
 
     Move(sprite: PIXI.Sprite){
 
-        sprite.interactive = true;
-        sprite.buttonMode = true;
-        sprite.on('mousedown', onDragStart)
+        this.container.interactive = true;
+        this.container.buttonMode = true;
+        this.container.on('mousedown', onDragStart)
 		    .on('touchstart', onDragStart)
 		    .on('mouseup', onDragEnd)
 		    .on('mouseupoutside', onDragEnd)
@@ -90,8 +93,8 @@ export class pixi_Computer implements Idrawable {
     }
      
     GetPosition(container: PIXI.Container,positionX: number , positionY:number){
-        container.position.x = positionX;
-        container.position.y = positionY;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
     remove(){
 
