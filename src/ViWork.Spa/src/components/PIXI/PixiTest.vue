@@ -17,7 +17,9 @@
                         <i class="el-icon-tickets"></i>
                         <span>Commutateurs</span>
                         </template>
+                        <el-button @click="CreateHub">New Hub</el-button>
                         <el-menu-item index="2-1">Hub</el-menu-item>
+                         <el-button @click="CreateCommutateur">New Switch</el-button>
                         <el-menu-item index="2-2">Switch</el-menu-item>
                     </el-submenu>
                     <el-submenu index="3">
@@ -280,6 +282,10 @@ function onLinkEnd(){
 import * as PIXI from 'pixi.js';
 import{Renderer} from 'pixi.js';
 import {pixi_Computer} from'../../pixi_objects/ts/computer';
+import { pixi_Hub } from '@/pixi_objects/ts/hub';
+import { pixi_NetWorkCard } from '@/pixi_objects/ts/networkcard';
+import { pixi_Router } from '@/pixi_objects/ts/routeur';
+import { pixi_Switch } from '@/pixi_objects/ts/commutateur';
 
 export default {
     data() {
@@ -339,16 +345,36 @@ export default {
             
            
         },
-        CreateComputer(){
-            let container = new PIXI.Container();
-            let computer = new pixi_Computer()   ;    
 
+        CreateComputer(){
+            let computer = new pixi_Computer();    
             computer.GetPosition(this.stage,0,0);
             computer.draw(this.stage,this.renderer);
         },
 
+        CreateCommutateur(){
+            let commutateur = new pixi_Switch();
+            commutateur.GetPosition(this.stage,0,0);
+            commutateur.draw(this.stage, this.renderer);
+        },
 
+        CreateNetworkCard(){
+            let networkCard = new pixi_NetWorkCard;
+            networkCard.GetPosition(this.stage,0,0);
+            networkCard.draw(this.stage, this.renderer);
+        },
 
+        CreateRouter(){
+            let router = new pixi_Router;
+            router.GetPosition(this.stage,0,0);
+            router.draw(this.stage, this.renderer);
+        },
+
+        CreateHub(){
+            let hub = new pixi_Hub;
+            hub.GetPosition(this.stage,0,0);
+            hub.draw(this.stage, this.renderer);
+        },
 
         returnIndex(key) {
             console.log(key);

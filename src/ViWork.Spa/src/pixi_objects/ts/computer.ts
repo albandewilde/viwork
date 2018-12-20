@@ -12,7 +12,6 @@ export class pixi_Computer implements Idrawable {
 
     constructor() {
         this.material = new Computer();
-            // position du pointeur de la souris
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/desktop.png";       
     }
 
@@ -34,6 +33,10 @@ export class pixi_Computer implements Idrawable {
         console.log(sprite)
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
+
+        sprite.width = 100;
+        sprite.height =100;
+
              
         sprite.x =container.position.x/2;
         sprite.y = container.position.y/2;
@@ -92,5 +95,8 @@ export class pixi_Computer implements Idrawable {
     GetPosition(container: PIXI.Container,positionX: number , positionY:number){
         container.position.x = positionX;
         container.position.y = positionY;
+    }
+    remove(){
+
     }
 }
