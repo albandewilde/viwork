@@ -1,8 +1,8 @@
 //import {all} from "pixi.js"
 
-import {Routeur} from "../../objects/js/routeur"
+import {Routeur} from "../../objects/ts/routeur"
 
-class pixi_Switch {
+class pixi_Router {
     computer: Routeur
     position: [number, number]
     sprite_path: string

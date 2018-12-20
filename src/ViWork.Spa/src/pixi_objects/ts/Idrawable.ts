@@ -11,9 +11,9 @@ export interface Idrawable {
 
     put(): any;
 
-    draw(): any;
+    draw(container: PIXI.Container, renderer:any): any;
 
+    Move(sprite: PIXI.Sprite)
     remove(): any;
 
-    animation(): any;
 }
