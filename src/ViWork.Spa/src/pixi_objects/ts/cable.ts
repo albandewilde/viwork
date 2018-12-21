@@ -37,7 +37,7 @@ export class pixi_Cable implements Idrawable {
         cable
                 .lineStyle(7,0x32CD32)
                 .moveTo(this.receptorX,this.receptorY )
-                .lineTo(this.destinatorX ,this.desinatorY)   
+                .lineTo(this.destinatorX ,this.destinatorY)   
         container.addChild(cable);
         
 

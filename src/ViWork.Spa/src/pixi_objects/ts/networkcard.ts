@@ -61,7 +61,7 @@ export class pixi_NetWorkCard implements Idrawable {
     Move(sprite: PIXI.Sprite){
         sprite.interactive = true;
         sprite.buttonMode = true;
-        sprite.on("click",this.active)
+        sprite.on("click",this.GetNetworkCart)
      
     }
    
@@ -114,7 +114,7 @@ export class pixi_NetWorkCard implements Idrawable {
         {
             this.cable = new pixi_Cable(true);
             this.cable.destinatorX = this.positionX;
-            this.cable.desinatorY = this.positionY;
+            this.cable.destinatorY = this.positionY;
             //this.Plug(this.cable.material)
         } else{
      
