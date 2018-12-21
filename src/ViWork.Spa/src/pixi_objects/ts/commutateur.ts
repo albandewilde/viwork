@@ -2,6 +2,8 @@ import * as PIXI from "pixi.js"
 
 import {Switch} from "../../objects/ts/commutateur"
 import {Idrawable} from "./Idrawable"
+import {pixi_NetWorkCard} from"./networkcard"
+
 
 export class pixi_Switch implements Idrawable {
     material: Switch;
@@ -9,9 +11,15 @@ export class pixi_Switch implements Idrawable {
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
+    renderer: any;
+    positionX: any;
+    positionY: any;
+    linking: any;
 
-    constructor() {
-        this.material = new Switch()
+    constructor(linking: boolean) {
+        this.material = new Switch();
+        this.linking = linking;
+        this.container = new PIXI.Container;
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/switch.png"
     }
     
@@ -27,9 +35,9 @@ export class pixi_Switch implements Idrawable {
 
     Move(sprite: PIXI.Sprite){
 
-        sprite.interactive = true;
-        sprite.buttonMode = true;
-        sprite.on('mousedown', onDragStart)
+        this.container.interactive = true;
+        this.container.buttonMode = true;
+        this.container.on('mousedown', onDragStart)
 		    .on('touchstart', onDragStart)
 		    .on('mouseup', onDragEnd)
 		    .on('mouseupoutside', onDragEnd)
@@ -65,7 +73,7 @@ export class pixi_Switch implements Idrawable {
     }
 
     draw(container: PIXI.Container, renderer:any) {
-   
+        this.renderer = renderer;
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
        
         
@@ -76,12 +84,16 @@ export class pixi_Switch implements Idrawable {
         sprite.width = 100;
         sprite.height =100;
 
-             
-        sprite.x =container.position.x/2;
-        sprite.y = container.position.y/2;
+
         this.Move(sprite);
         this.sprite= sprite;
-        container.addChild(sprite);
+        this.container.addChild(sprite)
+
+        for (var i=0; i < this.material.nb_port; i++ ){
+            this.CreatePort(this.container,20*i,40);
+        }
+
+        container.addChild(this.container);
         
 
         function animate(){      
@@ -91,13 +103,21 @@ export class pixi_Switch implements Idrawable {
         animate();
         
     }
+    
 
 
     async GetPosition(positionX: number , positionY:number){
-        this.container.position.x = positionX;
-        this.container.position.y = positionY;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
     remove() {
+    }
+
+    
+    CreatePort(container,positionX,positionY){
+        var port = new pixi_NetWorkCard(this.linking);
+        port.GetPosition(container, positionX,positionY);
+        port.draw(container,this.renderer)
     }
 
     async animation(){

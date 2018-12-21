@@ -1,7 +1,10 @@
 //import {all} from "pixi.js"
 
 import {NetworkCard} from "../../objects/ts/network_card"
+import { Cable } from '../../objects/ts/cable';
 import { Idrawable } from './Idrawable';
+import { pixi_Cable } from './cable';
+
 
 export class pixi_NetWorkCard implements Idrawable {
     material: NetworkCard;
@@ -9,10 +12,22 @@ export class pixi_NetWorkCard implements Idrawable {
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
+    stage: PIXI.Container;
+    moosePositoin: any;
+    positionX: any;
+    positionY: any;
+    linking: boolean;
+    fromLinkX: any;
+    fromLinkY: any;
+    cable: pixi_Cable;
+    renderer: any;
+    data: any;
+  
 
-    constructor() {
+    constructor(linking: boolean) {
+        this.linking = linking;
         this.material = new NetworkCard();
-        this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/network_card.png";       
+        this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";       
     }
 
     take(positionX: number , positionY: number ) {
@@ -26,77 +41,99 @@ export class pixi_NetWorkCard implements Idrawable {
     }
 
     draw(container: PIXI.Container, renderer:any) {
-   
+        this.renderer = renderer;
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
-       
-        
-        console.log(sprite)
+    
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
 
-        sprite.width = 100;
-        sprite.height =100;
-
-             
-        sprite.x =container.position.x/2;
-        sprite.y = container.position.y/2;
-        this.Move(sprite);
+        sprite.width = 20;
+        sprite.height = 20;
+                  
+        sprite.x =this.positionX
+        sprite.y = this.positionY
         this.sprite= sprite;
-        container.addChild(sprite);
-        
-
-        function animate(){      
-            requestAnimationFrame(animate);
-            renderer.render(container);           
-        }
-        animate();
-        
+        this.Move(sprite);
+        container.addChild(sprite);  
+         
     }
 
     Move(sprite: PIXI.Sprite){
-
         sprite.interactive = true;
         sprite.buttonMode = true;
-        sprite.on('mousedown', onDragStart)
-		    .on('touchstart', onDragStart)
-		    .on('mouseup', onDragEnd)
-		    .on('mouseupoutside', onDragEnd)
-		    .on('touchend', onDragEnd)
-		    .on('touchendoutside', onDragEnd)
-		    .on('mousemove', onDragMove)
-            .on('touchmove', onDragMove);
-
-
-            function onDragStart(event) {
-                // store a reference to the data
-                    this.data = event.data;
-                    this.alpha = 0.5;
-                    this.dragging = true;
-                    this.dragPoint = event.data.getLocalPosition(this.parent);
-                    this.dragPoint.x = this.position.x;
-                    this.dragPoint.y = this.position.y;
-            }
-
-            function onDragMove(event) {
-                if (this.dragging) {
-                    this.x += event.data.originalEvent.movementX;
-                    this.y += event.data.originalEvent.movementY;
-                }
-            }
-
-            function onDragEnd() {
-                this.alpha = 1;
-                this.dragging = false;
-                // set the interaction data to null
-                this.data = null;
-            }
-    }
+        sprite.on("click",this.active)
      
-    GetPosition(container: PIXI.Container,positionX: number , positionY:number){
-        container.position.x = positionX;
-        container.position.y = positionY;
     }
+   
+    GetNetworkCart(event){
+        var mousePosition = event.data.position
+        var cable = new pixi_Cable(true);
+        this.moosePositoin =mousePosition;
+        while(this.linking){
+            if (this.moosePositoin === mousePosition){
+                this.Plug(cable.material)
+                cable.destinatorX = mousePosition.x;
+                cable.destinatorY = mousePosition.y;
+            } else {
+                this.Plug(cable.material)
+                var moosePositoin = event.data.position
+                cable.receptorX = moosePositoin.x;
+                cable.receptorY = moosePositoin.y;
+                cable.draw(this.container,this.renderer);
+                console.log("ca a marcher");    
+                this.linking = false
+            }
+        }
+               
+    }
+
+    
+    GetPosition(container: PIXI.Sprite,positionX: number , positionY:number){
+        this.positionX = positionX;
+        this.positionY = positionY;
+    }
+  
     remove(){
 
     }
+
+    Plug(cable: Cable){
+        this.material.port.on_plug(cable)
+    }
+
+    
+    onLink(){  
+        if (this.linking){
+
+            this.onLinkEnd();
+        }
+    }
+
+    onLinkStart(event){
+        if (!this.linking)
+        {
+            this.cable = new pixi_Cable(true);
+            this.cable.destinatorX = this.positionX;
+            this.cable.desinatorY = this.positionY;
+            //this.Plug(this.cable.material)
+        } else{
+     
+            this.onLinkEnd()
+        }
+        
+     
+     }
+
+    getCable(){
+        return this.cable
+    }
+
+    onLinkEnd(){
+        this.cable.receptorX = this.positionX
+        this.cable.receptorY= this.positionY
+        this.Plug(this.cable.material)
+        this.cable.draw(this.container, this.renderer)
+        this.linking = false;
+    }
+
 }

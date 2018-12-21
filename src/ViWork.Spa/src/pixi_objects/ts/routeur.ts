@@ -1,7 +1,8 @@
 //import {all} from "pixi.js"
 
-import {Routeur} from "../../objects/ts/routeur"
+import {Routeur} from "../../objects/ts/routeur";
 import { Idrawable } from './Idrawable';
+import { pixi_Port} from "./port";
 
 export class pixi_Router implements Idrawable{
     material: Routeur;
@@ -9,6 +10,7 @@ export class pixi_Router implements Idrawable{
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
+    renderer: any;
 
     constructor() {
         this.material = new Routeur();
@@ -26,7 +28,8 @@ export class pixi_Router implements Idrawable{
     }
 
     draw(container: PIXI.Container, renderer:any) {
-   
+
+        this.renderer = renderer
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
        
         
@@ -36,13 +39,18 @@ export class pixi_Router implements Idrawable{
 
         sprite.width = 100;
         sprite.height =100;
-
-             
+     
         sprite.x =container.position.x/2;
         sprite.y = container.position.y/2;
+        
         this.Move(sprite);
-        this.sprite= sprite;
+        this.sprite = sprite;
+
         container.addChild(sprite);
+
+        for (var i=0; i < this.material.network_cards.length; i++ ){
+            this.CreatePort(this.container,0,10+20*i);
+        }
         
 
         function animate(){      
@@ -91,6 +99,12 @@ export class pixi_Router implements Idrawable{
                 this.data = null;
             }
     }
+    CreatePort(container,positionX,positionY){
+        var port = new pixi_Port();
+        port.GetPosition(container, positionX,positionY);
+        port.draw(container,this.renderer)
+    }
+
      
     GetPosition(container: PIXI.Container,positionX: number , positionY:number){
         container.position.x = positionX;

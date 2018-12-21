@@ -1,8 +1,9 @@
 //import {all} from "pixi.js"
 
-import * as PIXI from "pixi.js"
-import {Hub} from "../../objects/ts/hub"
+import * as PIXI from "pixi.js";
+import {Hub} from "../../objects/ts/hub";
 import { Idrawable } from './Idrawable';
+import {pixi_Port} from './port'
 
 export class pixi_Hub implements Idrawable{
     material: Hub
@@ -10,9 +11,11 @@ export class pixi_Hub implements Idrawable{
     sprite_path: string
     sprite: PIXI.Sprite
     container: PIXI.Container
+    renderer: any
 
     constructor() {
-        this.material = new Hub()
+        this.material = new Hub();
+        this.container = new PIXI.Container();
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/hub.png";
     }
 
@@ -28,6 +31,7 @@ export class pixi_Hub implements Idrawable{
 
     draw(container: PIXI.Container, renderer:any) {
    
+        this.renderer = renderer
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
        
         
@@ -35,15 +39,20 @@ export class pixi_Hub implements Idrawable{
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
 
-        sprite.width = 100;
+        sprite.width =100;
         sprite.height =100;
-
-             
+                
         sprite.x =container.position.x/2;
         sprite.y = container.position.y/2;
         this.Move(sprite);
         this.sprite= sprite;
-        container.addChild(sprite);
+        this.container.addChild(sprite);
+
+        for (var i=0; i < this.material.nb_ports; i++ ){
+            this.CreatePort(this.container,20*i,42);
+        }
+
+        container.addChild(this.container)
         
 
         function animate(){      
@@ -56,9 +65,9 @@ export class pixi_Hub implements Idrawable{
 
     Move(sprite: PIXI.Sprite){
 
-        sprite.interactive = true;
-        sprite.buttonMode = true;
-        sprite.on('mousedown', onDragStart)
+        this.container.interactive = true;
+        this.container.buttonMode = true;
+        this.container.on('mousedown', onDragStart)
 		    .on('touchstart', onDragStart)
 		    .on('mouseup', onDragEnd)
 		    .on('mouseupoutside', onDragEnd)
@@ -97,6 +106,13 @@ export class pixi_Hub implements Idrawable{
         container.position.x = positionX;
         container.position.y = positionY;
     }
+
+    CreatePort(container,positionX,positionY){
+        var port = new pixi_Port();
+        port.GetPosition(container, positionX,positionY);
+        port.draw(container,this.renderer)
+    }
+
     remove(){
 
     }

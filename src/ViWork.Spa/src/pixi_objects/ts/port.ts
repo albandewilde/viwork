@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js"
 
 import { Idrawable } from './Idrawable';
 import { Port } from '@/objects/ts/port';
+import { pixi_Cable } from './cable';
 
 export class pixi_Port implements Idrawable{
     material: Port
@@ -33,27 +34,28 @@ export class pixi_Port implements Idrawable{
     draw(container: PIXI.Container, renderer:any) {
    
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
-       
-        
-        console.log(sprite)
+    
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
 
-        sprite.width = 15;
-        sprite.height = 15;
+        sprite.width = 20;
+        sprite.height = 20;
 
              
         sprite.x =this.positionX
         sprite.y = this.positionY
         this.sprite= sprite;
-        container.addChild(sprite);
-        
+        this.Move(sprite);
+        container.addChild(sprite);        
     }
 
     Move(sprite: PIXI.Sprite){
 
         sprite.interactive = true;
         sprite.buttonMode = true;
+        sprite.on("click",this.onPlug)
+
+        
     }
      
     GetPosition(container: PIXI.Sprite,positionX: number , positionY:number){
@@ -63,4 +65,9 @@ export class pixi_Port implements Idrawable{
     remove(){
 
     }
+
+    onPlug(cable: pixi_Cable){
+        
+    }
+
 }

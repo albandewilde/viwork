@@ -251,7 +251,6 @@ function onLink(destinator,receptor){
 }
 function onLinkStart(event){
 
-    var mousePosition = event.data.getLocalPosition(stage);
     console.log(mousePosition);
   
     if (linking)
@@ -297,7 +296,10 @@ export default {
             goodNavAsideHeight: null,
             stage: null,
             renderer: null,
-            selectedIndex: null
+            selectedIndex: null,
+            firstObj: null,
+            secondObj: null,
+            linking: boolean,   
         }
     },
     mounted() {
@@ -345,22 +347,18 @@ export default {
             this.stage = new PIXI.Container();
             this.stage.width = 1800;
             this.stage.height = 1600;
-            
-           
+                    
         },
 
         CreateComputer(){
-            let computer = new pixi_Computer();    
+            let computer = new pixi_Computer(this.linking);    
             computer.GetPosition(this.stage,0,0);
-            console.log(computer.material.network_cards.length)
-            for (var i=0; i < computer.material.network_cards.length; i++ ){
-                 this.CreatePort(computer.container,20*i,20*i);
-            }
             computer.draw(this.stage,this.renderer);
+            
         },
 
         CreateCommutateur(){
-            let commutateur = new pixi_Switch();
+            let commutateur = new pixi_Switch(this.linking);
             commutateur.GetPosition(this.stage,0,0);
             commutateur.draw(this.stage, this.renderer);
         },
@@ -384,21 +382,16 @@ export default {
         },
 
         CreateCable(){
-         
-            let  cross_eh = true? this.selectedIndex == "3-2" : false
-               console.log(cross_eh)
-            let cable = new pixi_Cable(cross_eh);
-            cable.GetPosition(this.stage,0,0);
-            cable.draw(this.stage,this.renderer);
+         this.linking= true;
+        },
 
+        checkInteraction(){
+            if (!linking){
+
+            }
         },
         
-        CreatePort(container,positionX,positionY){
-            let port = new pixi_Port();
-            port.GetPosition(positionX,positionY);
-            port.draw(container,this.renderer)
-        },
-
+        
         returnIndex(key) {
             console.log(key)
         }

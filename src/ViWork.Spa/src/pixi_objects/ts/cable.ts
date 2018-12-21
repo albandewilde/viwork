@@ -10,6 +10,10 @@ export class pixi_Cable implements Idrawable {
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
+    receptorX: any;
+    receptorY: any;
+    destinatorX: any;
+    destinatorY: any;
 
     constructor(cross_eh: boolean) {
         this.material = new Cable()
@@ -28,23 +32,13 @@ export class pixi_Cable implements Idrawable {
     }
 
     draw(container: PIXI.Container, renderer:any) {
-        const sprite = PIXI.Sprite.fromImage(this.sprite_path)
-       
-        
-        console.log(sprite)
-        //set anchor
-        sprite.anchor.x = 0;
-        sprite.anchor.y = 0;
-        // set image scale
-        sprite.width = 50;
-        sprite.height =50;
-
-           
-        sprite.x =container.position.x/2;
-        sprite.y = container.position.y/2;
-        this.Move(sprite);
-        this.sprite= sprite;    
-        container.addChild(sprite);
+        var cable = new PIXI.Graphics()
+        cable.beginFill(0x32CD32);
+        cable
+                .lineStyle(7,0x32CD32)
+                .moveTo(this.receptorX,this.receptorY )
+                .lineTo(this.destinatorX ,this.desinatorY)   
+        container.addChild(cable);
         
 
         function animate(){      
@@ -58,39 +52,6 @@ export class pixi_Cable implements Idrawable {
 
         sprite.interactive = true;
         sprite.buttonMode = true;
-        sprite.on('mousedown', onDragStart)
-		    .on('touchstart', onDragStart)
-		    .on('mouseup', onDragEnd)
-		    .on('mouseupoutside', onDragEnd)
-		    .on('touchend', onDragEnd)
-		    .on('touchendoutside', onDragEnd)
-		    .on('mousemove', onDragMove)
-            .on('touchmove', onDragMove);
-
-
-            function onDragStart(event) {
-                // store a reference to the data
-                    this.data = event.data;
-                    this.alpha = 0.5;
-                    this.dragging = true;
-                    this.dragPoint = event.data.getLocalPosition(this.parent);
-                    this.dragPoint.x = this.position.x;
-                    this.dragPoint.y = this.position.y;
-            }
-
-            function onDragMove(event) {
-                if (this.dragging) {
-                    this.x += event.data.originalEvent.movementX;
-                    this.y += event.data.originalEvent.movementY;
-                }
-            }
-
-            function onDragEnd() {
-                this.alpha = 1;
-                this.dragging = false;
-                // set the interaction data to null
-                this.data = null;
-            }
     }
 
     async GetPosition(positionX: number , positionY:number){

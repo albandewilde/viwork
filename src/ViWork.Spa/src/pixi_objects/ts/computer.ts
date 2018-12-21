@@ -2,6 +2,7 @@ import * as PIXI from'pixi.js'
 
 import {Idrawable} from "./Idrawable";
 import {Computer} from "../../objects/ts/computer";
+import {pixi_Port} from "./port"
 
 export class pixi_Computer implements Idrawable {
     material: Computer;
@@ -11,6 +12,7 @@ export class pixi_Computer implements Idrawable {
     sprite: PIXI.Sprite;
     positionX: any;
     positionY: any;
+    renderer: any;
 
     constructor() {
         this.material = new Computer();
@@ -29,7 +31,7 @@ export class pixi_Computer implements Idrawable {
     }
 
     draw(container: PIXI.Container, renderer:any) {
-   
+        this.renderer = renderer;
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
        
         sprite.anchor.x = 0;
@@ -42,7 +44,12 @@ export class pixi_Computer implements Idrawable {
         this.Move(sprite);
         this.sprite= sprite;
         this.container.addChild(sprite)
+        
+        for (var i=0; i < this.material.network_cards.length; i++ ){
+            this.CreatePort(this.container,0,20*i);
+        }
         container.addChild(this.container);
+        
         
 
         function animate(){      
@@ -99,4 +106,10 @@ export class pixi_Computer implements Idrawable {
     remove(){
 
     }
+    CreatePort(container,positionX,positionY){
+        var port = new pixi_Port();
+        port.GetPosition(container, positionX,positionY);
+        port.draw(container,this.renderer)
+    }
+
 }
