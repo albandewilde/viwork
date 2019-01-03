@@ -32,7 +32,7 @@ export class NetworkCard implements IPortContainer {
     on_receive(cable_content: [EthernetFrame, EthernetFrame], port: Port) {
         let frame = cable_content[(this.write_on_cable+1)%2]
         if (frame != null && (!this.paquet_filter || (frame.destination === this.mac_addr || frame.destination === 0xFFFFFFFFFFFF))) {
-            // add the ip and the mac address of the source to our arp table
+            // add the ip and the mac address of the source in our arp table
             if (frame.content.ip_src != null && frame.source != null) {
                 this.roucom.arp_table.set(frame.content.ip_src, frame.source)
             }
