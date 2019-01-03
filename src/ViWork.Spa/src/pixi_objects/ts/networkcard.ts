@@ -22,10 +22,10 @@ export class pixi_NetWorkCard implements Idrawable {
     cable: pixi_Cable;
     renderer: any;
     data: any;
-  
+    
 
-    constructor(linking: boolean) {
-        this.linking = linking;
+    constructor() {
+       
         this.material = new NetworkCard();
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";       
     }
@@ -53,42 +53,60 @@ export class pixi_NetWorkCard implements Idrawable {
         sprite.x =this.positionX
         sprite.y = this.positionY
         this.sprite= sprite;
-        this.Move(sprite);
+        this.Move(this);
         container.addChild(sprite);  
          
     }
 
-    Move(sprite: PIXI.Sprite){
-        sprite.interactive = true;
-        sprite.buttonMode = true;
-        sprite.on("click",this.GetNetworkCart)
+    Move(NtC){
+        NtC.sprite.interactive = true;
+        NtC.sprite.buttonMode = true;
+        NtC.sprite.on("click",GetNetworkCart)
+
+        function GetNetworkCart(event){
+        
+            var mousePosition = event.data.position
+            var cable = new pixi_Cable(true);
+            this.linking = true
+            var i = 0
+         
+                if (i < 1 ){
+                console.log("blop")
+                   Plug(cable.material)
+                    cable.destinatorX = NtC.positionX
+                    cable.destinatorY = NtC.positionY;
+                    i++;
+                    this.linking = false;
+                    
+                } else if (i === 1 && NtC.material.cable) {
+                   console.log("bip bop")
+                    Plug(cable.material)
+                    cable.receptorX = NtC.positionX;
+                    cable.receptorY =  NtC.positionY;
+                    cable.draw(this.container,this.renderer);
+                    console.log("ca a marcher"); 
+                    this.linking = false                   
+                } else{
+                    console.log(i)
+                    return cable;
+                } 
+
+           
+            
+        function Plug(cable){
+                   
+            NtC.material.port.on_plug(cable)
+      
+        }
      
     }
    
-    GetNetworkCart(event){
-        var mousePosition = event.data.position
-        var cable = new pixi_Cable(true);
-        this.moosePositoin =mousePosition;
-        while(this.linking){
-            if (this.moosePositoin === mousePosition){
-                this.Plug(cable.material)
-                cable.destinatorX = mousePosition.x;
-                cable.destinatorY = mousePosition.y;
-            } else {
-                this.Plug(cable.material)
-                var moosePositoin = event.data.position
-                cable.receptorX = moosePositoin.x;
-                cable.receptorY = moosePositoin.y;
-                cable.draw(this.container,this.renderer);
-                console.log("ca a marcher");    
-                this.linking = false
-            }
-        }
+    
                
     }
 
     
-    GetPosition(container: PIXI.Sprite,positionX: number , positionY:number){
+    SetPosition(container: PIXI.Sprite,positionX: number , positionY:number){
         this.positionX = positionX;
         this.positionY = positionY;
     }
@@ -97,9 +115,6 @@ export class pixi_NetWorkCard implements Idrawable {
 
     }
 
-    Plug(cable: Cable){
-        this.material.port.on_plug(cable)
-    }
 
     
     onLink(){  
@@ -131,7 +146,6 @@ export class pixi_NetWorkCard implements Idrawable {
     onLinkEnd(){
         this.cable.receptorX = this.positionX
         this.cable.receptorY= this.positionY
-        this.Plug(this.cable.material)
         this.cable.draw(this.container, this.renderer)
         this.linking = false;
     }

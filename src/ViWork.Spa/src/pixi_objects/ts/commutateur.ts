@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js"
 import {Switch} from "../../objects/ts/commutateur"
 import {Idrawable} from "./Idrawable"
 import {pixi_NetWorkCard} from"./networkcard"
+import { pixi_Port } from './port';
 
 
 export class pixi_Switch implements Idrawable {
@@ -15,10 +16,11 @@ export class pixi_Switch implements Idrawable {
     positionX: any;
     positionY: any;
     linking: any;
+    ListPort: any;
 
-    constructor(linking: boolean) {
+    constructor() {
         this.material = new Switch();
-        this.linking = linking;
+        this.ListPort = [];
         this.container = new PIXI.Container;
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/switch.png"
     }
@@ -75,14 +77,13 @@ export class pixi_Switch implements Idrawable {
     draw(container: PIXI.Container, renderer:any) {
         this.renderer = renderer;
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
-       
-        
+           
         console.log(sprite)
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
 
         sprite.width = 100;
-        sprite.height =100;
+        sprite.height = 100;
 
 
         this.Move(sprite);
@@ -115,9 +116,13 @@ export class pixi_Switch implements Idrawable {
 
     
     CreatePort(container,positionX,positionY){
-        var port = new pixi_NetWorkCard(this.linking);
-        port.GetPosition(container, positionX,positionY);
+        var port = new pixi_Port();
+        port.SetPosition(container, positionX,positionY);
         port.draw(container,this.renderer)
+        var singleObj = {};
+        singleObj['type'] = 'NetWorkCard';
+        singleObj['value'] = port;
+        this.ListPort.push(singleObj);
     }
 
     async animation(){

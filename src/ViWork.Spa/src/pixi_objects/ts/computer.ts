@@ -3,6 +3,7 @@ import * as PIXI from'pixi.js'
 import {Idrawable} from "./Idrawable";
 import {Computer} from "../../objects/ts/computer";
 import {pixi_Port} from "./port"
+import { pixi_NetWorkCard } from './networkcard';
 
 export class pixi_Computer implements Idrawable {
     material: Computer;
@@ -13,10 +14,12 @@ export class pixi_Computer implements Idrawable {
     positionX: any;
     positionY: any;
     renderer: any;
+    NwCart: any;
 
     constructor() {
         this.material = new Computer();
         this.container = new PIXI.Container();
+        this.NwCart = []
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/computer.png";       
     }
 
@@ -99,7 +102,7 @@ export class pixi_Computer implements Idrawable {
             }
     }
      
-    GetPosition(container: PIXI.Container,positionX: number , positionY:number){
+    SetPosition(container: PIXI.Container,positionX: number , positionY:number){
         this.positionX = positionX;
         this.positionY = positionY;
     }
@@ -107,9 +110,13 @@ export class pixi_Computer implements Idrawable {
 
     }
     CreatePort(container,positionX,positionY){
-        var port = new pixi_Port();
-        port.GetPosition(container, positionX,positionY);
+        var port = new pixi_NetWorkCard();
+        port.SetPosition(container, positionX,positionY);
         port.draw(container,this.renderer)
+        var singleObj = {};
+        singleObj['type'] = 'NetWorkCard';
+        singleObj['value'] = port;
+        this.NwCart.push(singleObj);
     }
 
 }

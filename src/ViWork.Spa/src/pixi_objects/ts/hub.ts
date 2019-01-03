@@ -12,10 +12,11 @@ export class pixi_Hub implements Idrawable{
     sprite: PIXI.Sprite
     container: PIXI.Container
     renderer: any
-
+    ListPort: any
     constructor() {
         this.material = new Hub();
         this.container = new PIXI.Container();
+        this.ListPort = []
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/hub.png";
     }
 
@@ -109,8 +110,12 @@ export class pixi_Hub implements Idrawable{
 
     CreatePort(container,positionX,positionY){
         var port = new pixi_Port();
-        port.GetPosition(container, positionX,positionY);
+        port.SetPosition(container, positionX,positionY);
         port.draw(container,this.renderer)
+        var singleObj = {};
+        singleObj['type'] = 'NetWorkCard';
+        singleObj['value'] = port;
+        this.ListPort.push(singleObj);
     }
 
     remove(){

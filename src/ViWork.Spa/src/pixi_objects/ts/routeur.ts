@@ -101,7 +101,7 @@ export class pixi_Router implements Idrawable{
     }
     CreatePort(container,positionX,positionY){
         var port = new pixi_Port();
-        port.GetPosition(container, positionX,positionY);
+        port.SetPosition(container, positionX,positionY);
         port.draw(container,this.renderer)
     }
 

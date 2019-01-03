@@ -299,6 +299,7 @@ export default {
             selectedIndex: null,
             firstObj: null,
             secondObj: null,
+            ViWork: null,   
             linking: boolean,   
         }
     },
@@ -332,6 +333,7 @@ export default {
         },
 
         RunPixi() {
+            this.ViWork = [];
             let type = "canvas";
             if(!PIXI.utils.isWebGLSupported()){
                  type = "canvas";
@@ -347,20 +349,30 @@ export default {
             this.stage = new PIXI.Container();
             this.stage.width = 1800;
             this.stage.height = 1600;
-                    
+
         },
 
         CreateComputer(){
             let computer = new pixi_Computer(this.linking);    
-            computer.GetPosition(this.stage,0,0);
+            computer.SetPosition(this.stage,0,0);
             computer.draw(this.stage,this.renderer);
-            
+            var singleObj = {};
+            singleObj['type'] = 'computer';
+            singleObj['value'] = computer;
+            this.ViWork.push(singleObj)
+            this.Interaction();
+            console.log(this.ViWork);
         },
 
         CreateCommutateur(){
             let commutateur = new pixi_Switch(this.linking);
             commutateur.GetPosition(this.stage,0,0);
             commutateur.draw(this.stage, this.renderer);
+            var singleObj = {};
+            singleObj['type'] = 'switch';
+            singleObj['value'] = commutateur;
+            this.ViWork.push(singleObj);
+            console.log(this.ViWork);
         },
 
         CreateNetworkCard(){
@@ -373,22 +385,33 @@ export default {
             let router = new pixi_Router;
             router.GetPosition(this.stage,0,0);
             router.draw(this.stage, this.renderer);
+            var singleObj = {};
+            singleObj['type'] = 'router';
+            singleObj['value'] = router;
+            this.ViWork.push(singleObj);
+            console.log(this.ViWork);
         },
 
         CreateHub(){
             let hub = new pixi_Hub;
             hub.GetPosition(this.stage,0,0);
             hub.draw(this.stage, this.renderer);
+            var singleObj = {};
+            singleObj['type'] = 'hub';
+            singleObj['value'] = hub;
+            this.ViWork.push(singleObj);
+            console.log(this.ViWork);
         },
 
         CreateCable(){
-         this.linking= true;
+         this.linking= true;    
         },
 
-        checkInteraction(){
-            if (!linking){
-
-            }
+        Interaction(){
+            this.ViWork.forEach(element => {
+                console.log(element.value);
+                
+            });
         },
         
         

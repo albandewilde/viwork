@@ -58,7 +58,7 @@ export class pixi_Port implements Idrawable{
         
     }
      
-    GetPosition(container: PIXI.Sprite,positionX: number , positionY:number){
+    SetPosition(container: PIXI.Sprite,positionX: number , positionY:number){
         this.positionX = positionX;
         this.positionY = positionY;
     }
