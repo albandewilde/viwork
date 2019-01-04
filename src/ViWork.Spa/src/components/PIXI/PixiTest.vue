@@ -414,11 +414,11 @@ export default {
 
                     if(element.value.NwCart){
                         element.value.NwCart.forEach(NwCart => {
-                           this.Connection(NwCart.value, this.linking)
+                           this.Connection(NwCart.value)
                         })
                     } else{
                         element.value.ListPort.forEach(Port =>{
-                            this.Connection(Port.value, this.linking)
+                            this.Connection(Port.value)
                         })
                     }
 
@@ -427,7 +427,7 @@ export default {
             });
         },
         
-        Connection (NtC ,linking ){
+        Connection (NtC){
             NtC.sprite.interactive = true;
             NtC.sprite.buttonMode = true;
             NtC.sprite.on("click",ConnectNetWorkCard)
@@ -435,31 +435,34 @@ export default {
             function ConnectNetWorkCard(event){
             
                 var mousePosition = event.data.position
-                
+                var linking = this.linking
             
-                    if (!linking && !NtC.cable ){
+                    if (!this.linking && !NtC.cable ){
                   
-                    NtC.cable = new pixi_Cable(true);
+                        NtC.cable = new pixi_Cable(true);
                         console.log(NtC.cable)
                         Plug(NtC.cable.material)
                         NtC.cable.destinatorX = NtC.stage.position.x;
                         NtC.cable.destinatorY = NtC.stage.position.y;
-
+                        console.log('bg', NtC)
                         this.cable = NtC.cable;
                         this.linking = true;
-                        
-                    } else if(linking){
+                        console.log()
+                    } else if(this.linking)
+                    {
+                        console.log("wow", NtC)
                         Connect(this.cable);
                     } else {
                        console.log('Man there is a problem: you already plug a cable...');
                     }       
 
             function Connect (cable){
-
-                if (this.linking && cable){
-                    Plug(this.cable.material)
+                if (linking && cable){
+                    Plug(cable.material)
+                
                     cable.receptorX = NtC.stage.position.x;
                     cable.receptorY = NtC.stage.position.y;
+                    console.log("he ho")
                     cable.draw(this.container,this.renderer);
                     console.log("ca a marcher"); 
                     this.linking = false;
@@ -468,20 +471,18 @@ export default {
 
             function Plug(cable){
 
-                if (NtC.material.port){
-                    console.log( NtC.material.port);             
+                if (NtC.material.port){          
                     NtC.material.port.on_plug(cable); 
                     NtC.ChangeTexture();  
-                    console.log( NtC.material.port); 
                 } else {
                     NtC.material.on_plug(cable);
                     NtC.ChangeTexture();
                 }
                
-                }     
-            }
+        }   
+    }
                     
-        },
+},
 
     
         
