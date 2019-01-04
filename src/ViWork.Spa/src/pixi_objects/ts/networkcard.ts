@@ -4,6 +4,7 @@ import {NetworkCard} from "../../objects/ts/network_card"
 import { Cable } from '../../objects/ts/cable';
 import { Idrawable } from './Idrawable';
 import { pixi_Cable } from './cable';
+import * as PIXI from 'pixi.js';
 
 
 export class pixi_NetWorkCard implements Idrawable {
@@ -43,6 +44,7 @@ export class pixi_NetWorkCard implements Idrawable {
     draw(container: PIXI.Container, renderer:any) {
         this.renderer = renderer;
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
+        
     
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
@@ -55,60 +57,30 @@ export class pixi_NetWorkCard implements Idrawable {
         this.sprite= sprite;
         this.Move(this);
         container.addChild(sprite);  
+        this.stage = container;
          
     }
 
-    Move(NtC){
-        NtC.sprite.interactive = true;
-        NtC.sprite.buttonMode = true;
-        NtC.sprite.on("click",GetNetworkCart)
+    Move(NtC: pixi_NetWorkCard){
 
-        function GetNetworkCart(event){
-        
-            var mousePosition = event.data.position
-            var cable = new pixi_Cable(true);
-            this.linking = true
-            var i = 0
-         
-                if (i < 1 ){
-                console.log("blop")
-                   Plug(cable.material)
-                    cable.destinatorX = NtC.positionX
-                    cable.destinatorY = NtC.positionY;
-                    i++;
-                    this.linking = false;
-                    
-                } else if (i === 1 && NtC.material.cable) {
-                   console.log("bip bop")
-                    Plug(cable.material)
-                    cable.receptorX = NtC.positionX;
-                    cable.receptorY =  NtC.positionY;
-                    cable.draw(this.container,this.renderer);
-                    console.log("ca a marcher"); 
-                    this.linking = false                   
-                } else{
-                    console.log(i)
-                    return cable;
-                } 
+    }
 
-           
-            
-        function Plug(cable){
-                   
-            NtC.material.port.on_plug(cable)
-      
+    ChangeTexture(){
+        if (this.material.port.cable){
+            var newSprite = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_On.png";
+            var texture = PIXI.Texture.fromImage(newSprite);
+            this.sprite.texture = texture;
+        } else {
+            var sprite = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";
+            var texture = PIXI.Texture.fromImage(sprite);
+            this.sprite.texture = texture;
         }
-     
     }
-   
     
-               
-    }
 
-    
     SetPosition(container: PIXI.Sprite,positionX: number , positionY:number){
         this.positionX = positionX;
-        this.positionY = positionY;
+        this.positionY = positionY; 
     }
   
     remove(){

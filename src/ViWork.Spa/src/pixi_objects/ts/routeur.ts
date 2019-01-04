@@ -11,6 +11,9 @@ export class pixi_Router implements Idrawable{
     container: PIXI.Container;
     sprite: PIXI.Sprite;
     renderer: any;
+    ListPort: any;
+    positionX: any;
+    positionY: any;
 
     constructor() {
         this.material = new Routeur();
@@ -42,8 +45,7 @@ export class pixi_Router implements Idrawable{
      
         sprite.x =container.position.x/2;
         sprite.y = container.position.y/2;
-        
-        this.Move(sprite);
+    
         this.sprite = sprite;
 
         container.addChild(sprite);
@@ -61,11 +63,11 @@ export class pixi_Router implements Idrawable{
         
     }
 
-    Move(sprite: PIXI.Sprite){
+    Move(material: pixi_Router){
 
-        sprite.interactive = true;
-        sprite.buttonMode = true;
-        sprite.on('mousedown', onDragStart)
+        this.container.interactive = true;
+        this.container.buttonMode = true;
+        this.container.on('mousedown', onDragStart)
 		    .on('touchstart', onDragStart)
 		    .on('mouseup', onDragEnd)
 		    .on('mouseupoutside', onDragEnd)
@@ -95,20 +97,27 @@ export class pixi_Router implements Idrawable{
             function onDragEnd() {
                 this.alpha = 1;
                 this.dragging = false;
+                material.SetPosition(this.x , this.y)
                 // set the interaction data to null
                 this.data = null;
             }
     }
+
     CreatePort(container,positionX,positionY){
         var port = new pixi_Port();
         port.SetPosition(container, positionX,positionY);
-        port.draw(container,this.renderer)
+        port.draw(container,this.renderer);
+        var singleObj = {};
+        singleObj['type'] = 'NetWorkCard';
+        singleObj['value'] = port;
+        this.ListPort.push(singleObj);
+
     }
 
      
-    GetPosition(container: PIXI.Container,positionX: number , positionY:number){
-        container.position.x = positionX;
-        container.position.y = positionY;
+    SetPosition(positionX: number , positionY:number){
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
     remove(){
 

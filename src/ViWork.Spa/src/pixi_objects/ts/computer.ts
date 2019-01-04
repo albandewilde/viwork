@@ -2,7 +2,6 @@ import * as PIXI from'pixi.js'
 
 import {Idrawable} from "./Idrawable";
 import {Computer} from "../../objects/ts/computer";
-import {pixi_Port} from "./port"
 import { pixi_NetWorkCard } from './networkcard';
 
 export class pixi_Computer implements Idrawable {
@@ -44,7 +43,6 @@ export class pixi_Computer implements Idrawable {
         sprite.height = 110;
         sprite.x = this.positionX
         sprite.y = this.positionY;
-        this.Move(sprite);
         this.sprite= sprite;
         this.container.addChild(sprite)
         
@@ -63,7 +61,7 @@ export class pixi_Computer implements Idrawable {
         
     }
 
-    Move(sprite: PIXI.Sprite){
+    Move(material: pixi_Computer){
 
         this.container.interactive = true;
         this.container.buttonMode = true;
@@ -97,25 +95,28 @@ export class pixi_Computer implements Idrawable {
             function onDragEnd() {
                 this.alpha = 1;
                 this.dragging = false;
+                material.SetPosition(this.x ,this.y)
                 // set the interaction data to null
                 this.data = null;
             }
     }
      
-    SetPosition(container: PIXI.Container,positionX: number , positionY:number){
+    SetPosition(positionX: number , positionY:number){
         this.positionX = positionX;
         this.positionY = positionY;
+        this.container.x = positionX;
+        this.container.y = positionY;
     }
     remove(){
 
     }
     CreatePort(container,positionX,positionY){
-        var port = new pixi_NetWorkCard();
-        port.SetPosition(container, positionX,positionY);
-        port.draw(container,this.renderer)
+        var NwCard = new pixi_NetWorkCard();
+        NwCard.SetPosition(container, positionX,positionY);
+        NwCard.draw(container,this.renderer)
         var singleObj = {};
         singleObj['type'] = 'NetWorkCard';
-        singleObj['value'] = port;
+        singleObj['value'] = NwCard;
         this.NwCart.push(singleObj);
     }
 

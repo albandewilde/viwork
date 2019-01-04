@@ -4,12 +4,15 @@ import * as PIXI from "pixi.js";
 import {Hub} from "../../objects/ts/hub";
 import { Idrawable } from './Idrawable';
 import {pixi_Port} from './port'
+import { pixi_Router } from './routeur';
 
 export class pixi_Hub implements Idrawable{
     material: Hub
     texture: PIXI.Texture
     sprite_path: string
     sprite: PIXI.Sprite
+    positionX: any;
+    positionY: any;
     container: PIXI.Container
     renderer: any
     ListPort: any
@@ -45,7 +48,7 @@ export class pixi_Hub implements Idrawable{
                 
         sprite.x =container.position.x/2;
         sprite.y = container.position.y/2;
-        this.Move(sprite);
+     
         this.sprite= sprite;
         this.container.addChild(sprite);
 
@@ -64,7 +67,7 @@ export class pixi_Hub implements Idrawable{
         
     }
 
-    Move(sprite: PIXI.Sprite){
+    Move(material: pixi_Hub ){
 
         this.container.interactive = true;
         this.container.buttonMode = true;
@@ -98,14 +101,15 @@ export class pixi_Hub implements Idrawable{
             function onDragEnd() {
                 this.alpha = 1;
                 this.dragging = false;
+                material.SetPosition(this.x, this.y)
                 // set the interaction data to null
                 this.data = null;
             }
     }
      
-    GetPosition(container: PIXI.Container,positionX: number , positionY:number){
-        container.position.x = positionX;
-        container.position.y = positionY;
+    SetPosition(positionX: number , positionY:number){
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
 
     CreatePort(container,positionX,positionY){

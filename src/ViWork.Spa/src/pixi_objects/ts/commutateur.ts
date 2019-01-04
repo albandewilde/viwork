@@ -35,7 +35,7 @@ export class pixi_Switch implements Idrawable {
         // put the computer at his new position (fixed position), don't forget to change his sprite
     }
 
-    Move(sprite: PIXI.Sprite){
+    Move(material: pixi_Switch){
 
         this.container.interactive = true;
         this.container.buttonMode = true;
@@ -69,6 +69,8 @@ export class pixi_Switch implements Idrawable {
             function onDragEnd() {
                 this.alpha = 1;
                 this.dragging = false;
+                
+                material.SetPosition(this.x,this.y)
                 // set the interaction data to null
                 this.data = null;
             }
@@ -84,9 +86,7 @@ export class pixi_Switch implements Idrawable {
 
         sprite.width = 100;
         sprite.height = 100;
-
-
-        this.Move(sprite);
+        
         this.sprite= sprite;
         this.container.addChild(sprite)
 
@@ -107,7 +107,7 @@ export class pixi_Switch implements Idrawable {
     
 
 
-    async GetPosition(positionX: number , positionY:number){
+    SetPosition(positionX: number , positionY:number){
         this.positionX = positionX;
         this.positionY = positionY;
     }

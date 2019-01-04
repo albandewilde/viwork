@@ -300,7 +300,8 @@ export default {
             firstObj: null,
             secondObj: null,
             ViWork: null,   
-            linking: boolean,   
+            linking: boolean, 
+            cable: null,  
         }
     },
     mounted() {
@@ -349,12 +350,13 @@ export default {
             this.stage = new PIXI.Container();
             this.stage.width = 1800;
             this.stage.height = 1600;
+           
 
         },
 
         CreateComputer(){
             let computer = new pixi_Computer(this.linking);    
-            computer.SetPosition(this.stage,0,0);
+            computer.SetPosition(0,0);
             computer.draw(this.stage,this.renderer);
             var singleObj = {};
             singleObj['type'] = 'computer';
@@ -366,40 +368,38 @@ export default {
 
         CreateCommutateur(){
             let commutateur = new pixi_Switch(this.linking);
-            commutateur.GetPosition(this.stage,0,0);
+            commutateur.SetPosition(0,0);
             commutateur.draw(this.stage, this.renderer);
             var singleObj = {};
             singleObj['type'] = 'switch';
             singleObj['value'] = commutateur;
             this.ViWork.push(singleObj);
+            this.Interaction();
             console.log(this.ViWork);
-        },
-
-        CreateNetworkCard(){
-            let networkCard = new pixi_NetWorkCard;
-            networkCard.GetPosition(this.stage,0,0);
-            networkCard.draw(this.stage, this.renderer);
         },
 
         CreateRouter(){
             let router = new pixi_Router;
-            router.GetPosition(this.stage,0,0);
+            router.SetPosition(0,0);
             router.draw(this.stage, this.renderer);
             var singleObj = {};
             singleObj['type'] = 'router';
             singleObj['value'] = router;
             this.ViWork.push(singleObj);
+            this.Interaction();
             console.log(this.ViWork);
         },
+        
 
         CreateHub(){
             let hub = new pixi_Hub;
-            hub.GetPosition(this.stage,0,0);
+            hub.SetPosition(0,0);
             hub.draw(this.stage, this.renderer);
             var singleObj = {};
             singleObj['type'] = 'hub';
             singleObj['value'] = hub;
             this.ViWork.push(singleObj);
+            this.Interaction();
             console.log(this.ViWork);
         },
 
@@ -409,11 +409,81 @@ export default {
 
         Interaction(){
             this.ViWork.forEach(element => {
-                console.log(element.value);
+                if (element.type !== "NetWorkCard" || "Port" ){
+                    element.value.Move(element.value);
+
+                    if(element.value.NwCart){
+                        element.value.NwCart.forEach(NwCart => {
+                           this.Connection(NwCart.value, this.linking)
+                        })
+                    } else{
+                        element.value.ListPort.forEach(Port =>{
+                            this.Connection(Port.value, this.linking)
+                        })
+                    }
+
+                } 
                 
             });
         },
         
+        Connection (NtC ,linking ){
+            NtC.sprite.interactive = true;
+            NtC.sprite.buttonMode = true;
+            NtC.sprite.on("click",ConnectNetWorkCard)
+
+            function ConnectNetWorkCard(event){
+            
+                var mousePosition = event.data.position
+                
+            
+                    if (!linking && !NtC.cable ){
+                  
+                    NtC.cable = new pixi_Cable(true);
+                        console.log(NtC.cable)
+                        Plug(NtC.cable.material)
+                        NtC.cable.destinatorX = NtC.stage.position.x;
+                        NtC.cable.destinatorY = NtC.stage.position.y;
+
+                        this.cable = NtC.cable;
+                        this.linking = true;
+                        
+                    } else if(linking){
+                        Connect(this.cable);
+                    } else {
+                       console.log('Man there is a problem: you already plug a cable...');
+                    }       
+
+            function Connect (cable){
+
+                if (this.linking && cable){
+                    Plug(this.cable.material)
+                    cable.receptorX = NtC.stage.position.x;
+                    cable.receptorY = NtC.stage.position.y;
+                    cable.draw(this.container,this.renderer);
+                    console.log("ca a marcher"); 
+                    this.linking = false;
+                }
+            }
+
+            function Plug(cable){
+
+                if (NtC.material.port){
+                    console.log( NtC.material.port);             
+                    NtC.material.port.on_plug(cable); 
+                    NtC.ChangeTexture();  
+                    console.log( NtC.material.port); 
+                } else {
+                    NtC.material.on_plug(cable);
+                    NtC.ChangeTexture();
+                }
+               
+                }     
+            }
+                    
+        },
+
+    
         
         returnIndex(key) {
             console.log(key)

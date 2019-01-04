@@ -6,11 +6,12 @@ import { Port } from '@/objects/ts/port';
 import { pixi_Cable } from './cable';
 
 export class pixi_Port implements Idrawable{
-    material: Port
-    texture: PIXI.Texture
-    sprite_path: string
-    sprite: PIXI.Sprite
-    container: PIXI.Container
+    material: Port;
+    texture: PIXI.Texture;
+    sprite_path: string;
+    sprite: PIXI.Sprite;
+    stage: PIXI.Container;
+    container: PIXI.Container;
     positionX: any;
     positionY: any;
 
@@ -45,15 +46,11 @@ export class pixi_Port implements Idrawable{
         sprite.x =this.positionX
         sprite.y = this.positionY
         this.sprite= sprite;
-        this.Move(sprite);
-        container.addChild(sprite);        
+        container.addChild(sprite);  
+        this.stage = container;      
     }
 
     Move(sprite: PIXI.Sprite){
-
-        sprite.interactive = true;
-        sprite.buttonMode = true;
-        sprite.on("click",this.onPlug)
 
         
     }
@@ -62,6 +59,19 @@ export class pixi_Port implements Idrawable{
         this.positionX = positionX;
         this.positionY = positionY;
     }
+
+    ChangeTexture(){
+        if (this.material.cable){
+            var newSprite = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_On.png";
+            var texture = PIXI.Texture.fromImage(newSprite);
+            this.sprite.texture = texture;
+        } else {
+            var sprite = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";
+            var texture = PIXI.Texture.fromImage(sprite);
+            this.sprite.texture = texture;
+        }
+    }
+
     remove(){
 
     }
