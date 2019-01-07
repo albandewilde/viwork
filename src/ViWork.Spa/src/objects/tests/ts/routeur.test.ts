@@ -59,7 +59,7 @@ describe("Test the get network card idx on network function on a roucom", functi
     })
 })
 
-describe("Test the get mac by ip function on roucom", function() {
+describe("Test the get mac in arp function on roucom", function() {
     let roucom = new Roucom()
     
     // put some things in the arp table of the roucom
@@ -68,11 +68,11 @@ describe("Test the get mac by ip function on roucom", function() {
     roucom.arp_table.set(new ipv4("192.168.2.167/16"), 5)
 
     it("the ip isn't in the cam table", function() {
-        assert.isNull(roucom.get_mac_by_ip(new ipv4("26.18.174.242/24"), 0))
+        assert.isNull(roucom.get_mac_in_arp(new ipv4("26.18.174.242/24")))
     })
     it("ip which are in cam table", function() {
-        assert.strictEqual(roucom.get_mac_by_ip(new ipv4("192.168.1.32/24"), 0), 1)
-        assert.strictEqual(roucom.get_mac_by_ip(new ipv4("10.8.111.150/20"), 0), 3)
-        assert.strictEqual(roucom.get_mac_by_ip(new ipv4("192.168.2.167/16"), 0), 5)
+        assert.strictEqual(roucom.get_mac_in_arp(new ipv4("192.168.1.32/24")), 1)
+        assert.strictEqual(roucom.get_mac_in_arp(new ipv4("10.8.111.150/20")), 3)
+        assert.strictEqual(roucom.get_mac_in_arp(new ipv4("192.168.2.167/16")), 5)
     })
 })

@@ -10,7 +10,7 @@ export class Roucom{
     arp_table: Map<ipv4, number>
     write_on_cable: number
 
-    constructor(nb_network_card: number=1, route: boolean=false, write_on_cable: number) {
+    constructor(nb_network_card: number=1, route: boolean, write_on_cable: number) {
         if (nb_network_card < 0) {
             throw new Error("How get a negative number of network card is possible ? You have 4 houres.")
         }
@@ -82,25 +82,25 @@ export class Roucom{
         return network_card_idx
     }
 
-    get_mac_by_ip(search: ipv4, card_idx: number) {
-        // given an ip, we return the mac address corresponding with the arp table
-        let get_mac = function(target: ipv4, obj: Roucom) {
-            // searche in the arp table the ip
-            for (let ip of Array.from(obj.arp_table.keys())) {
-                if (ipv4.compare(ip, target)) {
-                    // we got the mac address
-                    return obj.arp_table.get(ip)
-                }
-            }
-            return null
-        }
+//    get_network_card_with_ip(search: ipv4, card_idx: number) { // in case of send a broadcast arp, we keep the idw of the networkcard
+//        // given an ip, we return the mac address corresponding with the arp table
+//
+//        let mac_addr = this.get_mac_in_arp(search)
+//        if (mac_addr === null ) {
+//            // if we don't have the mac address we send a broadcast_arp to find if
+//            this.network_cards[card_idx].broadcast_arp(search)
+//            mac_addr = this.get_mac_in_arp(search)
+//        }
+//        return mac_addr
+//    }
 
-        let mac_addr = get_mac(search, this)
-        if (mac_addr === null ) {
-            // if we don't have the mac address we send a broadcast_arp to find if
-            this.network_cards[card_idx].broadcast_arp(search)
-            mac_addr = get_mac(search, this)
+    get_mac_in_arp(search: ipv4) {
+        for (let ip of Array.from(this.arp_table.keys())) {
+            if (ipv4.compare(search, ip)) {
+                // we got the pac address
+                return this.arp_table.get(ip)
+            }
         }
-        return mac_addr
+        return null
     }
 }

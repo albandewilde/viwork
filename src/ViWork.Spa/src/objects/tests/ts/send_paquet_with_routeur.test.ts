@@ -36,11 +36,12 @@ let new_network = function() {
     routeur.network_cards[0].ip_addr = new ipv4("192.168.0.254/24")
     routeur.network_cards[1].ip_addr = new ipv4("192.168.1.254/24")
     routeur.network_cards[2].ip_addr = new ipv4("10.4.255.254/16")
+    // configure the route table of the routeur
 
     // the first network 192.168.0.0/24
     let switch0 = new Switch(4)
     // connect the switch to the routeur
-    let cab0 = new Cable(true, routeur.network_cards[0].port, switch0[3])
+    let cab0 = new Cable(true, routeur.network_cards[0].port, switch0.ports[3])
 
     let cmp00 = new Computer()
     // configure the ip
@@ -62,7 +63,7 @@ let new_network = function() {
 
     // no comments for computer configuration because you exactly know what i do otherwire look how i configure the previous computer
     let cmp02 = new Computer()
-    cmp02.network_cards[0].ip_addre = new ipv4("192.168.0.3/24")
+    cmp02.network_cards[0].ip_addr = new ipv4("192.168.0.3/24")
     cmp02.route_table.set(new ipv4("192.168.0.0/24"), new ipv4("192.168.0.3/24"))
     cmp02.route_table.set(new ipv4("0.0.0.0/0"), new ipv4("192.168.0.254/24"))
     let cab02 = new Cable(false, cmp02.network_cards[0].port, switch0.ports[2])
@@ -71,7 +72,7 @@ let new_network = function() {
     // the second network 192.168.1.0/24
     // if you want to know explictly what do (with comments) see the creaton and configuration of the first network
     let switch1 = new Switch(4)
-    let cab1 = new Cable(true, routeur.network_cards[1].port, switch1[3])
+    let cab1 = new Cable(true, routeur.network_cards[1].port, switch1.ports[3])
 
     let cmp10 = new Computer()
     cmp10.network_cards[0].ip_addr = new ipv4("192.168.1.1/24")
@@ -94,7 +95,7 @@ let new_network = function() {
 
     // the third network 10.4.0.0/16
     let switch2 = new Switch(4)
-    let cab2 = new Cable(true, routeur.network_cards[2].port, switch2[3])
+    let cab2 = new Cable(true, routeur.network_cards[2].port, switch2.ports[3])
 
     let cmp20 = new Computer()
     cmp20.network_cards[0].ip_addr = new ipv4("10.4.0.1/16")
@@ -109,10 +110,10 @@ let new_network = function() {
     let cab21 = new Cable(false, cmp21.network_cards[0].port, switch2.ports[1])
 
     let cmp22 = new Computer()
-    cmp22.network_carts[0].ip_addr = new ipv4("10.4.0.3/16")
+    cmp22.network_cards[0].ip_addr = new ipv4("10.4.0.3/16")
     cmp22.route_table.set(new ipv4("10.4.0.0/16"), new ipv4("10.4.0.3/16"))
     cmp22.route_table.set(new ipv4("0.0.0.0/0"), new ipv4("10.4.255.254/16"))
-    let cab22 = new Cable(false, cmp22.network_cards[0].port, switch1.ports[2])
+    let cab22 = new Cable(false, cmp22.network_cards[0].port, switch2.ports[2])
 
     // return all objects
     // - the routeur
@@ -155,3 +156,41 @@ let new_network = function() {
         "cab22": cab22
     }
 }
+
+describe("Send message on our local network on layer 3 with mac_address", function() {
+    let network = new_network()
+
+    network["cmp00"].send_thing("§", network["routeur"].network_cards[0].mac_addr, 0, network["routeur"].network_cards[0].ip_addr, 0x0800)
+    network["cmp00"].send_thing("¤", network["cmp01"].network_cards[0].mac_addr, 0, network["cmp01"].network_cards[0].ip_addr, 0x0800)
+    network["cmp01"].send_thing("^", network["cmp02"].network_cards[0].mac_addr, 0, network["cmp02"].network_cards[0].ip_addr, 0x0800)
+    network["cmp01"].send_thing("£", network["cmp00"].network_cards[0].mac_addr, 0, network["cmp00"].network_cards[0].ip_addr, 0x0800)
+
+    it("the destinataire got the message", function() {
+        assert.strictEqual(network["routeur"].last_recv, "§")
+        assert.strictEqual(network["cmp01"].last_recv, "¤")
+        assert.strictEqual(network["cmp02"].last_recv, "^")
+        assert.strictEqual(network["cmp00"].last_recv, "£")
+    })
+})
+
+describe("Send message on our local network on layer 3 with out mac_address", function() {
+    let network = new_network()
+
+    // we don't know the mac address of the destination
+    network["cmp00"].send_thing("§", null, 0, network["routeur"].network_cards[0].ip_addr, 0x0800)
+    network["cmp00"].send_thing("¤", null, 0, network["cmp01"].network_cards[0].ip_addr, 0x0800)
+    network["cmp01"].send_thing("^", null, 0, network["cmp02"].network_cards[0].ip_addr, 0x0800)
+    network["cmp01"].send_thing("£", null, 0, network["cmp00"].network_cards[0].ip_addr, 0x0800)
+
+    it("the destinataire got the message", function() {
+        assert.strictEqual(network["routeur"].last_recv, "§")
+        assert.strictEqual(network["cmp01"].last_recv, "¤")
+        assert.strictEqual(network["cmp02"].last_recv, "^")
+        assert.strictEqual(network["cmp00"].last_recv, "£")
+    })
+})
+
+describe("Send message on other network on layer 3", function() {
+    let network = new_network()
+
+})

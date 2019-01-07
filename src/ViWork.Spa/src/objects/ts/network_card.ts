@@ -44,7 +44,7 @@ export class NetworkCard implements IPortContainer {
                 this.roucom.arrived(content)
             } else if (frame.protocol_layer3 === 0x0800) {    // Internet Protocol version 4 (IPv4)
                 let payload = this.get_ethernet_payload(frame)
-                if (payload.ip_dest.address === this.ip_addr.address) {    // the paquet is for our us
+                if (ipv4.compare(payload.ip_dest, this.ip_addr)) {    // the paquet is for our us
                     let content = this.get_payload_content(payload)
                     this.roucom.arrived(content)
                 } else if (this.roucom.routing_eh) {    // the paquet isn't for us but we route paquets
@@ -53,7 +53,9 @@ export class NetworkCard implements IPortContainer {
             } else if (frame.protocol_layer3 === 0x0806) {    // Address Resolution Protocol (ARP)
                 let payload = this.get_ethernet_payload(frame)
                 if (ipv4.compare(payload.ip_dest, this.ip_addr)) {
-                    this.send("Hey, it's me " + String(this.mac_addr), this.roucom.arp_table.get(payload.ip_src), payload.ip_src, 0X0806)
+                    if (new RegExp("^Who is ([0-9]{1,3}\.){3}[0-9]{1,3}\/([0-9]){1,2} \\?$").test(payload.content as string)) {    // regex of an ipv4
+                        this.send("Hey, it's me " + String(this.mac_addr), frame.source /*this.roucom.arp_table.get(payload.ip_src)*/, payload.ip_src, 0X0806)
+                    }
                 }
             }
         }
@@ -72,20 +74,54 @@ export class NetworkCard implements IPortContainer {
         // we know on which interface to send the paquet if we don't break before
 
         if (network_card_idx != null) {
-            // get the mac address to mac the ethernet frame
-            let mac_dest = this.roucom.get_mac_by_ip(gateway, network_card_idx)
-            if (mac_dest != null) {
-                let content = this.get_payload_content(paquet)
-                this.roucom.network_cards[network_card_idx].send(content, mac_dest, paquet.ip_dest, 0x0800)
-            }
+            // we know on which network card we have to send the paquet
+            let content = this.get_payload_content(paquet)
+            // we don't know to who send the frame, this why the mac_dest is null
+            // but don't worry, the network card will do that
+            this.roucom.network_cards[network_card_idx].send(content, null, paquet.ip_dest, 0x0800)
         }
     }
 
     broadcast_arp(ip: ipv4) {
-        this.send("Who is " + ip.toString + " ?", 0xFFFFFFFFFFFF, ip, 0x0806)
+        this.send("Who is " + ip.toString() + " ?", 0xFFFFFFFFFFFF, ip, 0x0806)
     }
 
-    send(content: any, mac_dest: number, ip_dest: ipv4=null, protocole: number=null) {
+    send(content: any, mac_dest: number=null, ip_dest: ipv4=null, protocole: number=null) {
+        // if the mac_dest isn't given probably because we send the paquet on the layer 3
+        // we need to search the mac address of the routeur we want to join
+        // first, we look in the route table to know which routeur we want to send the frame
+        // second, we define the mac_dest to the routeur we find
+
+        if (mac_dest === null) {
+            let ip_next_routeur = new ipv4("0.0.0.0/0")
+            // here we search in the route_table
+            for (let ip of Array.from(this.roucom.route_table.keys())) {
+                if (ipv4.on_same_network(ip_dest, ip)) {
+                    ip_next_routeur = this.roucom.get_gateway(ip)
+                    break
+                }
+            }
+            
+            // if the ip is our ip, that mean we are on the same network of the sestinataire
+            // so the ip of the next routeur (which isn't a routeur) is the final destinataire
+            if (ipv4.compare(this.ip_addr, ip_next_routeur)) {
+                ip_next_routeur = ip_dest
+            }
+
+            // here we search the mac address of the next routeur
+            // may we don't know the mac adress of the next routeur, so we broadcast arp
+            let no_break = true
+            for (let ip of Array.from(this.roucom.arp_table.keys())) {
+                if (ipv4.compare(ip, ip_next_routeur)) {
+                    no_break = false
+                    break
+                }
+            } if (no_break) {
+                this.broadcast_arp(ip_next_routeur)
+            }
+
+            mac_dest = this.roucom.get_mac_in_arp(ip_next_routeur)
+        }
         let payload = this.make_ethernet_payload(content, ip_dest)
         let frame = this.make_ethernet_frame(payload, mac_dest, protocole)
         this.port.send(frame, this.write_on_cable)
