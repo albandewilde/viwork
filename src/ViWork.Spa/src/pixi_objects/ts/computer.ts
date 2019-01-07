@@ -47,7 +47,7 @@ export class pixi_Computer implements Idrawable {
         this.container.addChild(sprite)
         
         for (var i=0; i < this.material.network_cards.length; i++ ){
-            this.CreatePort(this.container,0,20*i);
+            this.CreatePort(this.container,0,20*i,i);
         }
         container.addChild(this.container);
         
@@ -110,12 +110,13 @@ export class pixi_Computer implements Idrawable {
     remove(){
 
     }
-    CreatePort(container,positionX,positionY){
+    CreatePort(container,positionX,positionY, i){
         var NwCard = new pixi_NetWorkCard();
+        NwCard.getName(container);
         NwCard.SetPosition(container, positionX,positionY);
         NwCard.draw(container,this.renderer)
         var singleObj = {};
-        singleObj['type'] = 'NetWorkCard';
+        singleObj['type'] = 'NetWorkCard'+i;
         singleObj['value'] = NwCard;
         this.NwCart.push(singleObj);
     }

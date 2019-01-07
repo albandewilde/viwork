@@ -17,7 +17,6 @@ export class pixi_Cable implements Idrawable {
 
     constructor(cross_eh: boolean) {
         this.material = new Cable()
-        this.container = new PIXI.Container();
         this.sprite_path = cross_eh ? process.env.VUE_APP_BACKEND+"/images/icons/cable_cross.png" : process.env.VUE_APP_BACKEND+"/images/icons/cable_straight.png"
     }
     
@@ -32,6 +31,7 @@ export class pixi_Cable implements Idrawable {
     }
 
     draw(container: PIXI.Container, renderer:any) {
+        this.container = container
         console.log(this.receptorX, this.receptorY)
         var cable = new PIXI.Graphics()
         cable.beginFill(0x32CD32);
@@ -39,7 +39,7 @@ export class pixi_Cable implements Idrawable {
                 .lineStyle(7,0x32CD32)
                 .moveTo(this.receptorX,this.receptorY )
                 .lineTo(this.destinatorX ,this.destinatorY)   
-        container.addChild(cable);
+        this.container.addChild(cable);
         
 
         function animate(){      

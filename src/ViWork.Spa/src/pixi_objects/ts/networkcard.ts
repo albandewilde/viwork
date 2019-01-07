@@ -23,6 +23,7 @@ export class pixi_NetWorkCard implements Idrawable {
     cable: pixi_Cable;
     renderer: any;
     data: any;
+    name: any;
     
 
     constructor() {
@@ -64,6 +65,9 @@ export class pixi_NetWorkCard implements Idrawable {
     Move(NtC: pixi_NetWorkCard){
 
     }
+    getName(name : any){
+        this.name = name;
+    }
 
     ChangeTexture(){
         if (this.material.port.cable){
@@ -87,29 +91,6 @@ export class pixi_NetWorkCard implements Idrawable {
 
     }
 
-
-    
-    onLink(){  
-        if (this.linking){
-
-            this.onLinkEnd();
-        }
-    }
-
-    onLinkStart(event){
-        if (!this.linking)
-        {
-            this.cable = new pixi_Cable(true);
-            this.cable.destinatorX = this.positionX;
-            this.cable.destinatorY = this.positionY;
-            //this.Plug(this.cable.material)
-        } else{
-     
-            this.onLinkEnd()
-        }
-        
-     
-     }
 
     getCable(){
         return this.cable

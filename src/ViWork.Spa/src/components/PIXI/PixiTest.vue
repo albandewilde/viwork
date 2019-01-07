@@ -300,8 +300,9 @@ export default {
             firstObj: null,
             secondObj: null,
             ViWork: null,   
-            linking: boolean, 
+            linking: null, 
             cable: null,  
+            previous: null
         }
     },
     mounted() {
@@ -328,6 +329,7 @@ export default {
             
             this.divWidth = document.documentElement.clientWidth - navWidth - 1;
             console.log("Largeur après calcul " + this.divWidth);
+
         },
         GetSelectedItem(key){
             this.selectedIndex = key
@@ -335,6 +337,7 @@ export default {
 
         RunPixi() {
             this.ViWork = [];
+            this.linking = false;       
             let type = "canvas";
             if(!PIXI.utils.isWebGLSupported()){
                  type = "canvas";
@@ -363,7 +366,7 @@ export default {
             singleObj['value'] = computer;
             this.ViWork.push(singleObj)
             this.Interaction();
-            console.log(this.ViWork);
+         
         },
 
         CreateCommutateur(){
@@ -375,7 +378,7 @@ export default {
             singleObj['value'] = commutateur;
             this.ViWork.push(singleObj);
             this.Interaction();
-            console.log(this.ViWork);
+
         },
 
         CreateRouter(){
@@ -387,7 +390,7 @@ export default {
             singleObj['value'] = router;
             this.ViWork.push(singleObj);
             this.Interaction();
-            console.log(this.ViWork);
+    
         },
         
 
@@ -400,7 +403,6 @@ export default {
             singleObj['value'] = hub;
             this.ViWork.push(singleObj);
             this.Interaction();
-            console.log(this.ViWork);
         },
 
         CreateCable(){
@@ -409,16 +411,18 @@ export default {
 
         Interaction(){
             this.ViWork.forEach(element => {
-                if (element.type !== "NetWorkCard" || "Port" ){
+                if (element.value.NwCart || element.value.ListPort ){
                     element.value.Move(element.value);
 
                     if(element.value.NwCart){
                         element.value.NwCart.forEach(NwCart => {
-                           this.Connection(NwCart.value)
+                         
+                           this.Connection(NwCart.value, this)
                         })
                     } else{
                         element.value.ListPort.forEach(Port =>{
-                            this.Connection(Port.value)
+         
+                            this.Connection(Port.value, this)
                         })
                     }
 
@@ -427,62 +431,92 @@ export default {
             });
         },
         
-        Connection (NtC){
+        Connection (NtC, current){
             NtC.sprite.interactive = true;
             NtC.sprite.buttonMode = true;
-            NtC.sprite.on("click",ConnectNetWorkCard)
+            NtC.sprite.on("click",Link)
 
-            function ConnectNetWorkCard(event){
-            
-                var mousePosition = event.data.position
-                var linking = this.linking
-            
-                    if (!this.linking && !NtC.cable ){
-                  
-                        NtC.cable = new pixi_Cable(true);
-                        console.log(NtC.cable)
-                        Plug(NtC.cable.material)
-                        NtC.cable.destinatorX = NtC.stage.position.x;
-                        NtC.cable.destinatorY = NtC.stage.position.y;
-                        console.log('bg', NtC)
-                        this.cable = NtC.cable;
-                        this.linking = true;
-                        console.log()
-                    } else if(this.linking)
-                    {
-                        console.log("wow", NtC)
-                        Connect(this.cable);
-                    } else {
-                       console.log('Man there is a problem: you already plug a cable...');
-                    }       
-
-            function Connect (cable){
-                if (linking && cable){
-                    Plug(cable.material)
-                
-                    cable.receptorX = NtC.stage.position.x;
-                    cable.receptorY = NtC.stage.position.y;
-                    console.log("he ho")
-                    cable.draw(this.container,this.renderer);
-                    console.log("ca a marcher"); 
-                    this.linking = false;
-                }
+            function Link(){
+                current.ConnectNetWorkCard(NtC)
             }
+           
+    },
+     
+    ConnectNetWorkCard(NtC){
 
-            function Plug(cable){
+        if (this.linking === true && this.previous){
+           console.log("second")
+           console.log(this.cable)
+           this.ConnectOff(NtC)             
 
-                if (NtC.material.port){          
-                    NtC.material.port.on_plug(cable); 
-                    NtC.ChangeTexture();  
-                } else {
-                    NtC.material.on_plug(cable);
-                    NtC.ChangeTexture();
+        } else if (this.linking === false && !this.previous ){
+            this.ConnectOn(NtC); 
+            this.linking = true;       
+            console.log("first")            
+         }
+    },
+
+    ConnectOn(NtC){
+        NtC.cable = new pixi_Cable(true);                    
+        
+        NtC.cable.destinatorX = NtC.stage.position.x;
+        NtC.cable.destinatorY = NtC.stage.position.y;
+        
+        this.cable = NtC.cable
+        this.Plug(NtC);
+        this.previous = NtC;
+      
+    },
+
+    ConnectOff( NtC){
+        if(this.linking === true ){
+        
+            this.Connect(NtC);      
+            NtC.ChangeTexture();
+            this.previous.ChangeTexture()  
+            NtC.cable = this.cable
+            this.previous.cable = this.cable
+            
+            console.log(this.cable)
+            this.linking = false           
+        } 
+    },
+
+    Connect (Ntc){
+        if (this.linking === true && this.cable){
+            Ntc.cable = this.cable
+            this.Plug(Ntc, this.cable)
+            this.cable.receptorX = Ntc.stage.position.x;
+            this.cable.receptorY = Ntc.stage.position.y;          
+            console.log("Connecter"); 
+        }
+    },
+
+    Plug(NtC,cable){
+        if (NtC.material.port){     
+            if (this.linking === true){
+                console.log("Wesh 2")
+                this.cable.material.port_b = NtC.material.port;
+                this.cable.material.plug(this.cable.material.port_b);                       
+            } else if (this.linking === false ) {
+            console.log("wesh")
+            console.log(this.cable)
+            this.cable.material.port_a = NtC.material.port
+            this.cable.material.plug(this.cable.material.port_a)        
+            }
+                         
+        } else{
+            if (this.linking === true){
+                console.log("wesh 4")
+                this.cable.material.port_b = Ntc.material;
+                this.cable.material.plug(this.cable.material.port_b);               
+            } else if (this.linking === false ) {
+                console.log("wesh 3")
+                this.cable.material.port_a = NtC.material;
+                this.cable.material.plug(this.cable.material.port_a);   
                 }
-               
-        }   
-    }
-                    
-},
+            }                    
+        },
 
     
         
