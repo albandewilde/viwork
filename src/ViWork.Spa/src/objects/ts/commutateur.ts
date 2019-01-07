@@ -60,7 +60,9 @@ export class Switch implements IPortContainer {
                     }
                 } if (no_break) {
                     for (let port_idx of vlan) {
-                        this.ports[port_idx].send(frame, 0)
+                        if (port_idx != index) {
+                            this.ports[port_idx].send(frame, 0)
+                        }
                     }
                 }
             }
