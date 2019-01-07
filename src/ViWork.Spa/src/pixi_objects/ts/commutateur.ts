@@ -54,23 +54,22 @@ export class pixi_Switch implements Idrawable {
                     this.data = event.data;
                     this.alpha = 0.5;
                     this.dragging = true;
-                    this.dragPoint = event.data.getLocalPosition(this.parent);
-                    this.dragPoint.x = this.position.x;
-                    this.dragPoint.y = this.position.y;
             }
 
             function onDragMove(event) {
                 if (this.dragging) {
-                    this.x += event.data.originalEvent.movementX;
-                    this.y += event.data.originalEvent.movementY;
+                    //this.x += event.data.originalEvent.movementX;
+                    //this.y += event.data.originalEvent.movementY;
+                    this.dragPoint = event.data.getLocalPosition(this.parent);
+                    this.x = this.dragPoint.x;
+                    this.y = this.dragPoint.y;
                 }
             }
 
             function onDragEnd() {
                 this.alpha = 1;
                 this.dragging = false;
-                
-                material.SetPosition(this.x,this.y)
+                material.SetPosition(this.x ,this.y)
                 // set the interaction data to null
                 this.data = null;
             }
