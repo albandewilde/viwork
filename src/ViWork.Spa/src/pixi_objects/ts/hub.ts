@@ -72,13 +72,13 @@ export class pixi_Hub implements Idrawable{
         this.container.interactive = true;
         this.container.buttonMode = true;
         this.container.on('mousedown', onDragStart)
-		    .on('touchstart', onDragStart)
-		    .on('mouseup', onDragEnd)
-		    .on('mouseupoutside', onDragEnd)
-		    .on('touchend', onDragEnd)
-		    .on('touchendoutside', onDragEnd)
-		    .on('mousemove', onDragMove)
-            .on('touchmove', onDragMove);
+                    .on('touchstart', onDragStart)
+                    .on('mouseup', onDragEnd)
+                    .on('mouseupoutside', onDragEnd)
+                    .on('touchend', onDragEnd)
+                    .on('touchendoutside', onDragEnd)
+                    .on('mousemove', onDragMove)
+                    .on('touchmove', onDragMove);
 
 
             function onDragStart(event) {
