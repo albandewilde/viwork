@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js"
 
 import {Idrawable} from"./Idrawable"
 import {Cable} from "../../objects/ts/cable"
-import { Container } from 'element-ui';
+
 
 export class pixi_Cable implements Idrawable {
     material: Cable;
@@ -32,6 +32,7 @@ export class pixi_Cable implements Idrawable {
     }
 
     draw(container: PIXI.Container, renderer:any) {
+        console.log(this.receptorX, this.receptorY)
         var cable = new PIXI.Graphics()
         cable.beginFill(0x32CD32);
         cable
