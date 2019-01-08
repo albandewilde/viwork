@@ -9,7 +9,8 @@
                         <span>Machines</span>
                         </template>
                         <el-menu-item index="1-1" @click="CreateComputer">Ordinateur <i>1 carte réseau</i></el-menu-item>
-                        <el-menu-item index="1-2">Ordinateur <i>2 cartes réseaux</i></el-menu-item>
+                        <el-menu-item index="1-2" @click="ShowMessage">test <i>2 cartes réseaux</i></el-menu-item>
+                        
                     </el-submenu>
                     <el-submenu index="2">
                         <template slot="title">
@@ -408,6 +409,15 @@ export default {
         CreateCable(){
          this.linking= true;    
         },
+        ShowMessage(){
+            this.ViWork.forEach(element=> {
+                if(element.type === 'computer'){
+                console.log(element.value)
+                   var message =  element.value.material.last_recv  
+                   console.log(element.type+ "   " + message)
+                }
+            })
+        },
 
         Interaction(){
             this.ViWork.forEach(element => {
@@ -435,11 +445,13 @@ export default {
             NtC.sprite.interactive = true;
             NtC.sprite.buttonMode = true;
             NtC.sprite.on("pointertap",Link)
+                    
 
             function Link(){
                 onDragEnd(NtC);
                 current.ConnectNetWorkCard(NtC)
             }
+           
 
             function onDragEnd(NtC) {
                 console.log(NtC)
@@ -447,6 +459,8 @@ export default {
                 NtC.stage.dragging = false;
                 
                 NtC.SetPosition( NtC.stage.x, NtC.stage.y)
+    
+            
                 // set the interaction data to null
                 
             }
@@ -478,18 +492,20 @@ export default {
       
     },
 
+ 
+
     ConnectOff( NtC){
         if(this.linking === true ){
         
             this.Connect(NtC);      
             NtC.ChangeTexture();
-            this.previous.ChangeTexture()  
-            NtC.cable = this.cable
-            this.previous.cable = this.cable
+            this.previous.ChangeTexture();
+            NtC.cable = this.cable;
+            this.previous.cable = this.cable;
             
-            console.log(this.cable)
             this.linking = false  
-            this.previous = null         
+            this.previous = null      
+            this.cable.draw(this.stage, this.renderer);   
         } 
     },
 

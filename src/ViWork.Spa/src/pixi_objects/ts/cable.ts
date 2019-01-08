@@ -32,7 +32,6 @@ export class pixi_Cable implements Idrawable {
 
     draw(container: PIXI.Container, renderer:any) {
         this.container = container
-        console.log(this.receptorX, this.receptorY)
         var cable = new PIXI.Graphics()
         cable.beginFill(0x32CD32);
         cable
@@ -47,6 +46,8 @@ export class pixi_Cable implements Idrawable {
             renderer.render(container);           
         }
         animate();
+                
+        
     }
 
     Move(sprite: PIXI.Sprite){

@@ -72,8 +72,14 @@ export class pixi_Computer implements Idrawable {
 		    .on('touchend', onDragEnd)
 		    .on('touchendoutside', onDragEnd)
 		    .on('mousemove', onDragMove)
-            .on('touchmove', onDragMove);
+            .on('touchmove', onDragMove)
+            .on('click', send)
 
+            function send(){
+                
+                material.material.send_thing("hello", 1,0)
+                
+            }
 
             function onDragStart(event) {
                 // store a reference to the data
