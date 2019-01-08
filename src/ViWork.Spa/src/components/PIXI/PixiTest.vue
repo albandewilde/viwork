@@ -434,10 +434,21 @@ export default {
         Connection (NtC, current){
             NtC.sprite.interactive = true;
             NtC.sprite.buttonMode = true;
-            NtC.sprite.on("click",Link)
+            NtC.sprite.on("pointertap",Link)
 
             function Link(){
+                onDragEnd(NtC);
                 current.ConnectNetWorkCard(NtC)
+            }
+
+            function onDragEnd(NtC) {
+                console.log(NtC)
+                NtC.stage.alpha = 1
+                NtC.stage.dragging = false;
+                
+                NtC.SetPosition( NtC.stage.x, NtC.stage.y)
+                // set the interaction data to null
+                
             }
            
     },
@@ -446,10 +457,9 @@ export default {
 
         if (this.linking === true && this.previous){
            console.log("second")
-           console.log(this.cable)
            this.ConnectOff(NtC)             
 
-        } else if (this.linking === false && !this.previous ){
+        } else if (this.linking === false && this.previous !== NtC ){
             this.ConnectOn(NtC); 
             this.linking = true;       
             console.log("first")            
@@ -478,7 +488,8 @@ export default {
             this.previous.cable = this.cable
             
             console.log(this.cable)
-            this.linking = false           
+            this.linking = false  
+            this.previous = null         
         } 
     },
 
@@ -508,7 +519,7 @@ export default {
         } else{
             if (this.linking === true){
                 console.log("wesh 4")
-                this.cable.material.port_b = Ntc.material;
+                this.cable.material.port_b = NtC.material;
                 this.cable.material.plug(this.cable.material.port_b);               
             } else if (this.linking === false ) {
                 console.log("wesh 3")
