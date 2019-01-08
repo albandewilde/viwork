@@ -54,17 +54,21 @@ export class Roucom{
     get_gateway(ip_reach: ipv4) {
         // given an ip, we return the gateway qhich is in the route table
         let no_break = true
-        let gateway: ipv4
+        let gateway: ipv4 = null
+        let def: ipv4 = null    // the default route
         for (let ip of Array.from(this.route_table.keys())) {
             // it's on the same network if the network address AND the mask are the same
-            if (ip.network === ip_reach.network && ip.mask === ip_reach.mask) {}
             if (ipv4.on_same_network(ip, ip_reach)) {
                 gateway = this.route_table.get(ip)
                 no_break = false
                 break
             }
+            // to be more efficient, we catch the default route when we pass on it
+            if (ipv4.compare(ip, new ipv4("0.0.0.0/0"))) {
+                def = this.route_table.get(ip)
+            }
         } if (no_break) {
-            gateway = this.get_gateway(new ipv4("0.0.0.0/0"))    // the default route
+            gateway = def    // the default route
         }
         return gateway
     }
@@ -81,18 +85,6 @@ export class Roucom{
         }
         return network_card_idx
     }
-
-//    get_network_card_with_ip(search: ipv4, card_idx: number) { // in case of send a broadcast arp, we keep the idw of the networkcard
-//        // given an ip, we return the mac address corresponding with the arp table
-//
-//        let mac_addr = this.get_mac_in_arp(search)
-//        if (mac_addr === null ) {
-//            // if we don't have the mac address we send a broadcast_arp to find if
-//            this.network_cards[card_idx].broadcast_arp(search)
-//            mac_addr = this.get_mac_in_arp(search)
-//        }
-//        return mac_addr
-//    }
 
     get_mac_in_arp(search: ipv4) {
         for (let ip of Array.from(this.arp_table.keys())) {

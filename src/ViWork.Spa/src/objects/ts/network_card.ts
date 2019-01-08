@@ -86,14 +86,14 @@ export class NetworkCard implements IPortContainer {
         this.send("Who is " + ip.toString() + " ?", 0xFFFFFFFFFFFF, ip, 0x0806)
     }
 
-    send(content: any, mac_dest: number=null, ip_dest: ipv4=null, protocole: number=null) {
+    send(content: any, mac_dest: number, ip_dest: ipv4=null, protocole: number=null) {
         // if the mac_dest isn't given probably because we send the paquet on the layer 3
         // we need to search the mac address of the routeur we want to join
         // first, we look in the route table to know which routeur we want to send the frame
         // second, we define the mac_dest to the routeur we find
 
         if (mac_dest === null) {
-            let ip_next_routeur = new ipv4("0.0.0.0/0")
+            let ip_next_routeur = this.roucom.get_gateway(new ipv4("0.0.0.0/0"))
             // here we search in the route_table
             for (let ip of Array.from(this.roucom.route_table.keys())) {
                 if (ipv4.on_same_network(ip_dest, ip)) {

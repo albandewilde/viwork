@@ -37,6 +37,9 @@ let new_network = function() {
     routeur.network_cards[1].ip_addr = new ipv4("192.168.1.254/24")
     routeur.network_cards[2].ip_addr = new ipv4("10.4.255.254/16")
     // configure the route table of the routeur
+    routeur.route_table.set(new ipv4("192.168.0.0/24"), new ipv4("192.168.0.254/24"))
+    routeur.route_table.set(new ipv4("192.168.1.0/24"), new ipv4("192.168.1.254/24"))
+    routeur.route_table.set(new ipv4("10.4.0.0/16"), new ipv4("10.4.255.254/16"))
 
     // the first network 192.168.0.0/24
     let switch0 = new Switch(4)
@@ -82,8 +85,8 @@ let new_network = function() {
 
     let cmp11 = new Computer()
     cmp11.network_cards[0].ip_addr = new ipv4("192.168.1.2/24")
-    cmp11.route_table.set(new ipv4("192.168.1.0/24"), new ipv4("192.168.1.2"))
-    cmp11.route_table.set(new ipv4("0.0.0.0/0"), new ipv4("192.168.1.254"))
+    cmp11.route_table.set(new ipv4("192.168.1.0/24"), new ipv4("192.168.1.2/24"))
+    cmp11.route_table.set(new ipv4("0.0.0.0/0"), new ipv4("192.168.1.254/24"))
     let cab11 = new Cable(false, cmp11.network_cards[0].port, switch1.ports[1])
 
     let cmp12 = new Computer()
@@ -100,7 +103,7 @@ let new_network = function() {
     let cmp20 = new Computer()
     cmp20.network_cards[0].ip_addr = new ipv4("10.4.0.1/16")
     cmp20.route_table.set(new ipv4("10.4.0.0/16"), new ipv4("10.4.0.1/16"))
-    cmp10.route_table.set(new ipv4("0.0.0.0/0"), new ipv4("10.4.255.254/16"))
+    cmp20.route_table.set(new ipv4("0.0.0.0/0"), new ipv4("10.4.255.254/16"))
     let cab20 = new Cable(false, cmp20.network_cards[0].port, switch2.ports[0])
 
     let cmp21 = new Computer()
@@ -192,5 +195,28 @@ describe("Send message on our local network on layer 3 with out mac_address", fu
 
 describe("Send message on other network on layer 3", function() {
     let network = new_network()
+    
+    network["cmp00"].send_thing("¤", null, 0, network["cmp10"].network_cards[0].ip_addr, 0x0800)
+    network["cmp02"].send_thing("$", null, 0, network["cmp21"].network_cards[0].ip_addr, 0x0800)
+
+    network["cmp11"].send_thing("*", null, 0, network["cmp22"].network_cards[0].ip_addr, 0x0800)
+    network["cmp10"].send_thing("£", null, 0, network["cmp02"].network_cards[0].ip_addr, 0x0800)
+
+    network["cmp21"].send_thing("µ", null, 0, network["cmp12"].network_cards[0].ip_addr, 0x0800)
+    network["cmp20"].send_thing("§", null, 0, network["cmp01"].network_cards[0].ip_addr, 0x0800)
+
+    it("the destinataire got the message", function() {
+        assert.strictEqual(network["cmp10"].last_recv, "¤")
+        assert.strictEqual(network["cmp21"].last_recv, "$")
+
+        assert.strictEqual(network["cmp22"].last_recv, "*")
+        assert.strictEqual(network["cmp02"].last_recv, "£")
+
+        assert.strictEqual(network["cmp12"].last_recv, "µ")
+        assert.strictEqual(network["cmp01"].last_recv, "§")
+    })
 
 })
+
+
+// regarder les tables arp pour check le protocole après l'envois de paquets
