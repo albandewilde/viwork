@@ -7,6 +7,7 @@ import { pixi_Cable } from './cable';
 
 export class pixi_Port implements Idrawable{
     material: Port;
+    cable: pixi_Cable;
     texture: PIXI.Texture;
     sprite_path: string;
     sprite: PIXI.Sprite;

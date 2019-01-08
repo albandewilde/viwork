@@ -90,7 +90,8 @@ export class pixi_Switch implements Idrawable {
         this.container.addChild(sprite)
 
         for (var i=0; i < this.material.nb_port; i++ ){
-            this.CreatePort(this.container,20*i,40);
+            
+            this.CreatePort(this.container,20*i,40, i);
         }
 
         container.addChild(this.container);
@@ -114,12 +115,12 @@ export class pixi_Switch implements Idrawable {
     }
 
     
-    CreatePort(container,positionX,positionY){
+    CreatePort(container,positionX,positionY, i){
         var port = new pixi_Port();
         port.SetPosition(container, positionX,positionY);
         port.draw(container,this.renderer)
         var singleObj = {};
-        singleObj['type'] = 'NetWorkCard';
+        singleObj['type'] = 'port' + i;
         singleObj['value'] = port;
         this.ListPort.push(singleObj);
     }
