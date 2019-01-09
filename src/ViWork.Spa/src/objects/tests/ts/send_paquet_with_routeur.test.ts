@@ -218,5 +218,86 @@ describe("Send message on other network on layer 3", function() {
 
 })
 
+describe("when send message, the arp table fill automatically", function () {
+    let network = new_network()
 
-// regarder les tables arp pour check le protocole après l'envois de paquets
+    network["cmp00"].send_thing("", null, 0, network["cmp10"].network_cards[0].ip_addr, 0x0800)
+    network["cmp02"].send_thing("", null, 0, network["cmp00"].network_cards[0].ip_addr, 0x0800)
+    network["cmp00"].send_thing("", null, 0, network["cmp21"].network_cards[0].ip_addr, 0x0800)
+
+    network["cmp12"].send_thing("", null, 0, network["cmp20"].network_cards[0].ip_addr, 0x0800)
+    network["cmp12"].send_thing("", null, 0, network["cmp11"].network_cards[0].ip_addr, 0x0800)
+    network["cmp12"].send_thing("", null, 0, network["cmp02"].network_cards[0].ip_addr, 0x0800)
+
+    network["cmp21"].send_thing("", null, 0, network["cmp10"].network_cards[0].ip_addr, 0x0800)
+    network["cmp21"].send_thing("", null, 0, network["cmp20"].network_cards[0].ip_addr, 0x0800)
+    network["cmp21"].send_thing("", null, 0, network["cmp00"].network_cards[0].ip_addr, 0x0800)
+
+    it("the arp table of cmp00", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[0].ip_addr, network["routeur"].network_cards[0].mac_addr)
+        table.set(network["cmp02"].network_cards[0].ip_addr, network["cmp02"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp00"].arp_table)
+    })
+    it("the arp table of cmp01", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[0].ip_addr, network["routeur"].network_cards[0].mac_addr)
+        table.set(network["cmp00"].network_cards[0].ip_addr, network["cmp00"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp01"].arp_table)
+    })
+    it("the arp table of cmp02", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[0].ip_addr, network["routeur"].network_cards[0].mac_addr)
+        table.set(network["cmp00"].network_cards[0].ip_addr, network["cmp00"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp02"].arp_table)
+    })
+
+    it("the arp table of cmp10", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[1].ip_addr, network["routeur"].network_cards[1].mac_addr)
+        table.set(network["cmp12"].network_cards[0].ip_addr, network["cmp12"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp10"].arp_table)
+    })
+    it("the arp table of cmp11", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[1].ip_addr, network["routeur"].network_cards[1].mac_addr)
+        table.set(network["cmp12"].network_cards[0].ip_addr, network["cmp12"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp11"].arp_table)
+    })
+    it("the arp table of cmp12", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[1].ip_addr, network["routeur"].network_cards[1].mac_addr)
+        table.set(network["cmp11"].network_cards[0].ip_addr, network["cmp11"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp12"].arp_table)
+    })
+
+    it("the arp table of cmp20", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[2].ip_addr, network["routeur"].network_cards[2].mac_addr)
+        table.set(network["cmp21"].network_cards[0].ip_addr, network["cmp21"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp20"].arp_table)
+    })
+    it("the arp table of cmp21", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[2].ip_addr, network["routeur"].network_cards[2].mac_addr)
+        table.set(network["cmp20"].network_cards[0].ip_addr, network["cmp20"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp21"].arp_table)
+    })
+    it("the arp table of cmp22", function() {
+        let table = new Map()
+        table.set(network["routeur"].network_cards[2].ip_addr, network["routeur"].network_cards[2].mac_addr)
+        table.set(network["cmp21"].network_cards[0].ip_addr, network["cmp21"].network_cards[0].mac_addr)
+
+        assert.deepEqual(table, network["cmp22"].arp_table)
+    })
+
+    // it("the arp table of the routeur", function() {
+})
