@@ -18,8 +18,7 @@ export class pixi_Port implements Idrawable{
 
 
     constructor() {
-
-        this.material = new Port();        
+       
         this.sprite_path =  process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";
     }
 
@@ -72,7 +71,11 @@ export class pixi_Port implements Idrawable{
             this.sprite.texture = texture;
         }
     }
-
+    SetMaterial(NtC , i){
+        NtC.forEach(element => {
+            if (NtC[i] === element) this.material = element
+        });
+    }
     remove(){
 
     }

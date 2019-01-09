@@ -35,7 +35,6 @@ export class pixi_Computer implements Idrawable {
     draw(container: PIXI.Container, renderer:any) {
         this.renderer = renderer;
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
-       
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
         
@@ -73,13 +72,9 @@ export class pixi_Computer implements Idrawable {
 		    .on('touchendoutside', onDragEnd)
 		    .on('mousemove', onDragMove)
             .on('touchmove', onDragMove)
-            .on('click', send)
+      
 
-            function send(){
-                
-                material.material.send_thing("hello", 1,0)
-                
-            }
+       
 
             function onDragStart(event) {
                 // store a reference to the data
@@ -118,11 +113,12 @@ export class pixi_Computer implements Idrawable {
     }
     CreatePort(container,positionX,positionY, i){
         var NwCard = new pixi_NetWorkCard();
+        NwCard.SetMaterial(this.material.network_cards, i);
         NwCard.getName(container);
         NwCard.SetPosition(container, positionX,positionY);
         NwCard.draw(container,this.renderer)
         var singleObj = {};
-        singleObj['type'] = 'NetWorkCard'+i;
+        singleObj['type'] = 'NetWorkCard' + i;
         singleObj['value'] = NwCard;
         this.NwCart.push(singleObj);
     }

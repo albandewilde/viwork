@@ -114,6 +114,7 @@ export class pixi_Hub implements Idrawable{
 
     CreatePort(container,positionX,positionY, i){
         var port = new pixi_Port();
+        port.SetMaterial(this.material.ports, i)
         port.SetPosition(container, positionX,positionY);
         port.draw(container,this.renderer)
         var singleObj = {};

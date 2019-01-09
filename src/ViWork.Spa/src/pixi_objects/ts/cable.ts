@@ -14,9 +14,11 @@ export class pixi_Cable implements Idrawable {
     receptorY: any;
     destinatorX: any;
     destinatorY: any;
+    cross_eh: any;
 
     constructor(cross_eh: boolean) {
-        this.material = new Cable()
+        this.material = new Cable(cross_eh)
+        this.cross_eh = cross_eh;
         this.sprite_path = cross_eh ? process.env.VUE_APP_BACKEND+"/images/icons/cable_cross.png" : process.env.VUE_APP_BACKEND+"/images/icons/cable_straight.png"
     }
     
@@ -34,12 +36,31 @@ export class pixi_Cable implements Idrawable {
         this.container = container
         var cable = new PIXI.Graphics()
         cable.beginFill(0x32CD32);
-        cable
-                .lineStyle(7,0x32CD32)
+      console.log(this.cross_eh)
+        if (this.cross_eh === false ){
+            cable
+                .lineStyle(3,0x32CD32)
                 .moveTo(this.receptorX,this.receptorY )
-                .lineTo(this.destinatorX ,this.destinatorY)   
-        this.container.addChild(cable);
+                .lineTo(this.destinatorX ,this.destinatorY)
+            this.container.addChild(cable); 
+        } else  {
+            cable
+                .lineStyle(3,0x32CD32)
+                .moveTo(this.receptorX,this.receptorY + 17)
+                .lineTo(this.destinatorX ,this.destinatorY)
+            
+            this.container.addChild(cable); 
+            var cable2 = new PIXI.Graphics()
+            cable2
+            .lineStyle(3,0x32CD32)
+            .moveTo(this.receptorX,this.receptorY )
+            .lineTo(this.destinatorX ,this.destinatorY +17)
+            this.container.addChild(cable2); 
+        }
+          
         
+        
+       
 
         function animate(){      
             requestAnimationFrame(animate);

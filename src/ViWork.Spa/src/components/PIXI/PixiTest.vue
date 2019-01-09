@@ -53,6 +53,36 @@
                     
                 </canvas>
                 </div>
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                    </div>
+
+                    <div class="modal-body">
+                        <form @submit="onSubmit($event)" >
+                        <div class="form-group">
+                           
+                            <select class="form-control" >
+                                Choisissez l'adresse mac de reception
+                                <option v-for="c of ViWork"  :value="c.value.material.last_recv" :key="c.type"  >
+                                  {{c.value.material}}
+                                </option>
+                             </select>
+                               <input type="text" v-model="message" class="form-control" >
+                            <button type="submit" class="btn btn-primary">Envoyer</button>
+
+                         </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+
+                </div>
                
             </el-main>
         </el-container>
@@ -298,15 +328,17 @@ export default {
             stage: null,
             renderer: null,
             selectedIndex: null,
-            firstObj: null,
-            secondObj: null,
             ViWork: null,   
             linking: null, 
             cable: null,  
-            previous: null
+            previous: null,
+            message: null,
+            modal: null,
+            span: null,
         }
     },
     mounted() {
+
         this.GetElement();
         this.RunPixi();
     },
@@ -337,6 +369,16 @@ export default {
         },
 
         RunPixi() {
+            this.modal = document.getElementById("myModal");
+            this.span =  document.getElementsByClassName("close")[0]
+            this.span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == this.modal) {
+                    current.modal.style.display = "none";
+                }
+            }
             this.ViWork = [];
             this.linking = false;       
             let type = "canvas";
@@ -354,6 +396,7 @@ export default {
             this.stage = new PIXI.Container();
             this.stage.width = 1800;
             this.stage.height = 1600;
+            this.stage.interactive = true;
            
 
         },
@@ -413,8 +456,8 @@ export default {
             this.ViWork.forEach(element=> {
                 if(element.type === 'computer'){
                 console.log(element.value)
-                   var message =  element.value.material.last_recv  
-                   console.log(element.type+ "   " + message)
+                  
+                   console.log( element.value.material.last_recv)
                 }
             })
         },
@@ -436,11 +479,24 @@ export default {
                         })
                     }
 
-                } 
+                } else if (element.type === "computer"){
+                    this.SendMessage(element.value,this);
+                }
                 
             });
         },
-        
+        SendMessage(computer, current){
+            computer.sprite.interactive = true;
+            computer.sprite.buttonMode = true;
+            computer.sprite.on('click', ShowModal)
+            function ShowModal(){
+                console.log("hey")
+                current.modal.style.display = "block";
+                
+            }
+        },
+
+
         Connection (NtC, current){
             NtC.sprite.interactive = true;
             NtC.sprite.buttonMode = true;
@@ -470,19 +526,22 @@ export default {
     ConnectNetWorkCard(NtC){
 
         if (this.linking === true && this.previous){
-           console.log("second")
+        
            this.ConnectOff(NtC)             
 
         } else if (this.linking === false && this.previous !== NtC ){
             this.ConnectOn(NtC); 
             this.linking = true;       
-            console.log("first")            
+                   
          }
     },
 
     ConnectOn(NtC){
-        NtC.cable = new pixi_Cable(true);                    
-        
+        var crosseh
+      
+        if(NtC.material.port) {crosseh = false} else crosseh = true
+        console.log(crosseh)
+        NtC.cable = new pixi_Cable(crosseh);                    
         NtC.cable.destinatorX = NtC.stage.position.x;
         NtC.cable.destinatorY = NtC.stage.position.y;
         
@@ -500,12 +559,16 @@ export default {
             this.Connect(NtC);      
             NtC.ChangeTexture();
             this.previous.ChangeTexture();
+
             NtC.cable = this.cable;
-            this.previous.cable = this.cable;
+            NtC.cable.cross_eh = this.previous.cable.cross_eh
+            this.previous.cable = NtC.cable;
             
             this.linking = false  
-            this.previous = null      
-            this.cable.draw(this.stage, this.renderer);   
+            this.previous = null    
+            this.cable = null;  
+            NtC.cable.draw(this.stage, this.renderer);   
+         
         } 
     },
 
@@ -561,5 +624,85 @@ export default {
     height: 100%;
     width: 100%;
 };
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content {
+  position: fixed;
+  bottom: 0;
+  background-color: #fefefe;
+  width: 100%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideIn;
+  animation-duration: 0.4s
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0} 
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
 </style>
 

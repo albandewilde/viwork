@@ -27,8 +27,6 @@ export class pixi_NetWorkCard implements Idrawable {
     
 
     constructor() {
-       
-        this.material = new NetworkCard();
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";       
     }
 
@@ -79,6 +77,12 @@ export class pixi_NetWorkCard implements Idrawable {
             var texture = PIXI.Texture.fromImage(sprite);
             this.sprite.texture = texture;
         }
+    }
+
+    SetMaterial(NtC , i){
+        NtC.forEach(element => {
+            if(NtC[i] === element) this.material = element
+        });
     }
     
 
