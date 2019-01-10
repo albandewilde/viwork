@@ -90,6 +90,10 @@ export class pixi_Computer implements Idrawable {
                     this.dragPoint = event.data.getLocalPosition(this.parent);
                     this.x = this.dragPoint.x;
                     this.y = this.dragPoint.y;
+                    if(material.NwCart[0].value.cable){
+                        material.NwCart[0].value.cable.UpdateCable(material.NwCart[0].value)
+                    }
+
                 }
             }
 

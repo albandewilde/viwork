@@ -100,11 +100,6 @@ export class pixi_NetWorkCard implements Idrawable {
         return this.cable
     }
 
-    onLinkEnd(){
-        this.cable.receptorX = this.positionX
-        this.cable.receptorY= this.positionY
-        this.cable.draw(this.container, this.renderer)
-        this.linking = false;
-    }
+
 
 }

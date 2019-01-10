@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js"
 
 import {Idrawable} from"./Idrawable"
 import {Cable} from "../../objects/ts/cable"
+import { pixi_NetWorkCard } from './networkcard';
 
 
 export class pixi_Cable implements Idrawable {
@@ -10,10 +11,11 @@ export class pixi_Cable implements Idrawable {
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
-    receptorX: any;
-    receptorY: any;
-    destinatorX: any;
-    destinatorY: any;
+    receptor: any;
+    destinator: any;
+    cable: any;
+    cable2: any;
+
     cross_eh: any;
 
     constructor(cross_eh: boolean) {
@@ -33,31 +35,35 @@ export class pixi_Cable implements Idrawable {
     }
 
     draw(container: PIXI.Container, renderer:any) {
+
+        
         this.container = container
         var cable = new PIXI.Graphics()
+        var cable2 = new PIXI.Graphics()
         cable.beginFill(0x32CD32);
-      console.log(this.cross_eh)
+  
         if (this.cross_eh === false ){
             cable
                 .lineStyle(3,0x32CD32)
-                .moveTo(this.receptorX,this.receptorY )
-                .lineTo(this.destinatorX ,this.destinatorY)
+                .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
+                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y)
             this.container.addChild(cable); 
         } else  {
             cable
                 .lineStyle(3,0x32CD32)
-                .moveTo(this.receptorX,this.receptorY + 17)
-                .lineTo(this.destinatorX ,this.destinatorY)
+                .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y + 17)
+                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y)
             
             this.container.addChild(cable); 
-            var cable2 = new PIXI.Graphics()
+          
             cable2
             .lineStyle(3,0x32CD32)
-            .moveTo(this.receptorX,this.receptorY )
-            .lineTo(this.destinatorX ,this.destinatorY +17)
+            .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
+            .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y +17)
             this.container.addChild(cable2); 
         }
-          
+        this.cable = cable;
+        this.cable2 = cable2;
         
         
        
@@ -70,6 +76,69 @@ export class pixi_Cable implements Idrawable {
                 
         
     }
+
+    SetReceptor(NtC: pixi_NetWorkCard){
+        this.receptor = NtC;
+    }
+
+    SetDestinator(NtC: pixi_NetWorkCard){
+        this.destinator = NtC
+    }
+
+    UpdateCable(NtC){
+     
+        if (NtC.material !== this.destinator.material){
+            console.log(1)
+            if (this.cross_eh === false){
+                this.cable.clear();
+                this.cable
+                .lineStyle(3,0x32CD32)
+                .moveTo(NtC.stage.position.x,NtC.stage.position.y )
+                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y);
+            } else {
+                this.cable.clear();
+                this.cable2.clear();
+
+                this.cable
+                .lineStyle(3,0x32CD32)
+                .moveTo(NtC.stage.position.x,NtC.stage.position.y + 17 )
+                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y);
+
+                
+                this.cable2
+                this.cable2
+                .lineStyle(3,0x32CD32)
+                .moveTo(NtC.stage.position.x,NtC.stage.position.y)
+                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y  + 17 );
+
+
+            }
+        } else if (NtC.material === this.destinator.material){
+            console.log(2)
+            if (this.cross_eh === false ){
+                this.cable.clear();
+                this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
+                    .lineTo(NtC.stage.position.x ,NtC.stage.position.y)
+               
+            } else  {
+                this.cable.clear();
+                this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y + 17)
+                    .lineTo(NtC.stage.position.x ,NtC.stage.position.y)
+       
+                this.cable2.clear()
+                this.cable2
+                .lineStyle(3,0x32CD32)
+                .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
+                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y +17)
+           
+            }
+        }
+    }
+
 
     Move(sprite: PIXI.Sprite){
 
@@ -84,6 +153,5 @@ export class pixi_Cable implements Idrawable {
     remove() {
     }
 
-    async animation(){
-    }
+
 }
