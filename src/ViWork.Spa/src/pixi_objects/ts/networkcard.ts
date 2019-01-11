@@ -17,9 +17,7 @@ export class pixi_NetWorkCard implements Idrawable {
     moosePositoin: any;
     positionX: any;
     positionY: any;
-    linking: boolean;
-    fromLinkX: any;
-    fromLinkY: any;
+    link: boolean;
     cable: pixi_Cable;
     renderer: any;
     data: any;
