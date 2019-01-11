@@ -57,11 +57,23 @@
                
             </el-main>
         </el-container>
-            <el-dialog title="Parametres de l'odinateur" :visible.sync="computerDialog" width="30%">
-                <span>This is a message</span>
+            <el-dialog title="Paramètres de l'odinateur" :visible.sync="computerDialog" width="30%">
+                <span>
+                    <el-form>
+                        <el-form-item label="Nombre de cartes réseaux :">
+                        <el-input-number v-model="nbNetCard" :min="1"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="Renvois les paquets :">
+                            <el-switch v-model="keepPacket" ></el-switch>
+                        </el-form-item>
+                        <el-form-item label="Inversement des pins du ports :">
+                            <el-switch v-model="inversPin"></el-switch>
+                        </el-form-item>
+                    </el-form>
+                </span>
                 <span slot="footer" class="dialog-footer">
-                    <el-button @click="computerDialog = false">Cancel</el-button>
-                    <el-button type="primary" @click="CreateComputer()">Confirm</el-button>
+                    <el-button @click="computerDialog = false">Annuler</el-button>
+                    <el-button type="primary" @click="CreateComputer(this.nbNetCard, this.keepPacket, this.inversPin)">Créer</el-button>
                 </span>
             </el-dialog>
     </div>
@@ -95,13 +107,17 @@ export default {
             cable: null,  
             previous: null,
             message: null,
-          
+            computerDialog: false,
+            nbNetCard: 1,
+            keepPacket: true,
+            inversPin: false
         }
     },
     mounted() {
 
         this.GetElement();
         this.RunPixi();
+
     },
 
     methods: {
@@ -153,7 +169,8 @@ export default {
 
         },
 
-        CreateComputer(){
+        CreateComputer(nbNetCard, keepPacket, inversPin){
+            console.log(nbNetCard);
             let computer = new pixi_Computer();    
             computer.SetPosition(0,0);
             computer.draw(this.stage,this.renderer);
@@ -162,7 +179,7 @@ export default {
             singleObj['value'] = computer;
             this.ViWork.push(singleObj)
             this.Interaction();
-         
+            this.computerDialog = false;
         },
 
         CreateCommutateur(){
@@ -189,7 +206,6 @@ export default {
     
         },
         
-
         CreateHub(){
             let hub = new pixi_Hub;
             hub.SetPosition(0,0);
