@@ -12,6 +12,7 @@ export class pixi_Port implements Idrawable{
     sprite_path: string;
     sprite: PIXI.Sprite;
     stage: PIXI.Container;
+    link: boolean;
     container: PIXI.Container;
     positionX: any;
     positionY: any;
@@ -78,6 +79,9 @@ export class pixi_Port implements Idrawable{
     }
     remove(){
 
+    }
+    SetLink(value: boolean){
+        this.link = value
     }
 
     onPlug(cable: pixi_Cable){

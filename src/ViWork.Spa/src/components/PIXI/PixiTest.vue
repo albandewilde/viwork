@@ -470,7 +470,6 @@ export default {
            
 
             function onDragEnd(NtC) {
-                console.log(NtC)
                 NtC.stage.alpha = 1
                 NtC.stage.dragging = false;
                 
@@ -484,15 +483,17 @@ export default {
     },
      
     ConnectNetWorkCard(NtC){
+      
+   
+        if (this.linking === true && this.previous !== NtC){
+           this.previous = this.GetPrevious();
+           this.ConnectOff(NtC);             
 
-        if (this.linking === true && this.previous){
-        
-           this.ConnectOff(NtC)             
-
-        } else if (this.linking === false && this.previous !== NtC ){
-            this.ConnectOn(NtC); 
-            this.linking = true;       
-                   
+        } else if (this.linking === false && !this.previous  ){
+            if(NtC.link !== true){
+                this.ConnectOn(NtC); 
+                this.linking = true;
+            }           
          }
     },
 
@@ -523,13 +524,15 @@ export default {
             NtC.cable = this.cable;
             NtC.cable.cross_eh = this.previous.cable.cross_eh
             this.previous.cable = NtC.cable;
-            
-              
-            console.log(NtC.cable)
+            NtC.link = this.linking;
+            this.previous.link = this.linking
+ 
+           
             NtC.cable.draw(this.stage, this.renderer);
-            this.linking = false  
-            this.previous = null     
-            this.cable = null;
+            this.linking = false;  
+            this.SetPrevious(null)
+         
+           
         } 
     },
 
@@ -567,7 +570,14 @@ export default {
                 }
             }                    
         },
+        
+        GetPrevious(){
+            return this.previous;
+        },
 
+        SetPrevious(NtC){
+            this.previous = NtC;
+        },
     
         
         returnIndex(key) {
