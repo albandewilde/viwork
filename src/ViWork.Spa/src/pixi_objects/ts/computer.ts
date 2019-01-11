@@ -49,8 +49,6 @@ export class pixi_Computer implements Idrawable {
             this.CreatePort(this.container,0,20*i,i);
         }
         container.addChild(this.container);
-        
-        
 
         function animate(){      
             requestAnimationFrame(animate);
