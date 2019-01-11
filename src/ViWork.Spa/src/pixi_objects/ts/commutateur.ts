@@ -63,7 +63,7 @@ export class pixi_Switch implements Idrawable {
                     this.dragPoint = event.data.getLocalPosition(this.parent);
                     this.x = this.dragPoint.x;
                     this.y = this.dragPoint.y;
-                    material.ListPort.forEach(element => {
+                    material.ListPort .forEach(element => {
                         if(element.value.cable){
                             element.value.cable.UpdateCable(element.value);
                         }
@@ -122,6 +122,7 @@ export class pixi_Switch implements Idrawable {
     
     CreatePort(container,positionX,positionY, i){
         var port = new pixi_Port();
+        port.SetMaterial(this.material.ports, i)
         port.SetPosition(container, positionX,positionY);
         port.draw(container,this.renderer)
         var singleObj = {};
