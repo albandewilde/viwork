@@ -16,7 +16,6 @@ export class pixi_Computer implements Idrawable {
     NwCart: any;
 
     constructor() {
-        this.material = new Computer();
         this.container = new PIXI.Container();
         this.NwCart = []
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/computer.png";       
@@ -28,6 +27,10 @@ export class pixi_Computer implements Idrawable {
         // the computer change his sprite and his position is under the pointer while he don't put ip
     }
 
+    SetMaterial(nbCard, packetKeeping, Pin){
+        this.material = new Computer(nbCard, packetKeeping, Pin);
+    }
+
     put() {
         // put the computer at his new position (fixed position), don't forget to change his sprite
     }
@@ -35,24 +38,24 @@ export class pixi_Computer implements Idrawable {
     draw(container: PIXI.Container, renderer:any) {
         this.renderer = renderer;
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
-        sprite.anchor.x = 0;
-        sprite.anchor.y = 0;
+        sprite.anchor.x = 0.5;
+        sprite.anchor.y = 0.5;
         
         sprite.width = 110;
         sprite.height = 110;
-        sprite.x = this.positionX
+        sprite.x = this.positionX;
         sprite.y = this.positionY;
-        this.sprite= sprite;
+        this.sprite = sprite;
         this.container.addChild(sprite)
         
         for (var i=0; i < this.material.network_cards.length; i++ ){
-            this.CreatePort(this.container,0,20*i,i);
+            this.CreatePort(this.container,-sprite.width/2,(20*i)-(sprite.height/2),i);
         }
         container.addChild(this.container);
 
         function animate(){      
             requestAnimationFrame(animate);
-            renderer.render(container);           
+            renderer.render(container);
         }
         animate();
         
@@ -88,10 +91,11 @@ export class pixi_Computer implements Idrawable {
                     this.dragPoint = event.data.getLocalPosition(this.parent);
                     this.x = this.dragPoint.x;
                     this.y = this.dragPoint.y;
-                    if(material.NwCart[0].value.cable){
-                        material.NwCart[0].value.cable.UpdateCable(material.NwCart[0].value)
-                    }
-
+                    material.NwCart.forEach(element => {
+                        if(element.value.cable){
+                            element.value.cable.UpdateCable(element.value)
+                        }
+                    });
                 }
             }
 

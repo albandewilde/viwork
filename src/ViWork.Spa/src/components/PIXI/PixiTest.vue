@@ -8,7 +8,6 @@
                         <i class="el-icon-mobile-phone"></i>
                         <span>Machines</span>
                         </template>
-                        <el-menu-item index="1-1" @click="CreateComputer">Ordinateur <i>1 carte réseau</i></el-menu-item>
                         <el-menu-item index="1-1-1" @click="computerDialog = true">Ordinateur</el-menu-item>
                         <el-menu-item index="1-2" @click="ShowMessage">test <i>2 cartes réseaux</i></el-menu-item>
                         
@@ -157,10 +156,8 @@ export default {
         },
 
         CreateComputer(nbCard, packetKeepping, Pin){
-            console.log(nbCard);
-            console.log(packetKeepping);
-            console.log(Pin);
-            let computer = new pixi_Computer();    
+            let computer = new pixi_Computer();
+            computer.SetMaterial(nbCard, packetKeepping, Pin);
             computer.SetPosition(0,0);
             computer.draw(this.stage,this.renderer);
             var singleObj = {};

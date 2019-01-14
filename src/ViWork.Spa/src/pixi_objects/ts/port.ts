@@ -44,8 +44,8 @@ export class pixi_Port implements Idrawable{
         sprite.height = 20;
 
              
-        sprite.x =this.positionX
-        sprite.y = this.positionY
+        sprite.x = this.positionX - 0.5
+        sprite.y = this.positionY - 0.5
         this.sprite= sprite;
         container.addChild(sprite);  
         this.stage = container;      
