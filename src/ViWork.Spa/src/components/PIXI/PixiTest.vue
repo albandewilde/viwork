@@ -32,7 +32,7 @@
             </el-aside>
             <el-main :style="`height: ${goodNavAsideHeight}px; width: ${divWidth}px; padding: 0;`">
                 <el-menu mode="horizontal" id="navTop">
-                    <el-menu-item index="1">Processing Center</el-menu-item>
+                    <el-menu-item index="1" @click="Sending = true">Envoyer un message</el-menu-item>
                         <el-submenu index="2">
                             <template slot="title">Workspace</template>
                             <el-menu-item index="2-1">item one</el-menu-item>
@@ -76,17 +76,16 @@
                 </span>
             </el-dialog>
 
-            <el-dialog title="SendMessage" :visible.sync="Sending" width="50%">
+            <el-dialog title="Envoyer un message" :visible.sync="Sending" width="50%">
                 <span>
-                    <el-form-item >
-                        <el-select v-model="value2" placeholder="Select">
-                            <el-option v-for="item in ViWork" :label= item.type :key="item.value" >
-                                
+                        <el-select v-model="value" placeholder="Select">
+                            <el-option 
+                                v-for="item in ViWork" 
+                                :label="item.type"
+                                :key="item.value"
+                                :value="item.value">
                             </el-option>
                         </el-select>
-                          
-
-                    </el-form-item>
                 </span>
             </el-dialog>
 
@@ -126,7 +125,7 @@ export default {
             keepPacket: true,
             inversPin: false,
             Sending: false,
-            value: null,
+            value: '',
         }
     },
     mounted() {
@@ -179,7 +178,8 @@ export default {
             var singleObj = {};
             singleObj['type'] = 'computer';
             singleObj['value'] = computer;
-            this.ViWork.push(singleObj)
+            this.ViWork.push(singleObj);
+            console.log(this.ViWork);
             this.Interaction();
             this.computerDialog = false;
         },
@@ -234,26 +234,21 @@ export default {
 
         Interaction(){
             this.ViWork.forEach(element => {
-                if (element.value.NwCart || element.value.ListPort ){
-                    element.value.Move(element.value);
-
-                    if(element.value.NwCart){
-                        element.value.NwCart.forEach(NwCart => {
-                         
-                           this.Connection(NwCart.value, this)
-                        })
-                    } else{
-                        element.value.ListPort.forEach(Port =>{
-         
-                            this.Connection(Port.value, this)
-                        })
-                    }
-
-                } 
-                if (element.type === "computer"){
-                    this.SendMessage(element.value,this);
+            if (element.value.NwCart || element.value.ListPort ){
+                element.value.Move(element.value);
+                if(element.value.NwCart){
+                    element.value.NwCart.forEach(NwCart => {
+                        this.Connection(NwCart.value, this)
+                    })
+                } else{
+                    element.value.ListPort.forEach(Port =>{
+                        this.Connection(Port.value, this)
+                    })
                 }
-                
+            } 
+            if (element.type === "computer"){
+                this.SendMessage(element.value,this);
+            }
             });
         },
         SendMessage(computer, current){
