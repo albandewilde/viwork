@@ -57,7 +57,7 @@
                
             </el-main>
         </el-container>
-            <el-dialog title="Paramètres de l'odinateur" :visible.sync="computerDialog" width="30%">
+            <el-dialog title="Paramètres de l'ordinateur" :visible.sync="computerDialog" width="30%">
                 <span>
                     <el-form>
                         <el-form-item label="Nombre de cartes réseaux :">
@@ -73,7 +73,7 @@
                 </span>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="computerDialog = false">Annuler</el-button>
-                    <el-button type="primary" @click="CreateComputer(this.nbNetCard, this.keepPacket, this.inversPin)">Créer</el-button>
+                    <el-button type="primary" @click="CreateComputer(nbNetCard, keepPacket, inversPin)">Créer</el-button>
                 </span>
             </el-dialog>
     </div>
@@ -123,23 +123,11 @@ export default {
     methods: {
         GetElement() {
             var navWidth = document.getElementById("navAside").offsetWidth;
-            console.log("Largeur de barre latérale " + navWidth);
-
             this.navTop = document.getElementById("navTop").offsetHeight;
-            console.log("Hauteur de la petite navBar " + this.navTop);
-
             this.navHeight = document.getElementById("header").offsetHeight;
-            console.log("Hauteur de barre nav " + this.navHeight);
-
             this.goodNavAsideHeight = document.documentElement.clientHeight - this.navHeight;
-            console.log("Hauteur de la barre latérale : " + this.goodNavAsideHeight);
-
-            this.divHeight = document.documentElement.clientHeight - this.navHeight - this.navTop - 6;
-            console.log("Hauteur après calcul " + this.divHeight);
-            
+            this.divHeight = document.documentElement.clientHeight - this.navHeight - this.navTop - 6;       
             this.divWidth = document.documentElement.clientWidth - navWidth - 1;
-            console.log("Largeur après calcul " + this.divWidth);
-
         },
         GetSelectedItem(key){
             this.selectedIndex = key
@@ -158,7 +146,6 @@ export default {
 
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
-            console.log(myView);
             this.renderer = new PIXI.WebGLRenderer(this.divWidth, this.divHeight ,{backgroundColor: 0xE7E7E7, view: myView,});
             
             this.stage = new PIXI.Container();
@@ -169,8 +156,10 @@ export default {
 
         },
 
-        CreateComputer(nbNetCard, keepPacket, inversPin){
-            console.log(nbNetCard);
+        CreateComputer(nbCard, packetKeepping, Pin){
+            console.log(nbCard);
+            console.log(packetKeepping);
+            console.log(Pin);
             let computer = new pixi_Computer();    
             computer.SetPosition(0,0);
             computer.draw(this.stage,this.renderer);
