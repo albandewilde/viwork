@@ -174,7 +174,7 @@ export default {
         CreateComputer(nbCard, packetKeepping, Pin){
             let computer = new pixi_Computer();
             computer.SetMaterial(nbCard, packetKeepping, Pin);
-            computer.SetPosition(0,0);
+            computer.SetPosition(80,80);
             computer.draw(this.stage,this.renderer);
             var singleObj = {};
             singleObj['type'] = 'computer';

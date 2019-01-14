@@ -88,6 +88,9 @@ export class pixi_Switch implements Idrawable {
         sprite.anchor.x = 0;
         sprite.anchor.y = 0;
 
+
+        sprite.position.x = container.position.x
+        sprite.position.y = container.position.y
         sprite.width = 100;
         sprite.height = 100;
         

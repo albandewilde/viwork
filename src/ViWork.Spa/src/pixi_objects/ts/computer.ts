@@ -43,8 +43,8 @@ export class pixi_Computer implements Idrawable {
         
         sprite.width = 110;
         sprite.height = 110;
-        sprite.x = this.positionX;
-        sprite.y = this.positionY;
+        sprite.x = container.position.x;
+        sprite.y = container.position.y;
         this.sprite = sprite;
         this.container.addChild(sprite)
         
