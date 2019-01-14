@@ -22,10 +22,12 @@ export class pixi_NetWorkCard implements Idrawable {
     renderer: any;
     data: any;
     name: any;
-    
+    id: any;
+    type: any;
 
     constructor() {
-        this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";       
+        this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";
+        this.type = "networkcard"       
     }
 
     take(positionX: number , positionY: number ) {
@@ -55,6 +57,7 @@ export class pixi_NetWorkCard implements Idrawable {
         this.Move(this);
         container.addChild(sprite);  
         this.stage = container;
+
          
     }
 
@@ -81,6 +84,7 @@ export class pixi_NetWorkCard implements Idrawable {
         NtC.forEach(element => {
             if(NtC[i] === element) this.material = element
         });
+        this.id = i;
     }
     
 

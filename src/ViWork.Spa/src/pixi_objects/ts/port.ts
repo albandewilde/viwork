@@ -16,11 +16,14 @@ export class pixi_Port implements Idrawable{
     container: PIXI.Container;
     positionX: any;
     positionY: any;
+    id: any;
+    type: any;
 
 
     constructor() {
        
         this.sprite_path =  process.env.VUE_APP_BACKEND+"/images/icons/ethernet_Off.png";
+        this.type = "port"
     }
 
     take(positionX: number , positionY: number ) {
@@ -76,6 +79,7 @@ export class pixi_Port implements Idrawable{
         NtC.forEach(element => {
             if (NtC[i] === element) this.material = element
         });
+        this.id = i;
     }
     remove(){
 

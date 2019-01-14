@@ -42,28 +42,51 @@ export class pixi_Cable implements Idrawable {
         var cable2 = new PIXI.Graphics()
         cable.beginFill(0x32CD32);
   
-        if (this.cross_eh === false ){
-            cable
+        
+            if (this.receptor.type === "networkcard" && this.destinator.type === "networkcard"){
+                cable
                 .lineStyle(3,0x32CD32)
-                .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
-                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y)
-            this.container.addChild(cable); 
-        } else  {
-            cable
+                .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
+                .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
+                this.container.addChild(cable); 
+            } else if (this.receptor.type === "networkcard" && this.destinator.type === "port"){
+                cable
                 .lineStyle(3,0x32CD32)
-                .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y + 17)
-                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y)
+                .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
+                .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
+                this.container.addChild(cable); 
+            } else if (this.receptor.type === "port" && this.destinator.type === "networkcard"){
+                cable
+                .lineStyle(3,0x32CD32)
+                .moveTo(this.receptor.stage.position.x   +(this.receptor.id * 20 ),this.receptor.stage.position.y + 50 )
+                .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
+                this.container.addChild(cable); 
+            } else if (this.receptor.type === "port" && this.destinator.type === "port"){
+                cable
+                .lineStyle(3,0x32CD32)
+                .moveTo(this.receptor.stage.position.x  +(this.receptor.id * 20 ) ,this.receptor.stage.position.y +50)
+                .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
+                this.container.addChild(cable); 
+            }
+        
+           
             
-            this.container.addChild(cable); 
+        // } else  {
+        //     cable
+        //         .lineStyle(3,0x32CD32)
+        //         .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y + 17)
+        //         .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y)
+            
+        //     this.container.addChild(cable); 
           
-            cable2
-            .lineStyle(3,0x32CD32)
-            .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
-            .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y +17)
-            this.container.addChild(cable2); 
-        }
+        //     cable2
+        //     .lineStyle(3,0x32CD32)
+        //     .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
+        //     .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y +17)
+        //     this.container.addChild(cable2); 
+        // }
         this.cable = cable;
-        this.cable2 = cable2;
+        // this.cable2 = cable2;
         
         
        
@@ -88,54 +111,95 @@ export class pixi_Cable implements Idrawable {
     UpdateCable(NtC){
      
         if (NtC.material !== this.destinator.material){
-            console.log(1)
-            if (this.cross_eh === false){
+            console.log( this.cable)
+           
                 this.cable.clear();
-                this.cable
-                .lineStyle(3,0x32CD32)
-                .moveTo(NtC.stage.position.x,NtC.stage.position.y )
-                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y);
-            } else {
-                this.cable.clear();
-                this.cable2.clear();
+                if (this.receptor.type === "networkcard" && this.destinator.type === "networkcard"){
+                    this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
+                    .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
+                    this.container.addChild( this.cable); 
+                } else if (this.receptor.type === "networkcard" && this.destinator.type === "port"){
+                    this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
+                    .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
+                    this.container.addChild( this.cable); 
+                } else if (this.receptor.type === "port" && this.destinator.type === "networkcard"){
+                    this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x   +(this.receptor.id * 20 ),this.receptor.stage.position.y + 50 )
+                    .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
+                    this.container.addChild( this.cable); 
+                } else if (this.receptor.type === "port" && this.destinator.type === "port"){
+                    this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x  +(this.receptor.id * 20 ) ,this.receptor.stage.position.y +50)
+                    .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
+                    this.container.addChild( this.cable); 
+                }
+        
+                // } else {
+            //     this.cable.clear();
+            //     this.cable2.clear();
 
-                this.cable
-                .lineStyle(3,0x32CD32)
-                .moveTo(NtC.stage.position.x,NtC.stage.position.y + 17 )
-                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y);
+            //     this.cable
+            //     .lineStyle(3,0x32CD32)
+            //     .moveTo(NtC.stage.position.x,NtC.stage.position.y + 17 )
+            //     .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y);
 
                 
-                this.cable2
-                this.cable2
-                .lineStyle(3,0x32CD32)
-                .moveTo(NtC.stage.position.x,NtC.stage.position.y)
-                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y  + 17 );
+            //     this.cable2
+            //     this.cable2
+            //     .lineStyle(3,0x32CD32)
+            //     .moveTo(NtC.stage.position.x,NtC.stage.position.y)
+            //     .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y  + 17 );
 
 
-            }
+            // }
         } else if (NtC.material === this.destinator.material){
-            console.log(2)
-            if (this.cross_eh === false ){
                 this.cable.clear();
-                this.cable
+                if (this.receptor.type === "networkcard" && this.destinator.type === "networkcard"){
+                    this.cable
                     .lineStyle(3,0x32CD32)
-                    .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
-                    .lineTo(NtC.stage.position.x ,NtC.stage.position.y)
-               
-            } else  {
-                this.cable.clear();
-                this.cable
+                    .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
+                    .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
+                    this.container.addChild( this.cable); 
+                } else if (this.receptor.type === "networkcard" && this.destinator.type === "port"){
+                    this.cable
                     .lineStyle(3,0x32CD32)
-                    .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y + 17)
-                    .lineTo(NtC.stage.position.x ,NtC.stage.position.y)
+                    .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
+                    .lineTo(this.destinator.stage.position.x +(this.destinator.id * 30 ),this.destinator.stage.position.y + 50)
+                    this.container.addChild( this.cable); 
+                } else if (this.receptor.type === "port" && this.destinator.type === "networkcard"){
+                    this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x   +(this.receptor.id * 30 ),this.receptor.stage.position.y + 50 )
+                    .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
+                    this.container.addChild( this.cable); 
+                } else if (this.receptor.type === "port" && this.destinator.type === "port"){
+                    this.cable
+                    .lineStyle(3,0x32CD32)
+                    .moveTo(this.receptor.stage.position.x  +(this.receptor.id * 30 ) ,this.receptor.stage.position.y +50)
+                    .lineTo(this.destinator.stage.position.x +(this.destinator.id * 30 ),this.destinator.stage.position.y + 50)
+                    this.container.addChild( this.cable); 
+                }
+            
+            // } else  {
+            //     this.cable.clear();
+            //     this.cable
+            //         .lineStyle(3,0x32CD32)
+            //         .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y + 17)
+            //         .lineTo(NtC.stage.position.x ,NtC.stage.position.y)
        
-                this.cable2.clear()
-                this.cable2
-                .lineStyle(3,0x32CD32)
-                .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
-                .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y +17)
+            //     this.cable2.clear()
+            //     this.cable2
+            //     .lineStyle(3,0x32CD32)
+            //     .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
+            //     .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y +17)
            
-            }
+            // }
         }
     }
 
@@ -144,7 +208,7 @@ export class pixi_Cable implements Idrawable {
 
         sprite.interactive = true;
         sprite.buttonMode = true;
-    }
+    }   
 
     async GetPosition(positionX: number , positionY:number){
         this.container.position.x = positionX;
@@ -152,6 +216,5 @@ export class pixi_Cable implements Idrawable {
     }
     remove() {
     }
-
 
 }

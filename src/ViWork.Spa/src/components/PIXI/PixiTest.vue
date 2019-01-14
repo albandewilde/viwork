@@ -287,7 +287,6 @@ export default {
                 NtC.stage.dragging = false;
                 
                 NtC.SetPosition( NtC.stage.x, NtC.stage.y)
-    
             
                 // set the interaction data to null
                 
