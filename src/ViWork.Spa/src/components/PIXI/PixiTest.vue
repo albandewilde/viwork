@@ -307,9 +307,14 @@ export default {
 
     ConnectOn(NtC){
         var crosseh
-      
-        if(NtC.material.port) {crosseh = false} else crosseh = true
-        console.log(crosseh)
+        console.log(NtC)
+        if(!NtC.material.port){
+             if(NtC.material.port) {crosseh = false} else crosseh = true                 
+        } else {
+            if(NtC.material) {crosseh = false} else crosseh = true    
+        }
+        
+        console.log(NtC.material)
         NtC.cable = new pixi_Cable(crosseh);                    
         NtC.cable.SetDestinator(NtC)
         
