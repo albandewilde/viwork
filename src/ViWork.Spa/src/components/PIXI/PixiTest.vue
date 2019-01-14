@@ -75,6 +75,21 @@
                     <el-button type="primary" @click="CreateComputer(nbNetCard, keepPacket, inversPin)">Créer</el-button>
                 </span>
             </el-dialog>
+
+            <el-dialog title="SendMessage" :visible.sync="Sending" width="50%">
+                <span>
+                    <el-form-item >
+                        <el-select v-model="value2" placeholder="Select">
+                            <el-option v-for="item in ViWork" :label= item.type :key="item.value" >
+                                
+                            </el-option>
+                        </el-select>
+                          
+
+                    </el-form-item>
+                </span>
+            </el-dialog>
+
     </div>
 </template>
 
@@ -101,7 +116,7 @@ export default {
             stage: null,
             renderer: null,
             selectedIndex: null,
-            ViWork: null,   
+            ViWork:  [],   
             linking: null, 
             cable: null,  
             previous: null,
@@ -109,7 +124,9 @@ export default {
             computerDialog: false,
             nbNetCard: 1,
             keepPacket: true,
-            inversPin: false
+            inversPin: false,
+            Sending: false,
+            value: null,
         }
     },
     mounted() {
@@ -134,7 +151,6 @@ export default {
 
         RunPixi() {
            
-            this.ViWork = [];
             this.linking = false;       
             let type = "canvas";
             if(!PIXI.utils.isWebGLSupported()){
@@ -233,7 +249,8 @@ export default {
                         })
                     }
 
-                } else if (element.type === "computer"){
+                } 
+                if (element.type === "computer"){
                     this.SendMessage(element.value,this);
                 }
                 
@@ -244,10 +261,12 @@ export default {
             computer.sprite.buttonMode = true;
             computer.sprite.on('click', ShowModal)
             function ShowModal(){
-                console.log("hey")
-                current.modal.style.display = "block";
-                
+                current.ShowModal();          
             }
+        },
+
+        ShowModal(){
+          this.Sending = true  
         },
 
 
