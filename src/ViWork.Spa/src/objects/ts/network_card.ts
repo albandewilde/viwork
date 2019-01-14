@@ -6,6 +6,7 @@ import {Roucom} from "./roucom"
 import {ipv4} from "./ipv4"
 import {IIpPayload} from "./IIpPayload"
 import {ip_paquet} from "./ip_paquet"
+import {icmp_paquet} from "./icmp_paquet"
 
 export class NetworkCard implements IPortContainer {
     static last_avariable_mac_addr: number = 0x0
@@ -32,25 +33,66 @@ export class NetworkCard implements IPortContainer {
     on_receive(cable_content: [EthernetFrame, EthernetFrame], port: Port) {
         let frame = cable_content[(this.write_on_cable+1)%2]
         if (frame != null && (!this.paquet_filter || (frame.destination === this.mac_addr || frame.destination === 0xFFFFFFFFFFFF))) {
-            // add the ip and the mac address of the source in our arp table
-            if (frame.content.ip_src != null && frame.source != null) {
-                this.roucom.arp_table.set(frame.content.ip_src, frame.source)
-            }
 
             // check the protocole
             if (frame.protocol_layer3 === null) {    // no protocole, we are un layer 2
                 let payload = this.get_ethernet_payload(frame)
-                let content = this.get_payload_content(payload)
+                let content = this.get_payload_content(payload) as string
                 this.roucom.arrived(content)
+            
             } else if (frame.protocol_layer3 === 0x0800) {    // Internet Protocol version 4 (IPv4)
                 let payload = this.get_ethernet_payload(frame)
                 if (ipv4.compare(payload.ip_dest, this.ip_addr)) {    // the paquet is for our us
-                    let content = this.get_payload_content(payload)
-                    this.roucom.arrived(content)
+                    // may this a ICMP protocole
+                    if (this.get_ip_payload_content(payload).icmp_eh) {
+                        let icmp = this.get_ip_payload_content(payload)
+                        switch (icmp.type) {
+                            case 0:
+                                // we recv an echo reply
+                                if (icmp.code === 0) {    // check the code
+                                    this.roucom.arrived(icmp.content)
+                                }
+                                break
+                            case 1:
+                            case 2:
+                                break
+                            case 3:
+                                break
+                            case 4:
+                                break
+                            case 5:
+                                break
+                            case 6:
+                            case 7:
+                                break
+                            case 8:
+                                // we recv an echo request
+                                if (icmp.code === 0) {    // check the code of the icmp paquet
+                                    this.pong(payload.ip_src)
+                                    this.roucom.arrived(icmp.content)
+                                }
+                                break
+                        }
+                    }
+                    // may this is for layer 4
+                    // else if (this.get_ip_payload_content(payload) as IIpPayload) {
+                    // }
+                    // may it's for layer 3
+                    else {
+                        let content = this.get_payload_content(payload) as string
+                        this.roucom.arrived(content)
+                    }
                 } else if (this.roucom.routing_eh) {    // the paquet isn't for us but we route paquets
                     this.route(payload)
                 }
+            
             } else if (frame.protocol_layer3 === 0x0806) {    // Address Resolution Protocol (ARP)
+
+                // add the ip and the mac address of the source in our arp table
+                if (frame.content.ip_src != null && frame.source != null) {
+                    this.roucom.arp_table.set(frame.content.ip_src, frame.source)
+                }
+
                 let payload = this.get_ethernet_payload(frame)
                 if (ipv4.compare(payload.ip_dest, this.ip_addr)) {
                     if (new RegExp("^Who is ([0-9]{1,3}\.){3}[0-9]{1,3}\/([0-9]){1,2} \\?$").test(payload.content as string)) {    // regex of an ipv4
@@ -61,7 +103,7 @@ export class NetworkCard implements IPortContainer {
         }
     }
 
-    route (paquet: IEthernetPayload) {
+    route (paquet: IEthernetPayload, ip_src: ipv4=this.ip_addr) {
         // serach who is the gateway to join the network of the destinataire of the paquet
         let gateway: ipv4 = null
         gateway = this.roucom.get_gateway(paquet.ip_dest)
@@ -78,7 +120,7 @@ export class NetworkCard implements IPortContainer {
             let content = this.get_payload_content(paquet)
             // we don't know to who send the frame, this why the mac_dest is null
             // but don't worry, the network card will do that
-            this.roucom.network_cards[network_card_idx].send(content, null, paquet.ip_dest, 0x0800)
+            this.roucom.network_cards[network_card_idx].send(content, null, paquet.ip_dest, 0x0800, paquet.ip_src)
         }
     }
 
@@ -86,7 +128,8 @@ export class NetworkCard implements IPortContainer {
         this.send("Who is " + ip.toString() + " ?", 0xFFFFFFFFFFFF, ip, 0x0806)
     }
 
-    send(content: any, mac_dest: number, ip_dest: ipv4=null, protocole: number=null) {
+    send(content: any, mac_dest: number, ip_dest: ipv4=null, protocole: number=null, ip_src: ipv4=this.ip_addr) {
+    
         // if the mac_dest isn't given probably because we send the paquet on the layer 3
         // we need to search the mac address of the routeur we want to join
         // first, we look in the route table to know which routeur we want to send the frame
@@ -122,9 +165,19 @@ export class NetworkCard implements IPortContainer {
 
             mac_dest = this.roucom.get_mac_in_arp(ip_next_routeur)
         }
-        let payload = this.make_ethernet_payload(content, ip_dest)
+        let payload = this.make_ethernet_payload(content, ip_dest, ip_src)
         let frame = this.make_ethernet_frame(payload, mac_dest, protocole)
         this.port.send(frame, this.write_on_cable)
+    }
+
+    ping(ip_reach: ipv4) {
+        let icmp = new icmp_paquet(8, 0, "Echo request - ping")
+        this.send(icmp, null, ip_reach, 0x0800)
+    }
+
+    pong(ip_reach: ipv4) {
+        let icmp = new icmp_paquet(0, 0, "Echo reply - pong")
+        this.send(icmp, null, ip_reach, 0X0800)
     }
 
     make_ethernet_frame(content: IEthernetPayload, destinataire: number, protocole_layer3: number){
@@ -135,12 +188,18 @@ export class NetworkCard implements IPortContainer {
         return frame.content
     }
 
-    make_ethernet_payload(content: String, ip_dest: ipv4) {
-        return new  ip_paquet(this.ip_addr, ip_dest, content)
+    make_ethernet_payload(content: IIpPayload, ip_dest: ipv4, ip_src: ipv4) {
+        return new  ip_paquet(ip_src, ip_dest, content)
     }
 
     get_payload_content(payload: IEthernetPayload) {
         return payload.content
+    }
+
+    make_ip_payload(){}
+
+    get_ip_payload_content(ip_payload: IIpPayload) {
+        return ip_payload.content
     }
 
     remove() {
