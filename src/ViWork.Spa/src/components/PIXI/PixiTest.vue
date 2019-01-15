@@ -47,8 +47,8 @@
                     <el-menu-item index="3" disabled>Info</el-menu-item>
                     <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
                 </el-menu>
-                <div :style="`height: ${divHeight}px; width: ${divWidth}px`">
-                <canvas id="myCanva">
+                <div :style="`height: ${divHeight}px; width: ${divWidth}px; background-color: 0xE7E7E7 !important`">
+                <canvas id="myCanva" style="background-color: 0xE7E7E7 !important">
                     
                 </canvas>
                 </div>
@@ -184,12 +184,19 @@ export default {
 
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
-            this.renderer = new PIXI.WebGLRenderer(this.divWidth, this.divHeight ,{backgroundColor: 0xE7E7E7, view: myView,});
+            this.renderer = new PIXI.WebGLRenderer(this.divWidth, this.divHeight,{transparent: false, backgroundColor: 0xE7E7E7, view: myView, resolution: 2,});
+            console.log(this.renderer);
+            this.renderer.backgroundColor = 0xE7E7E7;
+
             
             this.stage = new PIXI.Container();
             this.stage.width = 1800;
             this.stage.height = 1600;
             this.stage.interactive = true;
+        },
+
+        Get(){
+            console.log(this.renderer);
         },
 
         CreateComputer(nbCard, packetKeepping, Pin){

@@ -40,30 +40,30 @@ export class pixi_Cable implements Idrawable {
         this.container = container
         var cable = new PIXI.Graphics()
         var cable2 = new PIXI.Graphics()
-        cable.beginFill(0x32CD32);
+        cable.beginFill(0x979797);
   
         
             if (this.receptor.type === "networkcard" && this.destinator.type === "networkcard"){
                 cable
-                .lineStyle(3,0x32CD32)
+                .lineStyle(3,0x979797)
                 .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
                 .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
                 this.container.addChild(cable); 
             } else if (this.receptor.type === "networkcard" && this.destinator.type === "port"){
                 cable
-                .lineStyle(3,0x32CD32)
+                .lineStyle(3,0x979797)
                 .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
                 .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
                 this.container.addChild(cable); 
             } else if (this.receptor.type === "port" && this.destinator.type === "networkcard"){
                 cable
-                .lineStyle(3,0x32CD32)
+                .lineStyle(3,0x979797)
                 .moveTo(this.receptor.stage.position.x   +(this.receptor.id * 20 ),this.receptor.stage.position.y + 50 )
                 .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
                 this.container.addChild(cable); 
             } else if (this.receptor.type === "port" && this.destinator.type === "port"){
                 cable
-                .lineStyle(3,0x32CD32)
+                .lineStyle(3,0x979797)
                 .moveTo(this.receptor.stage.position.x  +(this.receptor.id * 20 ) ,this.receptor.stage.position.y +50)
                 .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
                 this.container.addChild(cable); 
@@ -116,25 +116,25 @@ export class pixi_Cable implements Idrawable {
                 this.cable.clear();
                 if (this.receptor.type === "networkcard" && this.destinator.type === "networkcard"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
                     .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
                     this.container.addChild( this.cable); 
                 } else if (this.receptor.type === "networkcard" && this.destinator.type === "port"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
                     .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
                     this.container.addChild( this.cable); 
                 } else if (this.receptor.type === "port" && this.destinator.type === "networkcard"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x   +(this.receptor.id * 20 ),this.receptor.stage.position.y + 50 )
                     .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
                     this.container.addChild( this.cable); 
                 } else if (this.receptor.type === "port" && this.destinator.type === "port"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x  +(this.receptor.id * 20 ) ,this.receptor.stage.position.y +50)
                     .lineTo(this.destinator.stage.position.x +(this.destinator.id * 20 ),this.destinator.stage.position.y + 50)
                     this.container.addChild( this.cable); 
@@ -162,25 +162,25 @@ export class pixi_Cable implements Idrawable {
                 this.cable.clear();
                 if (this.receptor.type === "networkcard" && this.destinator.type === "networkcard"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
                     .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
                     this.container.addChild( this.cable); 
                 } else if (this.receptor.type === "networkcard" && this.destinator.type === "port"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x - 50,this.receptor.stage.position.y - 50 + (this.receptor.id * 20 ))
                     .lineTo(this.destinator.stage.position.x +(this.destinator.id * 30 ),this.destinator.stage.position.y + 50)
                     this.container.addChild( this.cable); 
                 } else if (this.receptor.type === "port" && this.destinator.type === "networkcard"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x   +(this.receptor.id * 30 ),this.receptor.stage.position.y + 50 )
                     .lineTo(this.destinator.stage.position.x - 50,this.destinator.stage.position.y - 50 + (this.destinator.id * 20 ))
                     this.container.addChild( this.cable); 
                 } else if (this.receptor.type === "port" && this.destinator.type === "port"){
                     this.cable
-                    .lineStyle(3,0x32CD32)
+                    .lineStyle(3,0x979797)
                     .moveTo(this.receptor.stage.position.x  +(this.receptor.id * 30 ) ,this.receptor.stage.position.y +50)
                     .lineTo(this.destinator.stage.position.x +(this.destinator.id * 30 ),this.destinator.stage.position.y + 50)
                     this.container.addChild( this.cable); 
