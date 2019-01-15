@@ -9,7 +9,6 @@
                         <span>Machines</span>
                         </template>
                         <el-menu-item index="1-1-1" @click="computerDialog = true">Ordinateur</el-menu-item>
-                        <el-menu-item index="1-2" @click="ShowMessage">test <i>2 cartes réseaux</i></el-menu-item>
                         
                     </el-submenu>
                     <el-submenu index="2">
@@ -78,7 +77,15 @@
 
             <el-dialog title="Envoyer un message" :visible.sync="Sending" width="50%">
                 <span>
-                        <el-select v-model="value" placeholder="Select">
+                        <el-select v-model="value" placeholder="Source">
+                            <el-option 
+                                v-for="item in ViWork" 
+                                :label="item.type"
+                                :key="item.value"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="value" placeholder="Destinataire">
                             <el-option 
                                 v-for="item in ViWork" 
                                 :label="item.type"
@@ -166,8 +173,6 @@ export default {
             this.stage.width = 1800;
             this.stage.height = 1600;
             this.stage.interactive = true;
-           
-
         },
 
         CreateComputer(nbCard, packetKeepping, Pin){
@@ -245,25 +250,9 @@ export default {
                         this.Connection(Port.value, this)
                     })
                 }
-            } 
-            if (element.type === "computer"){
-                this.SendMessage(element.value,this);
             }
             });
         },
-        SendMessage(computer, current){
-            computer.sprite.interactive = true;
-            computer.sprite.buttonMode = true;
-            computer.sprite.on('click', ShowModal)
-            function ShowModal(){
-                current.ShowModal();          
-            }
-        },
-
-        ShowModal(){
-          this.Sending = true  
-        },
-
 
         Connection (NtC, current){
             NtC.sprite.interactive = true;

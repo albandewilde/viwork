@@ -85,8 +85,8 @@ export class pixi_Switch implements Idrawable {
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
            
         console.log(sprite)
-        sprite.anchor.x = 0;
-        sprite.anchor.y = 0;
+        sprite.anchor.x = 0.5;
+        sprite.anchor.y = 0.5;
 
 
         sprite.position.x = container.position.x
@@ -99,7 +99,8 @@ export class pixi_Switch implements Idrawable {
 
         for (var i=0; i < this.material.nb_port; i++ ){
             
-            this.CreatePort(this.container,20*i,40, i);
+            //this.CreatePort(this.container,20*i,40, i);
+            this.CreatePort(this.container,(20*i)-(sprite.width/2),40-(sprite.height/2), i);
         }
 
         container.addChild(this.container);
