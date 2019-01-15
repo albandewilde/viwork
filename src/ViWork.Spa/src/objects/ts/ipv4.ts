@@ -113,4 +113,8 @@ export class ipv4 {
     static compare(ip1: ipv4, ip2: ipv4) {
         return ip1.network === ip2.network && ip1.address === ip2.address
     }
+
+    static on_same_network(ip1: ipv4, ip2: ipv4) {
+        return ip1.network === ip2.network && ip1.mask === ip2.mask
+    }
 }
