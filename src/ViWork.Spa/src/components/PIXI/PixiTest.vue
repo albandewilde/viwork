@@ -9,7 +9,6 @@
                         <span>Machines</span>
                         </template>
                         <el-menu-item index="1-1-1" @click="computerDialog = true">Ordinateur</el-menu-item>
-                        <el-menu-item index="1-2" @click="ShowMessage">test <i>2 cartes réseaux</i></el-menu-item>
                         
                     </el-submenu>
                     <el-submenu index="2">
@@ -48,8 +47,8 @@
                     <el-menu-item index="3" disabled>Info</el-menu-item>
                     <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
                 </el-menu>
-                <div :style="`height: ${divHeight}px; width: ${divWidth}px`">
-                <canvas id="myCanva">
+                <div :style="`height: ${divHeight}px; width: ${divWidth}px; background-color: 0xE7E7E7 !important`">
+                <canvas id="myCanva" style="background-color: 0xE7E7E7 !important">
                     
                 </canvas>
                 </div>
@@ -76,16 +75,39 @@
                 </span>
             </el-dialog>
 
-            <el-dialog title="Envoyer un message" :visible.sync="Sending" width="50%">
+            <el-dialog title="Envoyer un message" :visible.sync="Sending" width="30%">
                 <span>
-                        <el-select v-model="value" placeholder="Select">
-                            <el-option 
-                                v-for="item in NwCardList" 
-                                :label="item.value"
-                                :key="item.value"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
+                    <el-form :inline="true">
+                            <el-form-item label="De :">
+                                <el-select v-model="sourceComputer" placeholder="Source">
+                                    <el-option 
+                                        v-for="item in ViWork" 
+                                        :label="item.type"
+                                        :key="item.value"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="A :">
+                                <el-select v-model="destinationComputer" placeholder="Destinataire">
+                                    <el-option 
+                                        v-for="item in ViWork"
+                                        :label="item.type"
+                                        :key="item.value"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                    </el-form>
+                    <el-form>
+                        <el-form-item label="Votre message :">
+                            <el-input type="textarea" :rows="7" placeholder="Ecrivez votre message" v-model="message"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </span>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="Sending = false">Annuler</el-button>
+                    <el-button type="primary" @click="SendMessage(sourceComputer, destinationComputer, message)">Envoyer le message</el-button>
                 </span>
             </el-dialog>
 
@@ -125,8 +147,9 @@ export default {
             keepPacket: true,
             inversPin: false,
             Sending: false,
-            value: '',
-            NwCardList: []
+            sourceComputer: '',
+            destinationComputer: '',
+            message: ''
         }
     },
     mounted() {
@@ -161,16 +184,19 @@ export default {
 
             //Create a Pixi Application
             var myView = document.getElementById('myCanva');
-            this.renderer = new PIXI.WebGLRenderer(this.divWidth, this.divHeight ,{backgroundColor: 0xE7E7E7, view: myView,});
+            this.renderer = new PIXI.WebGLRenderer(this.divWidth, this.divHeight,{transparent: false, backgroundColor: 0xE7E7E7, view: myView, resolution: 2,});
+            console.log(this.renderer);
+            this.renderer.backgroundColor = 0xE7E7E7;
+
             
             this.stage = new PIXI.Container();
             this.stage.width = 1800;
             this.stage.height = 1600;
             this.stage.interactive = true;
+        },
 
-            
-           
-
+        Get(){
+            console.log(this.renderer);
         },
 
 
@@ -210,7 +236,7 @@ export default {
             singleObj['type'] = 'computer';
             singleObj['value'] = computer;
             this.ViWork.push(singleObj);
-            console.log(this.ViWork);
+            console.log("Tu recherche ça " + this.ViWork);
             this.Interaction();
             this.computerDialog = false;
         },
@@ -276,25 +302,9 @@ export default {
                         this.Connection(Port.value, this)
                     })
                 }
-            } 
-            if (element.type === "computer"){
-                this.GetAllNetworkCard(element.value, this);
             }
             });
         },
-        SendMessage(computer, current){
-            computer.sprite.interactive = true;
-            computer.sprite.buttonMode = true;
-            computer.sprite.on('click', ShowModal)
-            function ShowModal(){
-                current.ShowModal();          
-            }
-        },
-
-        ShowModal(){
-          this.Sending = true  
-        },
-
 
         Connection (NtC, current){
             NtC.sprite.interactive = true;
@@ -425,6 +435,26 @@ export default {
         
         returnIndex(key) {
             console.log(key)
+        },
+
+        GetObjects(){
+            this.ViWork.forEach(element => {
+                if(element.value === 'computer'){
+                    console.log(element);
+                }
+            // if (element.value.NwCart || element.value.ListPort ){
+            //     element.value.Move(element.value);
+            //     if(element.value.NwCart){
+            //         element.value.NwCart.forEach(NwCart => {
+            //             this.Connection(NwCart.value, this)
+            //         })
+            //     } else{
+            //         element.value.ListPort.forEach(Port =>{
+            //             this.Connection(Port.value, this)
+            //         })
+            //     }
+            // }
+            });
         }
     }
 }

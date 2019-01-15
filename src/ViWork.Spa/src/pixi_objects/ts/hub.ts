@@ -40,20 +40,20 @@ export class pixi_Hub implements Idrawable{
        
         
         console.log(sprite)
-        sprite.anchor.x = 0;
-        sprite.anchor.y = 0;
+        sprite.anchor.x = 0.5;
+        sprite.anchor.y = 0.5;
 
         sprite.width =100;
         sprite.height =100;
                 
-        sprite.x =container.position.x/2;
+        sprite.x = container.position.x/2;
         sprite.y = container.position.y/2;
      
         this.sprite= sprite;
         this.container.addChild(sprite);
 
         for (var i=0; i < this.material.nb_ports; i++ ){
-            this.CreatePort(this.container,20*i,42, i);
+            this.CreatePort(this.container,(20*i)-(sprite.width/2),42-(sprite.height/2), i);
         }
 
         container.addChild(this.container)

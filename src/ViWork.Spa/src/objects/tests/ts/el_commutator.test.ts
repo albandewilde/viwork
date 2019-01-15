@@ -34,6 +34,15 @@ describe("Create a switch and send some paquets", function() {
         assert.strictEqual(cmp1.last_recv, "pouet")
         assert.strictEqual(cmp2.last_recv, "poulet")
     })
+    it("the sender don't get his paquet back because the switch don't resent the paquet to his sender unless he know where to find him", function() {
+        cmp1.last_recv = null
+
+        cmp1.send_thing("Flon", cmp2.network_cards[0].mac_addr, 0)
+        assert.isNull(cmp1.last_recv)
+
+        cmp1.send_thing("lettre", cmp1.network_cards[0].mac_addr, 0)
+        assert.strictEqual(cmp1.last_recv, "lettre")
+    })
 })
 
 describe("Create some vlan", function() {

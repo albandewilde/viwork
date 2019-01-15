@@ -39,4 +39,12 @@ describe("Config the network card", function() {
         assert.strictEqual(cmp2.last_recv, "thing")
         assert.strictEqual(cmp1.last_recv, "poulet")
     })
+    it("the sender don't get his paquet back because the hub don't resent the paquet to his sender", function() {
+        cmp1.last_recv = null
+        cmp1.send_thing("Flon", cmp2.network_cards[0].mac_addr, 0)
+        cmp1.send_thing("lettre", cmp1.network_cards[0].mac_addr, 0)
+
+        assert.isNull(cmp1.last_recv)
+        assert.isNull(cmp1.last_recv)
+    })
 })

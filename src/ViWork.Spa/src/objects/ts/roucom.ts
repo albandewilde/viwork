@@ -1,4 +1,4 @@
-// This class is the mother of computer ans routeur
+// This class is the mother of computer and routeur
 import {NetworkCard} from "./network_card"
 import {ipv4} from "./ipv4"
 
@@ -10,7 +10,7 @@ export class Roucom{
     arp_table: Map<ipv4, number>
     write_on_cable: number
 
-    constructor(nb_network_card: number=1, route: boolean=false, write_on_cable: number) {
+    constructor(nb_network_card: number=1, route: boolean, write_on_cable: number) {
         if (nb_network_card < 0) {
             throw new Error("How get a negative number of network card is possible ? You have 4 houres.")
         }
@@ -54,25 +54,31 @@ export class Roucom{
     get_gateway(ip_reach: ipv4) {
         // given an ip, we return the gateway qhich is in the route table
         let no_break = true
-        let gateway: ipv4
+        let gateway: ipv4 = null
+        let def: ipv4 = null    // the default route
         for (let ip of Array.from(this.route_table.keys())) {
-            if (ipv4.compare(ip, ip_reach)) {
+            // it's on the same network if the network address AND the mask are the same
+            if (ipv4.on_same_network(ip, ip_reach)) {
                 gateway = this.route_table.get(ip)
                 no_break = false
                 break
             }
+            // to be more efficient, we catch the default route when we pass on it
+            if (ipv4.compare(ip, new ipv4("0.0.0.0/0"))) {
+                def = this.route_table.get(ip)
+            }
         } if (no_break) {
-            gateway = this.route_table.get(new ipv4("0.0.0.0/0"))    // the default route
+            gateway = def    // the default route
         }
         return gateway
     }
 
-    get_network_card_idx_on_network(network_ip) {
+    get_network_card_idx_on_network(network_ip: ipv4) {
         // given a ip address, we return the first network card which is on the same network to the ip given
         let network_card_idx: number = null
         for (let idx = 0; idx < this.network_cards.length; idx += 1) {   
             let card = this.network_cards[idx]
-            if (ipv4.compare(card.ip_addr, network_ip)) {
+            if (ipv4.on_same_network(card.ip_addr, network_ip)) {
                 network_card_idx = idx
                 break
             }
@@ -80,27 +86,13 @@ export class Roucom{
         return network_card_idx
     }
 
-    get_mac_by_ip(search: ipv4, card_idx: number) {
-        // given an ip, we return the mac address corresponding with the arp table
-
-        let get_mac = function(target: ipv4, obj: Roucom=this) {
-            // searche in the arp table the ip
-            for (let ip of Array.from(obj.arp_table.keys())) {
-                if (ipv4.compare(ip, target)) {
-                    // we got the mac address
-                    return this.arp_table.get(ip)
-                }
+    get_mac_in_arp(search: ipv4) {
+        for (let ip of Array.from(this.arp_table.keys())) {
+            if (ipv4.compare(search, ip)) {
+                // we got the pac address
+                return this.arp_table.get(ip)
             }
-            return null
         }
-
-        let mac_addr = get_mac(search)
-        if (mac_addr === null) {
-            // if we don't have the mac address we send a broadcast_arp to find if
-            this.network_cards[card_idx].broadcast_arp(search)
-            mac_addr = get_mac(search)
-        }
-
-        return mac_addr
+        return null
     }
 }
