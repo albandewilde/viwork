@@ -75,24 +75,39 @@
                 </span>
             </el-dialog>
 
-            <el-dialog title="Envoyer un message" :visible.sync="Sending" width="50%">
+            <el-dialog title="Envoyer un message" :visible.sync="Sending" width="30%">
                 <span>
-                        <el-select v-model="value" placeholder="Source">
-                            <el-option 
-                                v-for="item in ViWork" 
-                                :label="item.type"
-                                :key="item.value"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                        <el-select v-model="value" placeholder="Destinataire">
-                            <el-option 
-                                v-for="item in ViWork" 
-                                :label="item.type"
-                                :key="item.value"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
+                    <el-form :inline="true">
+                            <el-form-item label="De :">
+                                <el-select v-model="sourceComputer" placeholder="Source">
+                                    <el-option 
+                                        v-for="item in ViWork" 
+                                        :label="item.type"
+                                        :key="item.value"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="A :">
+                                <el-select v-model="destinationComputer" placeholder="Destinataire">
+                                    <el-option 
+                                        v-for="item in ViWork"
+                                        :label="item.type"
+                                        :key="item.value"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                    </el-form>
+                    <el-form>
+                        <el-form-item label="Votre message :">
+                            <el-input type="textarea" :rows="7" placeholder="Ecrivez votre message" v-model="message"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </span>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="Sending = false">Annuler</el-button>
+                    <el-button type="primary" @click="SendMessage(sourceComputer, destinationComputer, message)">Envoyer le message</el-button>
                 </span>
             </el-dialog>
 
@@ -132,7 +147,9 @@ export default {
             keepPacket: true,
             inversPin: false,
             Sending: false,
-            value: '',
+            sourceComputer: '',
+            destinationComputer: '',
+            message: ''
         }
     },
     mounted() {
@@ -184,7 +201,7 @@ export default {
             singleObj['type'] = 'computer';
             singleObj['value'] = computer;
             this.ViWork.push(singleObj);
-            console.log(this.ViWork);
+            console.log("Tu recherche ça " + this.ViWork);
             this.Interaction();
             this.computerDialog = false;
         },
@@ -383,6 +400,26 @@ export default {
         
         returnIndex(key) {
             console.log(key)
+        },
+
+        GetObjects(){
+            this.ViWork.forEach(element => {
+                if(element.value === 'computer'){
+                    console.log(element);
+                }
+            // if (element.value.NwCart || element.value.ListPort ){
+            //     element.value.Move(element.value);
+            //     if(element.value.NwCart){
+            //         element.value.NwCart.forEach(NwCart => {
+            //             this.Connection(NwCart.value, this)
+            //         })
+            //     } else{
+            //         element.value.ListPort.forEach(Port =>{
+            //             this.Connection(Port.value, this)
+            //         })
+            //     }
+            // }
+            });
         }
     }
 }
