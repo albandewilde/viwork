@@ -23,7 +23,6 @@ export class pixi_Computer implements Idrawable {
 
     take(positionX: number , positionY: number ) {
        
- 
         // the computer change his sprite and his position is under the pointer while he don't put ip
     }
 
@@ -75,8 +74,6 @@ export class pixi_Computer implements Idrawable {
 		    .on('touchendoutside', onDragEnd)
 		    .on('mousemove', onDragMove)
             .on('touchmove', onDragMove)
-      
-
        
 
             function onDragStart(event) {

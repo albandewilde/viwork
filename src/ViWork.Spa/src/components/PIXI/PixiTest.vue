@@ -80,8 +80,8 @@
                 <span>
                         <el-select v-model="value" placeholder="Select">
                             <el-option 
-                                v-for="item in ViWork" 
-                                :label="item.type"
+                                v-for="item in NwCardList" 
+                                :label="item.value"
                                 :key="item.value"
                                 :value="item.value">
                             </el-option>
@@ -126,6 +126,7 @@ export default {
             inversPin: false,
             Sending: false,
             value: '',
+            NwCardList: []
         }
     },
     mounted() {
@@ -166,9 +167,39 @@ export default {
             this.stage.width = 1800;
             this.stage.height = 1600;
             this.stage.interactive = true;
+
+            
            
 
         },
+
+
+        GetAllNetworkCard(computer, current){
+            computer.material.network_cards.forEach(NtC => {
+            var obj = [];
+            obj['key'] = computer;
+            obj['value'] = NtC.mac_addr;
+           
+            if (this.NwCardList.length > 0){
+                   
+                   this.NwCardList.forEach(element => {
+                        console.log(element.key)
+                        if ( element.key === computer && element.value !== obj.value){
+                           
+                            console.log(obj.value)
+                           this.NwCardList.push(obj)
+                        }          
+                    });      
+             } else {
+                    
+                    this.NwCardList.push(obj)
+                }
+            })
+            console.log(this.NwCardList)
+        } ,
+         
+     
+     
 
         CreateComputer(nbCard, packetKeepping, Pin){
             let computer = new pixi_Computer();
@@ -247,7 +278,7 @@ export default {
                 }
             } 
             if (element.type === "computer"){
-                this.SendMessage(element.value,this);
+                this.GetAllNetworkCard(element.value, this);
             }
             });
         },
