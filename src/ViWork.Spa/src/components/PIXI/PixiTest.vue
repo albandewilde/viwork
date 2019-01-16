@@ -27,6 +27,7 @@
                         <el-menu-item index="3-1" @click="simpleCableChoosen = true">Simple</el-menu-item>
                         <el-menu-item index="3-2" @click="simpleCableChoosen = false">Croisé</el-menu-item>
                     </el-submenu>
+                      <el-button @click="ShowMessage()">TEST</el-button>
                 </el-menu>
             </el-aside>
             <el-main :style="`height: 100%; width: 100%; padding: 0;`">
@@ -69,7 +70,7 @@
                                         v-for="item in NwCardList" 
                                         :label="item.value"
                                         :key="item.value"
-                                        :value="item.value">
+                                        :value="item.key">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -94,6 +95,7 @@
                     <el-button @click="Sending = false">Annuler</el-button>
                     <el-button type="primary" @click="SendMessage(sourceComputer, destinationComputer, message)">Envoyer le message</el-button>
                 </span>
+              
             </el-dialog>
 
     </div>
@@ -277,6 +279,16 @@ export default {
             } 
            
             });
+        },
+
+        SendMessage(sourceComputer, destinationAddress, message){
+           try {
+               sourceComputer.material.send_thing(message,destinationAddress,0);
+               this.Sending = false
+           } catch (error) {
+               console.log(error)
+           }
+            
         },
 
         Connection (NtC, current){

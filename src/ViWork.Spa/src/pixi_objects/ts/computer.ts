@@ -39,7 +39,7 @@ export class pixi_Computer implements Idrawable {
         const sprite = PIXI.Sprite.fromImage(this.sprite_path)
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;
-        
+       
         sprite.width = 110;
         sprite.height = 110;
         sprite.x = container.position.x;
