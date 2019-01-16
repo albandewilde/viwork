@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-container>
-            <el-aside id="navAside" >
-                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${goodNavAsideHeight}px`">
+            <el-aside id="navAside" style="height: 100%">
+                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" default-active="3-1" :style="`height: ${goodNavAsideHeight}px`">
                     <el-submenu index="1">
                         <template slot="title">
                         <i class="el-icon-mobile-phone"></i>
@@ -14,7 +14,7 @@
                     <el-submenu index="2">
                         <template slot="title">
                         <i class="el-icon-tickets"></i>
-                        <span>Commutateurs</span>
+                        <span>Matériels</span>
                         </template>
                         <el-menu-item index="2-1" @click="CreateHub">Hub</el-menu-item>
                         <el-menu-item index="2-2" @click="CreateCommutateur">Switch</el-menu-item>
@@ -29,28 +29,13 @@
                     </el-submenu>
                 </el-menu>
             </el-aside>
-            <el-main :style="`height: ${goodNavAsideHeight}px; width: ${divWidth}px; padding: 0;`">
+            <el-main :style="`height: 100%; width: 100%; padding: 0;`">
                 <el-menu mode="horizontal" id="navTop">
                     <el-menu-item index="1" @click="Sending = true">Envoyer un message</el-menu-item>
-                        <el-submenu index="2">
-                            <template slot="title">Workspace</template>
-                            <el-menu-item index="2-1">item one</el-menu-item>
-                            <el-menu-item index="2-2">item two</el-menu-item>
-                            <el-menu-item index="2-3">item three</el-menu-item>
-                            <el-submenu index="2-4">
-                            <template slot="title">item four</template>
-                            <el-menu-item index="2-4-1">item one</el-menu-item>
-                            <el-menu-item index="2-4-2">item two</el-menu-item>
-                            <el-menu-item index="2-4-3">item three</el-menu-item>
-                            </el-submenu>
-                        </el-submenu>
-                    <el-menu-item index="3" disabled>Info</el-menu-item>
-                    <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
                 </el-menu>
-                <div :style="`height: ${divHeight}px; width: ${divWidth}px; background-color: 0xE7E7E7 !important`">
-                <canvas id="myCanva" style="background-color: 0xE7E7E7 !important">
-                    
-                </canvas>
+                
+                <div class="thisCanva" style="height: 100%; width: 100%;">
+                    <canvas id="myCanva" style="width: 100%; height: 100%"></canvas>
                 </div>
                
             </el-main>
@@ -222,6 +207,9 @@ export default {
             this.GetAllNetworkCard(computer )
             this.Interaction();
             this.computerDialog = false;
+            this.nbNetCard = 1;
+            this.keepPacket = true;
+            this.inversPin = false;
         },
 
         CreateCommutateur(){
