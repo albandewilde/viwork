@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-aside id="navAside" >
-                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${goodNavAsideHeight}px`" @select="GetSelectedItem">
+                <el-menu id="test" class="el-menu-vertical-demo" :default-openeds="['1','2','3']" :style="`height: ${goodNavAsideHeight}px`">
                     <el-submenu index="1">
                         <template slot="title">
                         <i class="el-icon-mobile-phone"></i>
@@ -24,8 +24,8 @@
                         <i class="el-icon-sort"></i>
                         <span>Câbles</span>
                         </template>
-                        <el-menu-item index="3-1" @click="CreateCable">Simple</el-menu-item>
-                        <el-menu-item index="3-2" @click="CreateCable">Croisé</el-menu-item>
+                        <el-menu-item index="3-1" @click="simpleCableChoosen = true">Simple</el-menu-item>
+                        <el-menu-item index="3-2" @click="simpleCableChoosen = false">Croisé</el-menu-item>
                     </el-submenu>
                 </el-menu>
             </el-aside>
@@ -78,26 +78,26 @@
             <el-dialog title="Envoyer un message" :visible.sync="Sending" width="30%">
                 <span>
                     <el-form :inline="true">
-                            <el-form-item label="De :">
-                                <el-select v-model="sourceComputer" placeholder="Source">
-                                    <el-option 
-                                        v-for="item in ViWork" 
-                                        :label="item.type"
-                                        :key="item.value"
-                                        :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="A :">
-                                <el-select v-model="destinationComputer" placeholder="Destinataire">
-                                    <el-option 
-                                        v-for="item in ViWork"
-                                        :label="item.type"
-                                        :key="item.value"
-                                        :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
+                        <el-form-item label="De :">
+                            <el-select v-model="sourceComputer" placeholder="Source">
+                                <el-option 
+                                    v-for="item in ViWork" 
+                                    :label="item.type"
+                                    :key="item.value"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="A :">
+                            <el-select v-model="destinationComputer" placeholder="Destinataire">
+                                <el-option 
+                                    v-for="item in ViWork"
+                                    :label="item.type"
+                                    :key="item.value"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
                     </el-form>
                     <el-form>
                         <el-form-item label="Votre message :">
@@ -149,7 +149,8 @@ export default {
             Sending: false,
             sourceComputer: '',
             destinationComputer: '',
-            message: ''
+            message: '',
+            simpleCableChoosen: true
         }
     },
     mounted() {
@@ -167,9 +168,6 @@ export default {
             this.goodNavAsideHeight = document.documentElement.clientHeight - this.navHeight;
             this.divHeight = document.documentElement.clientHeight - this.navHeight - this.navTop - 6;       
             this.divWidth = document.documentElement.clientWidth - navWidth - 1;
-        },
-        GetSelectedItem(key){
-            this.selectedIndex = key
         },
 
         RunPixi() {
@@ -193,12 +191,9 @@ export default {
             this.stage.width = 1800;
             this.stage.height = 1600;
             this.stage.interactive = true;
-        },
 
-        Get(){
-            console.log(this.renderer);
+            this.CreateComputer();
         },
-
 
         GetAllNetworkCard(computer, current){
             computer.material.network_cards.forEach(NtC => {
@@ -222,10 +217,7 @@ export default {
                 }
             })
             console.log(this.NwCardList)
-        } ,
-         
-     
-     
+        },     
 
         CreateComputer(nbCard, packetKeepping, Pin){
             let computer = new pixi_Computer();
@@ -279,6 +271,7 @@ export default {
         CreateCable(){
          this.linking= true;    
         },
+
         ShowMessage(){
             this.ViWork.forEach(element=> {
                 if(element.type === 'computer'){
@@ -330,9 +323,7 @@ export default {
            
     },
      
-    ConnectNetWorkCard(NtC){
-      
-   
+    ConnectNetWorkCard(NtC){   
         if (this.linking === true && this.previous !== NtC){
            this.previous = this.GetPrevious();
            this.ConnectOff(NtC);             
