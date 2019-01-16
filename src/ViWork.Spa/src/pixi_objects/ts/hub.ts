@@ -46,8 +46,8 @@ export class pixi_Hub implements Idrawable{
         sprite.width =100;
         sprite.height =100;
                 
-        sprite.x = container.position.x/2;
-        sprite.y = container.position.y/2;
+        sprite.x = this.container.position.x;
+        sprite.y = this.container.position.y;
      
         this.sprite= sprite;
         this.container.addChild(sprite);
@@ -115,6 +115,9 @@ export class pixi_Hub implements Idrawable{
     SetPosition(positionX: number , positionY:number){
         this.positionX = positionX;
         this.positionY = positionY;
+        this.container.position.x = positionX;
+        this.container.position.y = positionY;
+        
     }
 
     CreatePort(container,positionX,positionY, i){

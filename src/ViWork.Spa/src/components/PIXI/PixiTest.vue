@@ -150,7 +150,7 @@ export default {
             sourceComputer: '',
             destinationComputer: '',
             message: '',
-            simpleCableChoosen: true
+            simpleCableChoosen: true,
             NwCardList: []
         }
     },
@@ -196,30 +196,17 @@ export default {
             this.CreateComputer();
         },
 
-        GetAllNetworkCard(computer, current){
-            computer.material.network_cards.forEach(NtC => {
-            var obj = [];
-            obj['key'] = computer;
-            obj['value'] = NtC.mac_addr;
-           
-            if (this.NwCardList.length >  1){
-                   
-                   this.NwCardList.forEach(element => {
-                       console.log(element.key)
-                       if (element.key.NwCart.length < 2){
-                             if (element.value !== obj.value){
-                                this.NwCardList.push(obj)
-                            }   
-                       } else if (element.key !== computer && element.value !== NtC.mac_addr ){
-                           this.NwCardList.push(obj)
-                       }             
-                    });      
-             } else {
-                    console.log(element.key)
-                    this.NwCardList.push(obj)
-                }
-            })
-            console.log(this.NwCardList)
+        GetAllNetworkCard(computer){
+            var mac_addr = []
+            var i = 0
+            computer.material.network_cards.forEach(NtC => { mac_addr.push(NtC.mac_addr) });      
+            for(i = 0; i < mac_addr.length ;i++){
+                 var obj = [];
+                obj['key'] = computer;
+                obj['value'] = mac_addr[i];
+
+                this.NwCardList.push(obj)
+            }
         },     
 
         CreateComputer(nbCard, packetKeepping, Pin){
@@ -232,13 +219,14 @@ export default {
             singleObj['value'] = computer;
             this.ViWork.push(singleObj);
             console.log("Tu recherche ça " + this.ViWork);
+            this.GetAllNetworkCard(computer )
             this.Interaction();
             this.computerDialog = false;
         },
 
         CreateCommutateur(){
             let commutateur = new pixi_Switch();
-            commutateur.SetPosition(0,0);
+            commutateur.SetPosition(100,100);
             commutateur.draw(this.stage, this.renderer);
             var singleObj = {};
             singleObj['type'] = 'switch';
@@ -250,7 +238,7 @@ export default {
 
         CreateRouter(){
             let router = new pixi_Router;
-            router.SetPosition(0,0);
+            router.SetPosition(100,100);
             router.draw(this.stage, this.renderer);
             var singleObj = {};
             singleObj['type'] = 'router';
@@ -262,7 +250,7 @@ export default {
         
         CreateHub(){
             let hub = new pixi_Hub;
-            hub.SetPosition(0,0);
+            hub.SetPosition(100,100);
             hub.draw(this.stage, this.renderer);
             var singleObj = {};
             singleObj['type'] = 'hub';
@@ -298,9 +286,8 @@ export default {
                         this.Connection(Port.value, this)
                     })
                 }
-            } else if (element.type === "computer"){
-                this.GetAllNetworkCard(element, this)
-            }
+            } 
+           
             });
         },
 

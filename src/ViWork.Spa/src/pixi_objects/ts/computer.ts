@@ -126,6 +126,8 @@ export class pixi_Computer implements Idrawable {
         singleObj['type'] = 'NetWorkCard' + i;
         singleObj['value'] = NwCard;
         this.NwCart.push(singleObj);
+        
+        
     }
 
 }

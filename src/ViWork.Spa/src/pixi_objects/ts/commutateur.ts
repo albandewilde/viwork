@@ -89,8 +89,8 @@ export class pixi_Switch implements Idrawable {
         sprite.anchor.y = 0.5;
 
 
-        sprite.position.x = container.position.x
-        sprite.position.y = container.position.y
+        sprite.position.x = this.container.position.x
+        sprite.position.y = this.container.position.y
         sprite.width = 100;
         sprite.height = 100;
         
@@ -119,6 +119,8 @@ export class pixi_Switch implements Idrawable {
     SetPosition(positionX: number , positionY:number){
         this.positionX = positionX;
         this.positionY = positionY;
+        this.container.position.x = positionX;
+        this.container.position.y = positionY;
     }
     remove() {
     }
