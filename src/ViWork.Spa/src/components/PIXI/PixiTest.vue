@@ -78,26 +78,26 @@
             <el-dialog title="Envoyer un message" :visible.sync="Sending" width="30%">
                 <span>
                     <el-form :inline="true">
-                        <el-form-item label="De :">
-                            <el-select v-model="sourceComputer" placeholder="Source">
-                                <el-option 
-                                    v-for="item in ViWork" 
-                                    :label="item.type"
-                                    :key="item.value"
-                                    :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="A :">
-                            <el-select v-model="destinationComputer" placeholder="Destinataire">
-                                <el-option 
-                                    v-for="item in ViWork"
-                                    :label="item.type"
-                                    :key="item.value"
-                                    :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                            <el-form-item label="De :">
+                                <el-select v-model="sourceComputer" placeholder="Adresse Source">
+                                    <el-option 
+                                        v-for="item in NwCardList" 
+                                        :label="item.value"
+                                        :key="item.value"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="A :">
+                                <el-select v-model="destinationComputer" placeholder="Adresse Destinataire">
+                                    <el-option 
+                                        v-for="item in NwCardList"
+                                        :label="item.value"
+                                        :key="item.value"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
                     </el-form>
                     <el-form>
                         <el-form-item label="Votre message :">
@@ -151,6 +151,7 @@ export default {
             destinationComputer: '',
             message: '',
             simpleCableChoosen: true
+            NwCardList: []
         }
     },
     mounted() {
@@ -201,18 +202,20 @@ export default {
             obj['key'] = computer;
             obj['value'] = NtC.mac_addr;
            
-            if (this.NwCardList.length > 0){
+            if (this.NwCardList.length >  1){
                    
                    this.NwCardList.forEach(element => {
-                        console.log(element.key)
-                        if ( element.key === computer && element.value !== obj.value){
-                           
-                            console.log(obj.value)
+                       console.log(element.key)
+                       if (element.key.NwCart.length < 2){
+                             if (element.value !== obj.value){
+                                this.NwCardList.push(obj)
+                            }   
+                       } else if (element.key !== computer && element.value !== NtC.mac_addr ){
                            this.NwCardList.push(obj)
-                        }          
+                       }             
                     });      
              } else {
-                    
+                    console.log(element.key)
                     this.NwCardList.push(obj)
                 }
             })
@@ -295,6 +298,8 @@ export default {
                         this.Connection(Port.value, this)
                     })
                 }
+            } else if (element.type === "computer"){
+                this.GetAllNetworkCard(element, this)
             }
             });
         },
@@ -338,19 +343,14 @@ export default {
 
     ConnectOn(NtC){
         var crosseh
-        console.log(NtC)
         if(!NtC.material.port){
              if(NtC.material.port) {crosseh = false} else crosseh = true                 
         } else {
             if(NtC.material) {crosseh = false} else crosseh = true    
         }
-        
-        console.log(NtC.material)
         NtC.cable = new pixi_Cable(crosseh);                    
-        NtC.cable.SetDestinator(NtC)
-        
-        
-        this.cable = NtC.cable
+        NtC.cable.SetDestinator(NtC);   
+        this.cable = NtC.cable;
         this.Plug(NtC);
         this.previous = NtC;
       
@@ -392,23 +392,18 @@ export default {
     Plug(NtC,cable){
         if (NtC.material.port){     
             if (this.linking === true){
-                console.log("Wesh 2")
                 this.cable.material.port_b = NtC.material.port;
                 this.cable.material.plug(this.cable.material.port_b);                       
             } else if (this.linking === false ) {
-            console.log("wesh")
-            console.log(this.cable)
             this.cable.material.port_a = NtC.material.port
             this.cable.material.plug(this.cable.material.port_a)        
             }
                          
         } else{
             if (this.linking === true){
-                console.log("wesh 4")
                 this.cable.material.port_b = NtC.material;
                 this.cable.material.plug(this.cable.material.port_b);               
             } else if (this.linking === false ) {
-                console.log("wesh 3")
                 this.cable.material.port_a = NtC.material;
                 this.cable.material.plug(this.cable.material.port_a);   
                 }
@@ -435,7 +430,7 @@ export default {
                 }
             // if (element.value.NwCart || element.value.ListPort ){
             //     element.value.Move(element.value);
-            //     if(element.value.NwCart){
+            //     if(element.value.NwCart){ 
             //         element.value.NwCart.forEach(NwCart => {
             //             this.Connection(NwCart.value, this)
             //         })
