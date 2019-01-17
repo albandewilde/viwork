@@ -100,7 +100,6 @@ export class NetworkCard implements IPortContainer {
     route (paquet: IEthernetPayload) {
         // decrement the ttl of the ip_paquet
         paquet.ttl -= 1
-        console.log(paquet)
 
         if (paquet.ttl <= 0) {
             // send ICMP Time exceeded error
@@ -143,8 +142,6 @@ export class NetworkCard implements IPortContainer {
         // we need to search the mac address of the routeur we want to join
         // first, we look in the route table to know which routeur we want to send the frame
         // second, we define the mac_dest to the routeur we find
-        console.log("i sen this")
-        console.log(content)
 
         if (mac_dest === null) {
             let ip_next_routeur = this.roucom.get_gateway(new ipv4("0.0.0.0/0"))
