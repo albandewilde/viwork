@@ -93,6 +93,6 @@ export class Roucom{
                 return this.arp_table.get(ip)
             }
         }
-        return null
+        return 0x000000
     }
 }

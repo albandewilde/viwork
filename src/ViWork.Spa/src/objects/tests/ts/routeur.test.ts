@@ -68,7 +68,7 @@ describe("Test the get mac in arp function on roucom", function() {
     roucom.arp_table.set(new ipv4("192.168.2.167/16"), 5)
 
     it("the ip isn't in the cam table", function() {
-        assert.isNull(roucom.get_mac_in_arp(new ipv4("26.18.174.242/24")))
+        assert.strictEqual(roucom.get_mac_in_arp(new ipv4("26.18.174.242/24")), 0)
     })
     it("ip which are in cam table", function() {
         assert.strictEqual(roucom.get_mac_in_arp(new ipv4("192.168.1.32/24")), 1)
