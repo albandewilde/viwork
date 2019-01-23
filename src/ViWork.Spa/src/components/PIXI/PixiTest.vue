@@ -24,8 +24,8 @@
                         <i class="el-icon-sort"></i>
                         <span>Câbles</span>
                         </template>
-                        <el-menu-item index="3-1" @click="simpleCableChoosen = true">Simple</el-menu-item>
-                        <el-menu-item index="3-2" @click="simpleCableChoosen = false">Croisé</el-menu-item>
+                        <el-menu-item index="3-1" @click="simpleCableChoosen = false">Simple</el-menu-item>
+                        <el-menu-item index="3-2" @click="simpleCableChoosen = true">Croisé</el-menu-item>
                     </el-submenu>
                       <el-button @click="ShowMessage()">TEST</el-button>
                 </el-menu>
@@ -76,7 +76,7 @@
                                         v-for="item in NwCardList" 
                                         :label="item.value"
                                         :key="item.value"
-                                        :value="item.key">
+                                        :value="item.value">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -202,20 +202,21 @@ export default {
             }
         },     
         GetComputerWithMacAdress(MacAddr){
+            var computer
             this.ViWork.forEach(element => {
             
                 if(element.type === "computer"){
                     var mac_addr = []
-                    
+                   
                     element.value.material.network_cards.forEach(NtC => { mac_addr.push(NtC.mac_addr) });
                     for(var i = 0; i < mac_addr.length; i++){
                         if(MacAddr === mac_addr[i]){
-                        
-                            return element.value;
+                            computer = element.value
                         }
                     }
                 }
             })
+            return computer
 
         },
 
@@ -330,22 +331,10 @@ export default {
 
         SendMessage(sourceComputer, destinationAddress, message){
            try {
-               sourceComputer.material.send_thing(message,destinationAddress,0);
-               var computer 
-               this.ViWork.forEach(element => {
-            
-                    if(element.type === "computer"){
-                        var mac_addr = []
-                        
-                        element.value.material.network_cards.forEach(NtC => { mac_addr.push(NtC.mac_addr) });
-                        for(var i = 0; i < mac_addr.length; i++){
-                            if(destinationAddress === mac_addr[i]){
-                            
-                                computer = element.value;
-                            }
-                        }
-                    }
-                })
+               var sComputer = this.GetComputerWithMacAdress(sourceComputer)
+               sComputer.material.send_thing(message,destinationAddress,0);
+               var computer = this.GetComputerWithMacAdress(destinationAddress);
+               
                computer.previousMessage = message
                computer.CheckLastRecv();
                this.Sending = false
@@ -393,13 +382,8 @@ export default {
     },
 
     ConnectOn(NtC){
-        var crosseh
-        if(!NtC.material.port){
-             if(NtC.material.port) {crosseh = false} else crosseh = true                 
-        } else {
-            if(NtC.material) {crosseh = false} else crosseh = true    
-        }
-        NtC.cable = new pixi_Cable(crosseh);                    
+    
+        NtC.cable = new pixi_Cable(this.simpleCableChoosen);                    
         NtC.cable.SetDestinator(NtC);   
         this.cable = NtC.cable;
         this.Plug(NtC);
