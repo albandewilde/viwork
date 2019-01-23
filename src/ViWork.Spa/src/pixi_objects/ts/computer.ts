@@ -10,10 +10,12 @@ export class pixi_Computer implements Idrawable {
     sprite_path: string;
     container: PIXI.Container;
     sprite: PIXI.Sprite;
+    Mail: PIXI.Sprite;
     positionX: any;
     positionY: any;
     renderer: any;
     NwCart: any;
+    previousMessage: any;
 
     constructor() {
         this.container = new PIXI.Container();
@@ -46,6 +48,20 @@ export class pixi_Computer implements Idrawable {
         sprite.y = container.position.y;
         this.sprite = sprite;
         this.container.addChild(sprite)
+
+        const mail = PIXI.Sprite.fromImage(process.env.VUE_APP_BACKEND+"/images/icons/envelope.png");
+        mail.anchor.x = 0,5;
+        mail.anchor.y = 0,5;
+
+        mail.width = 20;
+        mail.height = 20;
+
+        mail.x = sprite.width/2 - 19
+        mail.y = - (sprite.height /2);
+
+        this.container.addChild(mail);
+        this.Mail = mail;
+
         
         for (var i=0; i < this.material.network_cards.length; i++ ){
             this.CreatePort(this.container,-sprite.width/2,(20*i)-(sprite.height/2),i);
@@ -61,7 +77,20 @@ export class pixi_Computer implements Idrawable {
         animate();
         
     }
+    CheckLastRecv(){
+        if (this.material.last_recv === this.previousMessage && this.previousMessage !== null)
+        {
 
+                var newSprite = process.env.VUE_APP_BACKEND+"/images/icons/message.png";
+                var texture = PIXI.Texture.fromImage(newSprite);
+                this.Mail.texture = texture;
+             
+        } else {
+            var sprite = process.env.VUE_APP_BACKEND+"/images/icons/envelope.png";
+            var texture = PIXI.Texture.fromImage(sprite);
+            this.Mail.texture = texture;
+        }
+    }
     Move(material: pixi_Computer){
 
         this.container.interactive = true;
@@ -113,9 +142,11 @@ export class pixi_Computer implements Idrawable {
         this.container.x = positionX;
         this.container.y = positionY;
     }
+
     remove(){
 
     }
+    
     CreatePort(container,positionX,positionY, i){
         var NwCard = new pixi_NetWorkCard();
         NwCard.SetMaterial(this.material.network_cards, i);

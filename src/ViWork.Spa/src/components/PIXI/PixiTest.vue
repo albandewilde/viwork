@@ -60,6 +60,10 @@
                     <el-button type="primary" @click="CreateComputer(nbNetCard, keepPacket, inversPin)">Créer</el-button>
                 </span>
             </el-dialog>
+            <el-dialog title="Boite de réception" :visible.sync="DisplayMessage" with="30%"> 
+                <span> {{message}} </span>
+                <el-button @click="CloseMessage">Quitter </el-button> 
+            </el-dialog>
 
             <el-dialog title="Envoyer un message" :visible.sync="Sending" width="30%">
                 <span>
@@ -138,7 +142,8 @@ export default {
             destinationComputer: '',
             message: '',
             simpleCableChoosen: true,
-            NwCardList: []
+            NwCardList: [],
+            DisplayMessage: false
         }
     },
     mounted() {
@@ -185,9 +190,8 @@ export default {
 
         GetAllNetworkCard(computer){
             var mac_addr = []
-            var i = 0
             computer.material.network_cards.forEach(NtC => { mac_addr.push(NtC.mac_addr) });      
-            for(i = 0; i < mac_addr.length ;i++){
+            for(var i = 0; i < mac_addr.length ;i++){
                  var obj = [];
                 obj['key'] = computer;
                 obj['value'] = mac_addr[i];
@@ -195,6 +199,23 @@ export default {
                 this.NwCardList.push(obj)
             }
         },     
+        GetComputerWithMacAdress(MacAddr){
+            this.ViWork.forEach(element => {
+            
+                if(element.type === "computer"){
+                    var mac_addr = []
+                    
+                    element.value.material.network_cards.forEach(NtC => { mac_addr.push(NtC.mac_addr) });
+                    for(var i = 0; i < mac_addr.length; i++){
+                        if(MacAddr === mac_addr[i]){
+                        
+                            return element.value;
+                        }
+                    }
+                }
+            })
+
+        },
 
         CreateComputer(nbCard, packetKeepping, Pin){
             let computer = new pixi_Computer();
@@ -253,15 +274,35 @@ export default {
          this.linking= true;    
         },
 
-        ShowMessage(){
-            this.ViWork.forEach(element=> {
-                if(element.type === 'computer'){
-                console.log(element.value)
-                  
-                   console.log( element.value.material.last_recv)
+        ShowMessage(computer, current){
+            computer.Mail.interactive = true;
+            computer.Mail.buttonMode = true;
+            computer.Mail.on("click", Message)
+
+            function Message (){
+                current.DisplayMessageBox(computer)
+            }
+            
+        },
+
+        CloseMessage(){
+            this.ViWork.forEach(element => {
+                if (element.type === "computer"){
+                    element.value.previousMessage = null;
+                    element.value.CheckLastRecv()
+
                 }
             })
+            this.DisplayMessage = false
         },
+
+        DisplayMessageBox(computer){
+            console.log("hey")
+            this.message = computer.material.last_recv;
+            this.DisplayMessage = true;
+
+        },
+
 
         Interaction(){
             this.ViWork.forEach(element => {
@@ -277,6 +318,10 @@ export default {
                     })
                 }
             } 
+
+            if (element.type === "computer"){
+                this.ShowMessage(element.value, this);
+            }
            
             });
         },
@@ -284,6 +329,23 @@ export default {
         SendMessage(sourceComputer, destinationAddress, message){
            try {
                sourceComputer.material.send_thing(message,destinationAddress,0);
+               var computer 
+               this.ViWork.forEach(element => {
+            
+                    if(element.type === "computer"){
+                        var mac_addr = []
+                        
+                        element.value.material.network_cards.forEach(NtC => { mac_addr.push(NtC.mac_addr) });
+                        for(var i = 0; i < mac_addr.length; i++){
+                            if(destinationAddress === mac_addr[i]){
+                            
+                                computer = element.value;
+                            }
+                        }
+                    }
+                })
+               computer.previousMessage = message
+               computer.CheckLastRecv();
                this.Sending = false
            } catch (error) {
                console.log(error)
