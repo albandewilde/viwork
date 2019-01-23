@@ -62,7 +62,9 @@
             </el-dialog>
             <el-dialog title="Boite de réception" :visible.sync="DisplayMessage" with="30%"> 
                 <span> {{message}} </span>
+                  <span slot="footer" class="dialog-footer">
                 <el-button @click="CloseMessage">Quitter </el-button> 
+                  </span>
             </el-dialog>
 
             <el-dialog title="Envoyer un message" :visible.sync="Sending" width="30%">
