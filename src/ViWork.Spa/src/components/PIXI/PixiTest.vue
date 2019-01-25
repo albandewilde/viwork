@@ -67,6 +67,23 @@
                   </span>
             </el-dialog>
 
+            <el-dialog title="Paramètre du switch" :visible.sync="SwitchDialog" width="30%">
+               <span>
+                    <el-form :inline="true">
+                        <el-checkbox v-model="SelectPort" v-for="port in SwitchPortList" 
+                                            :label="port.id"
+                                            :key="port.value"
+                                            :value="port.material" >
+                        </el-checkbox>
+                    </el-form>
+               </span>
+
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="SwitchDialog = false">Annuler</el-button>
+                    <el-button type="primary" @click="SaveSwitchConfig(SelectPort)">Valider</el-button>
+                </span>
+            </el-dialog>
+
             <el-dialog title="Envoyer un message" :visible.sync="Sending" width="30%">
                 <span>
                     <el-form :inline="true">
@@ -143,9 +160,12 @@ export default {
             sourceComputer: '',
             destinationComputer: '',
             message: '',
-            simpleCableChoosen: true,
+            simpleCableChoosen: false,
             NwCardList: [],
-            DisplayMessage: false
+            DisplayMessage: false,
+            SelectPort: '',
+            SwitchPortList: '',
+            SwitchDialog: false
         }
     },
     mounted() {
@@ -200,7 +220,12 @@ export default {
 
                 this.NwCardList.push(obj)
             }
-        },     
+        },  
+       GetAllPort(commutator){
+           var listPort = []
+           commutator.ListPort.forEach(Port => {listPort.push(Port)})
+
+       },
         GetComputerWithMacAdress(MacAddr){
             var computer
             this.ViWork.forEach(element => {
@@ -331,11 +356,16 @@ export default {
 
         SendMessage(sourceComputer, destinationAddress, message){
            try {
+               // get the computer object with the mac address
                var sComputer = this.GetComputerWithMacAdress(sourceComputer)
+               console.log(sourceComputer)
+               console.log(sComputer);
                sComputer.material.send_thing(message,destinationAddress,0);
                var computer = this.GetComputerWithMacAdress(destinationAddress);
-               
+               console.log(destinationAddress)
+               console.log(computer);
                computer.previousMessage = message
+               // check if you got a new message
                computer.CheckLastRecv();
                this.Sending = false
            } catch (error) {
@@ -457,26 +487,6 @@ export default {
         returnIndex(key) {
             console.log(key)
         },
-
-        GetObjects(){
-            this.ViWork.forEach(element => {
-                if(element.value === 'computer'){
-                    console.log(element);
-                }
-            // if (element.value.NwCart || element.value.ListPort ){
-            //     element.value.Move(element.value);
-            //     if(element.value.NwCart){ 
-            //         element.value.NwCart.forEach(NwCart => {
-            //             this.Connection(NwCart.value, this)
-            //         })
-            //     } else{
-            //         element.value.ListPort.forEach(Port =>{
-            //             this.Connection(Port.value, this)
-            //         })
-            //     }
-            // }
-            });
-        }
     }
 }
 

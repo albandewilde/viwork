@@ -68,8 +68,6 @@ export class pixi_Computer implements Idrawable {
         }
         container.addChild(this.container);
         
-        
-
         function animate(){      
             requestAnimationFrame(animate);
             renderer.render(container);
@@ -157,6 +155,7 @@ export class pixi_Computer implements Idrawable {
         singleObj['type'] = 'NetWorkCard' + i;
         singleObj['value'] = NwCard;
         this.NwCart.push(singleObj);
+        
         
         
     }

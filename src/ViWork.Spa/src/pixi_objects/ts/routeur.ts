@@ -1,8 +1,11 @@
 //import {all} from "pixi.js"
 
+
+import * as PIXI from "pixi.js"
 import {Routeur} from "../../objects/ts/routeur";
 import { Idrawable } from './Idrawable';
 import { pixi_Port} from "./port";
+import { pixi_NetWorkCard } from "./networkcard";
 
 export class pixi_Router implements Idrawable{
     material: Routeur;
@@ -11,12 +14,13 @@ export class pixi_Router implements Idrawable{
     container: PIXI.Container;
     sprite: PIXI.Sprite;
     renderer: any;
-    ListPort: any;
+    NwCart: any;
     positionX: any;
     positionY: any;
 
     constructor() {
-        this.material = new Routeur();
+        this.container = new PIXI.Container();
+        this.NwCart = [];
         this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/routeur.png";       
     }
 
@@ -48,12 +52,13 @@ export class pixi_Router implements Idrawable{
     
         this.sprite = sprite;
 
-        container.addChild(sprite);
+        this.container.addChild(sprite);
 
         for (var i=0; i < this.material.network_cards.length; i++ ){
-            this.CreatePort(this.container,0,10+20*i);
+            this.CreatePort(this.container,0,10+20*i, i);
         }
         
+        container.addChild(this.container)
 
         function animate(){      
             requestAnimationFrame(animate);
@@ -61,6 +66,9 @@ export class pixi_Router implements Idrawable{
         }
         animate();
         
+    }
+    SetMaterial(nbCard){
+        this.material = new Routeur(nbCard)
     }
 
     Move(material: pixi_Router){
@@ -103,14 +111,17 @@ export class pixi_Router implements Idrawable{
             }
     }
 
-    CreatePort(container,positionX,positionY){
-        var port = new pixi_Port();
-        port.SetPosition(container, positionX,positionY);
-        port.draw(container,this.renderer);
+    CreatePort(container,positionX,positionY, i){
+        var NwCard = new pixi_NetWorkCard();
+        NwCard.SetMaterial(this.material.network_cards, i);
+        NwCard.getName(container);
+        NwCard.SetPosition(container, positionX,positionY);
+        NwCard.draw(container,this.renderer)
         var singleObj = {};
-        singleObj['type'] = 'NetWorkCard';
-        singleObj['value'] = port;
-        this.ListPort.push(singleObj);
+        singleObj['type'] = 'NetWorkCard' + i;
+        singleObj['value'] = NwCard;
+        this.NwCart.push(singleObj);
+        
 
     }
 
