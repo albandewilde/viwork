@@ -21,7 +21,7 @@ export class pixi_Router implements Idrawable{
     constructor() {
         this.container = new PIXI.Container();
         this.NwCart = [];
-        this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/routeur.png";       
+        this.sprite_path = process.env.VUE_APP_BACKEND+"/images/icons/router.png";       
     }
 
     take(positionX: number , positionY: number ) {
@@ -55,7 +55,7 @@ export class pixi_Router implements Idrawable{
         this.container.addChild(sprite);
 
         for (var i=0; i < this.material.network_cards.length; i++ ){
-            this.CreatePort(this.container,0,10+20*i, i);
+            this.CreatePort(this.container,60+(20*i)-(sprite.width/2),20+(sprite.height/2), i);
         }
         
         container.addChild(this.container)
