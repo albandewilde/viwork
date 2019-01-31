@@ -25,10 +25,9 @@
                         <i class="el-icon-sort"></i>
                         <span>Câbles</span>
                         </template>
-                        <el-menu-item index="3-1" @click="simpleCableChoosen = false">Simple</el-menu-item>
-                        <el-menu-item index="3-2" @click="simpleCableChoosen = true">Croisé</el-menu-item>
+                        <el-menu-item index="3-1" @click="crossChoosen = false">Simple</el-menu-item>
+                        <el-menu-item index="3-2" @click="crossChoosen = true">Croisé</el-menu-item>
                     </el-submenu>
-                      <el-button @click="ShowMessage()">TEST</el-button>
                 </el-menu>
             </el-aside>
             <el-main :style="`height: 100%; width: 100%; padding: 0;`">
@@ -175,7 +174,7 @@ export default {
             sourceComputer: '',
             destinationComputer: '',
             message: '',
-            simpleCableChoosen: false,
+            crossChoosen: false,
             NwCardList: [],
             ListVlan:[],
             DisplayMessage: false,
@@ -479,7 +478,7 @@ export default {
 
     ConnectOn(NtC){
     
-        NtC.cable = new pixi_Cable(this.simpleCableChoosen);                    
+        NtC.cable = new pixi_Cable(this.crossChoosen);                    
         NtC.cable.SetDestinator(NtC);   
         this.cable = NtC.cable;
         this.Plug(NtC);

@@ -31,6 +31,7 @@ import { GetSchemaByIdAsync, DeleteSchemaByIdAsync} from "../../../api/schemaApi
     async mounted() {
         await this.getUserId();
         await this.refreshData(this.User.userId);
+        console.log(this.User);
     },
 
   
@@ -42,6 +43,7 @@ import { GetSchemaByIdAsync, DeleteSchemaByIdAsync} from "../../../api/schemaApi
         async getUserId(){
         try {
         this.User = await findByEmail(this.auth.email);
+        console.log(this.User);
         }
         catch (e) {
                 console.error(e);
