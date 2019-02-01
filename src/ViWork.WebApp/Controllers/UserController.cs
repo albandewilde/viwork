@@ -20,7 +20,7 @@ namespace ViWork.WebApp.Controllers
             _userGateway = userGateway;
         }
 
-        [HttpGet("FindByEmail/{email}")]
+        [HttpGet("FindByEmail")]
         public async Task<IActionResult> FindByEmail(string email)
         {
             UserData result = await _userGateway.FindByEmail(email);

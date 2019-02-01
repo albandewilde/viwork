@@ -1,55 +1,62 @@
-import AuthService from '../services/AuthService';
-function dataFilter(data, type) {
-    if (data === '')
-        return null;
-    return data;
+import AuthService from '../services/AuthService'
+
+async function checkErrors(resp) {
+    if(resp.ok) return resp;
+
+    let errorMsg = `ERROR ${resp.status} (${resp.statusText})`;
+    let serverText = await resp.text();
+    if(serverText) errorMsg = `${errorMsg}: ${serverText}`;
+
+    var error = new Error(errorMsg);
+    error.response = resp;
+    throw error;
 }
-export async function postAsync(url, data) {
-    return await ({
-        method: 'POST',
-        url: url,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(data),
-        dataFilter: dataFilter,
+
+async function toJSON(resp) {
+    const result = await resp.text();
+    if(result) return JSON.parse(result);
+}
+
+async function send(url, method, data, contentType, isRetrying) {
+    let options = {
+        method: method,
         headers: {
-            Authorization: `Bearer ${AuthService.accessToken}`
+            'Authorization': `Bearer ${AuthService.accessToken}`
+       
         },
-    });
+        mode: 'cors'
+    };
+
+    if (data) options.body = JSON.stringify(data);
+    if (contentType) options.headers['Content-Type'] = contentType;
+    
+    let result = await fetch(url, options);
+
+    if (result.status === 401 && !isRetrying) {
+        await AuthService.refreshToken();
+        send(url, method, data, contentType, true);
+    }
+
+    await checkErrors(result);
+    return await toJSON(result);
 }
-export async function putAsync(url, data) {
-    return await ({
-        method: 'PUT',
-        url: url,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(data),
-        dataFilter: dataFilter,
-        headers: {
-            Authorization: `Bearer ${AuthService.accessToken}`
-        },
-    });
+
+export function postAsync(url, data) {
+    return send(url, 'POST', data, 'application/json');
 }
-export async function getAsync(url) {
-    return await ({
-        method: 'GET',
-        url: url,
-        dataType: 'json',
-        dataFilter: dataFilter,
-        headers: {
-            Authorization: `Bearer ${AuthService.accessToken}`
-        },
-    });
+
+export function putAsync(url, data) {
+    return send(url, 'PUT', data, 'application/json');
 }
-export async function deleteAsync(url) {
-    return await ({
-        method: 'DELETE',
-        url: url,
-        dataType: 'json',
-        dataFilter: dataFilter,
-        headers: {
-            Authorization: `Bearer ${AuthService.accessToken}`
-        },
-    });
+
+export function getAsync(url) {
+    return send(url, 'GET');
 }
-//# sourceMappingURL=apiHelper.js.map
+
+export function deleteAsync(url) {
+    return send(url, 'DELETE');
+}
+
+export function postAsyncChooseContentType(url, data,contentType) {
+    return send(url, 'POST', data, contentType);
+}

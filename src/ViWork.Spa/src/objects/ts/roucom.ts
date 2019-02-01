@@ -31,11 +31,11 @@ export class Roucom{
         this.network_cards.push(new NetworkCard(this, true, this.write_on_cable))
     }
 
-    send_thing(content: string, mac_dest: number, card_id: number, ip_dest: ipv4=null, protocol_layer3: number=null) {
+    send_thing(content: string, mac_dest: number, card_id: number, ip_dest: ipv4=null, protocol_layer3: number=null, ttl: number=64) {
         if (card_id < 0 || card_id > this.network_cards.length) {
             throw RangeError("Index of network card out of range")
         }
-        this.network_cards[card_id].send(content, mac_dest, ip_dest, protocol_layer3)
+        this.network_cards[card_id].send(content, mac_dest, ip_dest, protocol_layer3, ttl=ttl)
     }
 
     arrived(content: String) {
@@ -89,10 +89,10 @@ export class Roucom{
     get_mac_in_arp(search: ipv4) {
         for (let ip of Array.from(this.arp_table.keys())) {
             if (ipv4.compare(search, ip)) {
-                // we got the pac address
+                // we got the mac address
                 return this.arp_table.get(ip)
             }
         }
-        return null
+        return 0x000000
     }
 }

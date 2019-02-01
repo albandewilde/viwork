@@ -12,6 +12,6 @@ export async function register(form) {
 }
 
 const   Connectedendpoint = process.env.VUE_APP_BACKEND + "/api/user";
-export async function findByEmail(email ){
-    return await getAsync(`${Connectedendpoint}/FindByEmail/${email}`);
+export async function findByEmail(email){
+    return await getAsync(`${Connectedendpoint}/FindByEmail?email=${email}`);
 }

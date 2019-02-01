@@ -18,16 +18,16 @@
                         </template>
                         <el-menu-item index="2-1" @click="CreateHub">Hub</el-menu-item>
                         <el-menu-item index="2-2" @click="CreateCommutateur">Switch</el-menu-item>
+                        <el-menu-item index="2-3" @click=" routerDialog= true">Router</el-menu-item>
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title">
                         <i class="el-icon-sort"></i>
                         <span>Câbles</span>
                         </template>
-                        <el-menu-item index="3-1" @click="simpleCableChoosen = false">Simple</el-menu-item>
-                        <el-menu-item index="3-2" @click="simpleCableChoosen = true">Croisé</el-menu-item>
+                        <el-menu-item index="3-1" @click="crossChoosen = false">Simple</el-menu-item>
+                        <el-menu-item index="3-2" @click="crossChoosen = true">Croisé</el-menu-item>
                     </el-submenu>
-                      <el-button @click="ShowMessage()">TEST</el-button>
                 </el-menu>
             </el-aside>
             <el-main :style="`height: 100%; width: 100%; padding: 0;`">
@@ -41,6 +41,19 @@
                
             </el-main>
         </el-container>
+            <el-dialog title="Paramètre du router"  :visible.sync="routerDialog" width ="30%">
+                <span>
+                    <el-form >
+                        <el-form-item label="Nombre de carte réseaux :">
+                            <el-input-number v-model="nbNetCard" :min="4"></el-input-number>
+                        </el-form-item>
+                    </el-form>
+                </span>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="computerDialog = false">Annuler</el-button>
+                    <el-button type="primary" @click="CreateRouter(nbNetCard)">Créer</el-button>
+                </span>
+            </el-dialog>
             <el-dialog title="Paramètres de l'ordinateur" :visible.sync="computerDialog" width="30%">
                 <span>
                     <el-form>
@@ -134,6 +147,7 @@ import { pixi_Router } from '@/pixi_objects/ts/routeur';
 import { pixi_Switch } from '@/pixi_objects/ts/commutateur';
 import { pixi_Cable } from '@/pixi_objects/ts/cable';
 import { pixi_Port} from '@/pixi_objects/ts/port';
+import { Switch } from 'element-ui';
 
 export default {
     data() {
@@ -160,12 +174,16 @@ export default {
             sourceComputer: '',
             destinationComputer: '',
             message: '',
-            simpleCableChoosen: false,
+            crossChoosen: false,
             NwCardList: [],
+            ListVlan:[],
             DisplayMessage: false,
             SelectPort: '',
             SwitchPortList: '',
-            SwitchDialog: false
+            SwitchDialog: false,
+            routerDialog: false,
+            ConfigDialog: false,
+            RouterConfigDialog: false
         }
     },
     mounted() {
@@ -222,10 +240,34 @@ export default {
             }
         },  
        GetAllPort(commutator){
-           var listPort = []
-           commutator.ListPort.forEach(Port => {listPort.push(Port)})
+           this.ListPort = [];
+           var listPort = [];
+           commutator.material.port.forEach(Port => {listPort.push(Port)})
+           for (var i = o; i < listPort.length; i++){
+                var obj = [];
+                obj['key'] = commutator
+                obj['id'] = port[i].value.id;
+                obj['value'] = port.value;
+
+                this.ListPort.push(obj)
+           }
+
 
        },
+
+        GetAllVlan(swt){
+            this.ListVlan = [];
+            var listVlan = [];
+            swr.material.vlan.forEach(Vlan => {listVlan.push(Vlan)})
+            for (var i = o; i < listVlan.length; i++){
+                var obj
+                obj['key'] = swt
+                obj.value = listVlan[i]
+
+                this.listVlan.push(obj)
+
+            }
+        },
         GetComputerWithMacAdress(MacAddr){
             var computer
             this.ViWork.forEach(element => {
@@ -275,15 +317,17 @@ export default {
 
         },
 
-        CreateRouter(){
-            let router = new pixi_Router;
+        CreateRouter(nbCard){
+            let router = new pixi_Router();
             router.SetPosition(100,100);
+            router.SetMaterial(nbCard);
             router.draw(this.stage, this.renderer);
             var singleObj = {};
             singleObj['type'] = 'router';
             singleObj['value'] = router;
             this.ViWork.push(singleObj);
             this.Interaction();
+            this.routerDialog = false;
     
         },
         
@@ -350,27 +394,48 @@ export default {
             if (element.type === "computer"){
                 this.ShowMessage(element.value, this);
             }
+            
+            if (element.type === "switch" || element.type ==="computer" || element.type==="router"){
+                this.ShowConfiguration(element.value,element.type, this)
+            }
            
             });
         },
 
+        ShowConfiguration(material, type,current){
+            if (type === "router"){
+                material.sprite.interactive = true;
+                material.sprite.buttonMode = true;
+                material.sprite.on("click", RouterConfigDialog)
+
+                function RouterConfigDialog(){
+                    current.RouterConfigDialog(material)
+                }
+            }
+        },
+
+        RouterConfigDialog(router){
+            this.router = router
+            this.RouterCongigDialog = true;
+        },
+
+        
         SendMessage(sourceComputer, destinationAddress, message){
-           try {
+                
                // get the computer object with the mac address
                var sComputer = this.GetComputerWithMacAdress(sourceComputer)
-               console.log(sourceComputer)
-               console.log(sComputer);
-               sComputer.material.send_thing(message,destinationAddress,0);
+                 try {
+                    sComputer.material.send_thing(message,destinationAddress,0);
+                 } catch (error) {
+               console.log(error)
+                }
                var computer = this.GetComputerWithMacAdress(destinationAddress);
-               console.log(destinationAddress)
-               console.log(computer);
+               
                computer.previousMessage = message
                // check if you got a new message
                computer.CheckLastRecv();
                this.Sending = false
-           } catch (error) {
-               console.log(error)
-           }
+         
             
         },
 
@@ -413,7 +478,7 @@ export default {
 
     ConnectOn(NtC){
     
-        NtC.cable = new pixi_Cable(this.simpleCableChoosen);                    
+        NtC.cable = new pixi_Cable(this.crossChoosen);                    
         NtC.cable.SetDestinator(NtC);   
         this.cable = NtC.cable;
         this.Plug(NtC);
@@ -444,6 +509,7 @@ export default {
            
         } 
     },
+    
 
     Connect (Ntc){
         if (this.linking === true && this.cable){
@@ -453,6 +519,15 @@ export default {
         
         }
     },
+
+    Deconnect(Ntc){
+        if (this.linking === false && Ntc.linking === true){
+            this.UnPlug(Ntc, Ntc.cable);
+            this.cable = Ntc.cable;
+    
+        }
+    },
+    
 
     Plug(NtC,cable){
         if (NtC.material.port){     

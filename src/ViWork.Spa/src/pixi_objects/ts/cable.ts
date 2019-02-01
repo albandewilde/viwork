@@ -52,22 +52,7 @@ export class pixi_Cable implements Idrawable {
         cable.beginFill(this.color);
         this.Drawing(cable,50,60,20);
             
-        // } else  {
-        //     cable
-        //         .lineStyle(3,0x32CD32)
-        //         .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y + 17)
-        //         .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y)
-            
-        //     this.container.addChild(cable); 
-          
-        //     cable2
-        //     .lineStyle(3,0x32CD32)
-        //     .moveTo(this.receptor.stage.position.x,this.receptor.stage.position.y )
-        //     .lineTo(this.destinator.stage.position.x ,this.destinator.stage.position.y +17)
-        //     this.container.addChild(cable2); 
-        // }
         this.cable = cable;
-        // this.cable2 = cable2;
         
         
        
